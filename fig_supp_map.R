@@ -27,6 +27,7 @@ notssa <- ne_countries(scale = "small", type = "countries", continent = "Africa"
 dat <- readxl::read_xlsx("./data/study_data.xlsx") |>
   left_join(read.csv("./data/study_name.csv"),
             by = c("study_id")) |>
+  filter(year_mid >= 2005) |>
   group_by(sti,sex,study_name,country) |>
   summarise(n_id = n_distinct(study_id)) |>
   mutate(n_study = case_when(!is.na(study_name) ~ 1, is.na(study_name) ~ n_id)) |>
@@ -81,4 +82,4 @@ plot_country <- ggplot(df_country) +
 
 plot_country
 
-ggsave("./plots/fig_supp_map.tiff", plot_country, width = 18, units="cm", dpi=700)
+ggsave("./plots/fig_supp_map.png", plot_country, width = 18, units="cm", dpi=700)

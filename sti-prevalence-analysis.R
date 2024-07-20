@@ -6,7 +6,7 @@ library(sjPlot)
 
 # PREP DATA ----
 
-# Population by region, 15-49 years in 2024
+# Population by region, 15-49 years in 2020
 df_pop <- read.csv("./data/unpopulation_dataportal_20240426093533.csv") |>
   rename_all(tolower) |>
   filter(time == 2020,
@@ -29,17 +29,19 @@ df_pop <- read.csv("./data/unpopulation_dataportal_20240426093533.csv") |>
   summarise(population = sum(value))
 
 # Study data
+# Williams et al ANC review covers 2000-2022
+# WHO three reviews cover 2005-2021
+# Updated review covers 2021-2024
 df <- readxl::read_xlsx("./data/study_data.xlsx") |>
   mutate(year_regression = year_mid - 2010,
          sti = factor(sti, levels = c("CT", "NG", "TV")),
-         year_grp = case_when(year_mid %in% c(2000:2004) ~ "2000-2004",
-                              year_mid %in% c(2005:2009) ~ "2005-2009",
+         year_grp = case_when(year_mid %in% c(2005:2009) ~ "2005-2009",
                               year_mid %in% c(2010:2014) ~ "2010-2014",
                               year_mid %in% c(2015:2019) ~ "2015-2019",
-                              year_mid %in% c(2020:2022) ~ "2020-2022"),
+                              year_mid %in% c(2020:2022) ~ "2020-2024"),
          year_grp = factor(year_grp, 
-                           levels = c("2000-2004", "2005-2009", "2010-2014", 
-                                      "2015-2019", "2020-2022")),
+                           levels = c("2005-2009", "2010-2014", 
+                                      "2015-2019", "2020-2024")),
          region = fct_collapse(region_analysis, 
                                         "Western and Central" = c("Western", "Central")),
          region = factor(region, levels = c("Southern", "Eastern", "Western and Central")),
@@ -66,7 +68,7 @@ prediction <- function(mod, sti) {
   
   df_pred <- crossing(sex = c("Female", "Male"),
                       region = c("Western and Central", "Eastern", "Southern"),
-                      year = 2000:2023) %>%
+                      year = 2005:2023) %>%
     mutate(year_regression = year - 2010,
            population = "ANC attendees",
            age_group = "Adult",
@@ -240,8 +242,8 @@ rbind(dat_region_annual |> filter(year == 2020),
       dat_ssa_annual |> filter(year == 2020)) |>
   write.csv("./results/prevalence_2020_adjusted.csv", row.names = FALSE)
 
-# Prediction for 2005
-dat_ssa_annual |> filter(year == 2005)
+# Prediction for 2008
+dat_ssa_annual |> filter(year == 2008)
 
 # Prediction for 2012, 2016, 2020 (supp. table for comparison with WHO)
 rbind(dat_region_annual, dat_ssa_annual) |>
@@ -428,18 +430,18 @@ modtv8 <- glmmTMB(form, data = df_tv_anc, family = binomial(link="log"),
 
 # Predict by region
 dat_region_annual <- rbind(
-  prediction(modct6, "CT")$region_prev,
-  prediction(modng6, "NG")$region_prev,
-  prediction(modtv6, "TV")$region_prev) |>
+  prediction(modct8, "CT")$region_prev,
+  prediction(modng8, "NG")$region_prev,
+  prediction(modtv8, "TV")$region_prev) |>
   filter(sex == "Female")
 
 dat_region_annual |> write.csv("./results/prevalence_alldata_anc.csv", row.names = FALSE)
 
 # Predict weighted mean for SSA 
 dat_ssa_annual <- rbind(
-  prediction(modct6, "CT")$ssa_prev,
-  prediction(modng6, "NG")$ssa_prev,
-  prediction(modtv6, "TV")$ssa_prev) |>
+  prediction(modct8, "CT")$ssa_prev,
+  prediction(modng8, "NG")$ssa_prev,
+  prediction(modtv8, "TV")$ssa_prev) |>
   mutate(region = "SSA") |>
   relocate(sti, sex, region) |>
   filter(sex == "Female")
@@ -448,71 +450,6 @@ dat_ssa_annual <- rbind(
 rbind(dat_region_annual |> filter(year == 2020),
       dat_ssa_annual |> filter(year == 2020)) |>
   write.csv("./results/prevalence_2020_anc.csv", row.names = FALSE)
-
-# < Remove 2000-2005 ----
-
-df_ct_2005 <- df |> filter(sti == "CT", year_mid >= 2005)
-df_ng_2005 <- df |> filter(sti == "NG", year_mid >= 2005)
-df_tv_2005 <- df |> filter(sti == "TV", year_mid >= 2005)
-
-# Formula
-form <- cbind(adj_num,(adj_denom-adj_num)) ~ region + year_regression:region + 
-  sex:region + population + age_group + hiv_status + (1 | study_id)
-
-# Logit models
-modct9 <- glmmTMB(form, data = df_ct_2005, family = binomial(link="logit"))
-modng9 <- glmmTMB(form, data = df_ng_2005, family = binomial(link="logit"))
-modtv9 <- glmmTMB(form, data = df_tv_2005, family = binomial(link="logit"))
-
-# Use  parameter values from logit model as starting values for log model
-summary(modct9)
-theta_ct <- as.vector(modct9$fit$par[names(modct9$fit$par) == "theta"])
-fixed_ct <- as.vector(modct9$fit$par[names(modct9$fit$par) == "beta"])
-fixed_ct <- append(fixed_ct, 0, length(fixed_ct))
-
-summary(modng9)
-theta_ng <- as.vector(modng9$fit$par[names(modng9$fit$par) == "theta"])
-fixed_ng <- as.vector(modng9$fit$par[names(modng9$fit$par) == "beta"])
-fixed_ng <- append(fixed_ng, 0, length(fixed_ng))
-
-summary(modtv9)
-theta_tv <- as.vector(modtv9$fit$par[names(modtv9$fit$par) == "theta"])
-fixed_tv <- as.vector(modtv9$fit$par[names(modtv9$fit$par) == "beta"])
-fixed_tv <- append(fixed_tv, 0, length(fixed_tv) - 1)
-fixed_tv <- append(fixed_tv, 0, length(fixed_tv))
-
-# Log models
-modct10 <- glmmTMB(form, data = df_ct_2005, family = binomial(link="log"),
-                  start = list(theta = theta_ct, beta = fixed_ct))
-
-modng10 <- glmmTMB(form, data = df_ng_2005, family = binomial(link="log"),
-                  start = list(theta = theta_ng, beta = fixed_ng))
-
-modtv10 <- glmmTMB(form, data = df_tv_2005, family = binomial(link="log"),
-                  start = list(theta = theta_tv, beta = fixed_tv))
-
-sjPlot::tab_model(modct10, modng10, modtv10, p.style = "stars", wrap.labels = 100)
-
-# Predict by region
-dat_region_annual <- rbind(
-  prediction(modct10, "CT")$region_prev,
-  prediction(modng10, "NG")$region_prev,
-  prediction(modtv10, "TV")$region_prev)
-
-dat_region_annual |> write.csv("./results/prevalence_alldata_2005onwards.csv", row.names = FALSE)
-
-# Predict weighted mean for SSA 
-dat_ssa_annual <- rbind(
-  prediction(modct2, "CT")$ssa_prev,
-  prediction(modng2, "NG")$ssa_prev,
-  prediction(modtv2, "TV")$ssa_prev) |>
-  mutate(region = "SSA") |>
-  relocate(sti, sex, region)
-
-# Save 2020 predictions
-rbind(dat_region_annual |> filter(year == 2020),
-      dat_ssa_annual |> filter(year == 2020)) |>
-  write.csv("./results/prevalence_2020_2005onwards.csv", row.names = FALSE)
 
 # WITHIN STUDY ANALYSIS ----
 
@@ -699,7 +636,7 @@ left_join(
   left_join(reg_table(modtv2) |> rename(TV = estimate)) |>
   # reorder variables
   mutate(variable = factor(variable, levels = desired_order)) |>
-  arrange(variable) # |> 
+  arrange(variable)  |> 
   write.csv("./tables/regression_alldata.csv", row.names = FALSE)
 
 insight::get_variance(modct2)
@@ -708,6 +645,22 @@ insight::get_variance(modtv2)
 
 sjPlot::tab_model(modct2, modng2, modtv2, p.style = "stars", wrap.labels = 100)
 
+# between study - unadjusted
+left_join(
+  reg_table(modct4) |> rename(CT = estimate),
+  reg_table(modng4) |> rename(NG = estimate)) |>
+  left_join(reg_table(modtv4) |> rename(TV = estimate)) |>
+  # reorder variables
+  mutate(variable = factor(variable, levels = desired_order)) |>
+  arrange(variable)  |> 
+  write.csv("./tables/regression_alldata_unadjusted.csv", row.names = FALSE)
+
+insight::get_variance(modct4)
+insight::get_variance(modng4)
+insight::get_variance(modtv4)
+
+sjPlot::tab_model(modct4, modng4, modtv4, p.style = "stars", wrap.labels = 100)
+
 # within study
 left_join(
   reg_table(modct2_w) |> rename(CT = estimate),
@@ -715,7 +668,7 @@ left_join(
   left_join(reg_table(modtv2_w) |> rename(TV = estimate)) |>
   # reorder variables
   mutate(variable = factor(variable, levels = desired_order)) |>
-  arrange(variable) # |>
+  arrange(variable)  |>
   write.csv("./tables/regression_within.csv", row.names = FALSE)
 
 insight::get_variance(modct2_w)
@@ -726,9 +679,10 @@ sjPlot::tab_model(modct2_w, modng2_w, modtv2_w, p.style = "stars", wrap.labels =
 
 # STUDY CHARACTERISTICS ----
 
-df_study <- df |> 
-  left_join(read.csv("./data/study_name.csv"),
-            by = c("study_id"))
+# Number articles
+df |> 
+  group_by() |>
+  summarise(n = n_distinct(study_id))
 
 tab_characteristics <- function(df){
   
@@ -770,7 +724,11 @@ tab_characteristics <- function(df){
   
 }
 
-# Between study
+# Between study 
+df_study <- df |> 
+  left_join(read.csv("./data/study_name.csv"),
+            by = c("study_id"))
+
 t_characteristics_all <- full_join(
   tab_characteristics(df_study |> filter(sti == "CT")) |> rename(CT = col, CT_tot = tot),
   tab_characteristics(df_study |> filter(sti == "NG")) |> rename(NG = col, NG_tot = tot)) |>

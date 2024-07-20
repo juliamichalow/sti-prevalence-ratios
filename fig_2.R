@@ -5,7 +5,7 @@ mytheme <- theme_bw(base_size = 7) +
   theme(panel.grid = element_blank(),
         panel.spacing = unit(0.2, "cm"),
         legend.position = "bottom",
-        legend.margin = margin(unit(c(t=-10,r=5,b=0,l=5), "cm")),
+        legend.margin = margin(unit(c(t=-5,r=5,b=0,l=5), "cm")),
         legend.key.size = unit(0.3, "cm"),
         plot.title = element_text(size = rel(1.2), face = "bold"),
         axis.text = element_text(size = rel(1.1)),
@@ -30,7 +30,8 @@ df2 <- read.csv("./results/prevalence_alldata_adjusted.csv") |>
                          labels = c("Western and Central Africa", "Eastern Africa", "Southern Africa")),
          sti = factor(sti, levels = c("CT", "NG", "TV"),
                       labels = c("Chlamydia", "Gonorrhoea", "Trichomoniasis")),
-         sex = fct_relevel(sex, "Female"))
+         sex = fct_relevel(sex, "Female")) |>
+  filter(year >= 2005)
 
 df_plot <- readxl::read_xlsx("./data/study_data.xlsx") |>
   mutate(region = fct_collapse(region_analysis, 
@@ -42,7 +43,8 @@ df_plot <- readxl::read_xlsx("./data/study_data.xlsx") |>
          sex = factor(sex, levels = c("Female", "Male", "Both sexes")),
          test = fct_collapse(test, "Wet mount" = c("Wet mount", "Wet mount and NAAT")),
          test = factor(test, levels = c("NAAT","Culture", "DFA", "ELISA", "Rapid antigen test", "Wet mount"))) |>
-  filter(!sex == "Both sexes")
+  filter(!sex == "Both sexes",
+         year >= 2005)
 
 colour_1 <- c("grey30","#CAA633")
 
@@ -86,7 +88,8 @@ p1 <- df1 |>
   labs(x = "", y = "", fill = "", tag = "A")
 
 colour_2 <- c("grey30","grey30")
-colour_3 <- MetBrewer::met.brewer("Redon", 6, direction=-1)
+colour_3 <- c("#af4f2f","#df8d71","#1e5a46","#75884b","#5b859e")
+# MetBrewer::met.brewer("Redon", 6, direction=-1) |> as.vector()
 
 p2 <- df2 |>
   ggplot() +
@@ -125,10 +128,11 @@ p2 <- df2 |>
         legend.key.width = unit(0.5, "cm"),
         legend.key.height = unit(0.35, "cm"),
         legend.spacing.x = unit(0.2, "cm"),
-        legend.margin = margin(unit(c(t=0,r=15,b=0,l=0), "cm"))) +
+        legend.box = "vertical",
+        legend.margin = margin(unit(c(t=0,r=0,b=0,l=0), "cm"))) +
   labs(x = "", y = "", tag = "B")
 
-(p1 / p2) + plot_layout(height = c(1,3.9))   
+(p1 / p2) + plot_layout(height = c(1,3.9))
 
 ggsave("./plots/fig_2.png", width = 18, height = 25, unit = "cm", dpi = 700)  
 
