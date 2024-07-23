@@ -43,8 +43,7 @@ df_plot <- readxl::read_xlsx("./data/study_data.xlsx") |>
          sex = factor(sex, levels = c("Female", "Male", "Both sexes")),
          test = fct_collapse(test, "Wet mount" = c("Wet mount", "Wet mount and NAAT")),
          test = factor(test, levels = c("NAAT","Culture", "DFA", "ELISA", "Rapid antigen test", "Wet mount"))) |>
-  filter(!sex == "Both sexes",
-         year >= 2005)
+  filter(!sex == "Both sexes")
 
 colour_1 <- c("grey30","#CAA633")
 

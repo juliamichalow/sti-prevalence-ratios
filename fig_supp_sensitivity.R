@@ -17,7 +17,7 @@ mytheme <- theme_bw(base_size = 7) +
         legend.key.size = unit(0.3, "cm"),
         plot.title = element_text(size = rel(1.2), face = "bold"),
         axis.text = element_text(size = rel(1.1)),
-        axis.title = element_text(size = rel(1.1), face="bold"),
+        axis.title = element_text(size = rel(1.2), face="bold"),
         legend.title = element_text(size = rel(1.1), face = "bold"),
         legend.text = element_text(size = rel(1.1)),
         strip.text = element_text(color="black", size = rel(1.2), face="bold",
@@ -184,9 +184,7 @@ rbind(df_adj |> mutate(type = "Adjusted"),
              hjust = 0.5, vjust = 0.5) +
   facet_grid(sex~sti) +
   mytheme +
-  theme(legend.margin = margin(unit(c(t=-10,r=0,b=10,l=0), "cm")),
-        strip.text.y = element_text(color="black", size = rel(1.2), face="bold",
-                                    margin = margin(t=4,r=4,b=4,l=4))) +
+  theme(legend.margin = margin(unit(c(t=-10,r=0,b=10,l=0), "cm"))) +
   scale_x_continuous(breaks = c(1, 2, 3, 4.4),
                      labels = c("WCA", "EA", "SA","SSA")) +
   scale_y_continuous(labels = scales::label_percent(), 

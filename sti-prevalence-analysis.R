@@ -33,7 +33,7 @@ df_pop <- read.csv("./data/unpopulation_dataportal_20240426093533.csv") |>
 # WHO three reviews cover 2005-2021
 # Updated review covers 2021-2024
 df <- readxl::read_xlsx("./data/study_data.xlsx") |>
-  mutate(year_regression = year_mid - 2010,
+  mutate(year_regression = year_mid - 2015,
          sti = factor(sti, levels = c("CT", "NG", "TV")),
          year_grp = case_when(year_mid %in% c(2005:2009) ~ "2005-2009",
                               year_mid %in% c(2010:2014) ~ "2010-2014",
@@ -69,7 +69,7 @@ prediction <- function(mod, sti) {
   df_pred <- crossing(sex = c("Female", "Male"),
                       region = c("Western and Central", "Eastern", "Southern"),
                       year = 2005:2023) %>%
-    mutate(year_regression = year - 2010,
+    mutate(year_regression = year - 2015,
            population = "ANC attendees",
            age_group = "Adult",
            hiv_status = "Mixed",
@@ -245,6 +245,12 @@ rbind(dat_region_annual |> filter(year == 2020),
 # Prediction for 2008
 dat_ssa_annual |> filter(year == 2008)
 
+# Compare 2020 and 2008
+dat_ssa_annual |> filter(year %in% c(2008, 2020)) |> 
+  select(!c(lwr,upr)) |> #
+  pivot_wider(names_from = year, values_from = prev) |> 
+  mutate(ratio = `2020`/`2008`)
+
 # Prediction for 2012, 2016, 2020 (supp. table for comparison with WHO)
 rbind(dat_region_annual, dat_ssa_annual) |>
   filter(year %in% c(2012, 2016, 2020)) |>
@@ -329,6 +335,8 @@ rbind(dat_region_annual |> filter(year == 2020),
       dat_ssa_annual |> filter(year == 2020)) |>
   write.csv("./results/prevalence_2020_unadjusted.csv", row.names = FALSE)
 
+dat_ssa_annual |> filter(year == 2020)
+
 # < Women only ----
 
 df_ct_fm <- df |> filter(sti == "CT", sex == "Female")
@@ -366,6 +374,8 @@ modng6 <- glmmTMB(form, data = df_ng_fm, family = binomial(link="log"),
 
 modtv6 <- glmmTMB(form, data = df_tv_fm, family = binomial(link="log"),
                   start = list(theta = theta_tv, beta = fixed_tv))
+
+sjPlot::tab_model(modct6, modng6, modtv6, p.style = "stars", wrap.labels = 100)
 
 # Predict by region
 dat_region_annual <- rbind(
@@ -427,6 +437,8 @@ modng8 <- glmmTMB(form, data = df_ng_anc, family = binomial(link="log"),
 
 modtv8 <- glmmTMB(form, data = df_tv_anc, family = binomial(link="log"),
                   start = list(theta = theta_tv, beta = fixed_tv))
+
+sjPlot::tab_model(modct8, modng8, modtv8, p.style = "stars", wrap.labels = 100)
 
 # Predict by region
 dat_region_annual <- rbind(
@@ -570,7 +582,7 @@ extract_ratio <- function(mod) {
     as.data.frame() |>
     rownames_to_column("variable") |>
     filter(variable == "sexMale") |>
-    mutate(year = 2010,
+    mutate(year = 2015,
            ratio = exp(Estimate),
            lwr = exp(Estimate - 1.96*`Std. Error`),
            upr = exp(Estimate + 1.96*`Std. Error`),
@@ -660,6 +672,40 @@ insight::get_variance(modng4)
 insight::get_variance(modtv4)
 
 sjPlot::tab_model(modct4, modng4, modtv4, p.style = "stars", wrap.labels = 100)
+
+# between study - female pops
+left_join(
+  reg_table(modct6) |> rename(CT = estimate),
+  reg_table(modng6) |> rename(NG = estimate)) |>
+  left_join(reg_table(modtv6) |> rename(TV = estimate)) |>
+  # reorder variables
+  mutate(variable = factor(variable, levels = desired_order)) |>
+  arrange(variable)  |> 
+  write.csv("./tables/regression_alldata_female.csv", row.names = FALSE)
+
+insight::get_variance(modct6)
+insight::get_variance(modng6)
+insight::get_variance(modtv6)
+
+sjPlot::tab_model(modct6, modng6, modtv6, p.style = "stars", wrap.labels = 100)
+
+
+# between study - ANC
+left_join(
+  reg_table(modct8) |> rename(CT = estimate),
+  reg_table(modng8) |> rename(NG = estimate)) |>
+  left_join(reg_table(modtv8) |> rename(TV = estimate)) |>
+  # reorder variables
+  mutate(variable = factor(variable, levels = desired_order)) |>
+  arrange(variable)  |> 
+  write.csv("./tables/regression_alldata_ANC.csv", row.names = FALSE)
+
+insight::get_variance(modct8)
+insight::get_variance(modng8)
+insight::get_variance(modtv8)
+
+sjPlot::tab_model(modct8, modng8, modtv8, p.style = "stars", wrap.labels = 100)
+
 
 # within study
 left_join(
@@ -846,7 +892,8 @@ full_join(
   mutate(n_study = case_when(is.na(n_study) ~ 0, TRUE ~ n_study),
          n_art = case_when(is.na(n_art) ~ 0, TRUE ~ n_art),
          n_tot = n_study + n_art) |>
-  arrange(-n_tot)
+  arrange(-n_tot) |>
+  mutate(prop = n_tot/124)
 
 # Number studies per country - CT
 full_join(
@@ -944,15 +991,7 @@ full_join(
     summarise(n_art=n_distinct(study_id))) |>
   mutate(n_tot = n_study + n_art)
 
-# Number studies among both sexes
-df_study |> 
-  select(study_name, study_id, country, location, population, sex, sti, adj_prev) |> 
-  pivot_wider(names_from = sex, values_from = adj_prev) |>
-  filter(!is.na(`Both sexes`)) |>
-  group_by(sti) |>
-  summarise(n=n_distinct(study_id))
-
-# Number studies among both men and women
+# Number studies among both men and women - total
 cbind(
   df_study |> 
     filter(!is.na(study_name)) |>
@@ -970,7 +1009,15 @@ cbind(
     summarise(n_art=n_distinct(study_id))) |>
   mutate(n_tot = n_study + n_art)
 
-# Number studies among both sexes
+# Number studies among both sexes (unstratified)
+df_study |> 
+  select(study_name, study_id, country, location, population, sex, sti, adj_prev) |> 
+  pivot_wider(names_from = sex, values_from = adj_prev) |>
+  filter(!is.na(`Both sexes`)) |>
+  group_by(sti) |>
+  summarise(n=n_distinct(study_id))
+
+# Number studies among both sexes (unstratified) - total
 df_study |> 
   select(study_name, study_id, country, location, population, sex, sti, adj_prev) |> 
   pivot_wider(names_from = sex, values_from = adj_prev) |>
@@ -985,3 +1032,39 @@ df_study |>
   filter(!is.na(Male) & is.na(Female)) |>
   group_by() |>
   summarise(n=n_distinct(study_id))
+
+# Number studies among women only
+full_join(
+  df_study |> 
+    filter(!is.na(study_name)) |>
+    select(study_name, study_id, country, location, population, sex, sti, adj_prev) |> 
+    pivot_wider(names_from = sex, values_from = adj_prev) |>
+    filter(is.na(Male) & !is.na(Female)) |>
+    group_by(sti) |>
+    summarise(n_study=n_distinct(study_name)),
+  df_study |> 
+    filter(is.na(study_name)) |>
+    select(study_name, study_id, country, location, population, sex, sti, adj_prev) |> 
+    pivot_wider(names_from = sex, values_from = adj_prev) |>
+    filter(is.na(Male) & !is.na(Female)) |>
+    group_by(sti) |>
+    summarise(n_art=n_distinct(study_id))) |>
+  mutate(n_tot = n_study + n_art)
+
+# Number studies among women only - total
+cbind(
+  df_study |> 
+    filter(!is.na(study_name)) |>
+    select(study_name, study_id, country, location, population, sex, sti, adj_prev) |> 
+    pivot_wider(names_from = sex, values_from = adj_prev) |>
+    filter(is.na(Male) & !is.na(Female)) |>
+    group_by() |>
+    summarise(n_study=n_distinct(study_name)),
+  df_study |> 
+    filter(is.na(study_name)) |>
+    select(study_name, study_id, country, location, population, sex, sti, adj_prev) |> 
+    pivot_wider(names_from = sex, values_from = adj_prev) |>
+    filter(is.na(Male) & !is.na(Female)) |>
+    group_by() |>
+    summarise(n_art=n_distinct(study_id))) |>
+  mutate(n_tot = n_study + n_art)
