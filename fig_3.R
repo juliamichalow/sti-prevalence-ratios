@@ -227,32 +227,19 @@ plot_forest <- function(dat, dat_summary, dim, who_ratio) {
   #   plot_layout(heights = dim) 
 } 
 
-p_ct <- plot_forest(dat_ct, dat_summary_ct, c(4.3, 0.1, 0.95), 0.8)
-p_ng <- plot_forest(dat_ng, dat_summary_ng, c(4.35, 0.1, 0.94), 0.86)
-p_tv <- plot_forest(dat_tv, dat_summary_tv, c(2.05, 0.1, 0.95), 0.1)
-
 # FOR PLOT WITHOUT DOTTED LINE
 # p_ct <- plot_forest(dat_ct, dat_summary_ct, c(3.9, -0.36, 0.6), 0.8)
 # p_ng <- plot_forest(dat_ng, dat_summary_ng, c(4, -0.36, 0.6), 0.86)
 # p_tv <- plot_forest(dat_tv, dat_summary_tv, c(2, -0.36, 0.6), 0.1)
 
-p <- wrap_elements(p_ct) / wrap_elements(p_ng) / wrap_elements(p_tv) +
-  plot_layout(height = c(2, 2.1, 1.2)) +
-  plot_annotation(tag_levels = "A") & 
-  theme(plot.tag = element_text(size = 9, face="bold"))
 
-p
+p_ct <- plot_forest(dat_ct, dat_summary_ct, c(14/3, 0.1, 1), 0.8)
+p_ng <- plot_forest(dat_ng, dat_summary_ng, c(15/3, 0.1, 1), 0.86)
+p_tv <- plot_forest(dat_tv, dat_summary_tv, c(2.2, 0.1, 1), 0.1)
 
-ggsave("./plots/fig_3_2.png", p, width = 16, height = 23, unit = "cm", dpi = 700)
-
-
-
-p_ct <- plot_forest(dat_ct, dat_summary_ct, c(28, 0.1, 3*1.8), 0.8)
-p_ng <- plot_forest(dat_ng, dat_summary_ng, c(30, 0.1, 3*1.8), 0.86)
-p_tv <- plot_forest(dat_tv, dat_summary_tv, c(12, 0.1, 3*1.8), 0.1)
 
 p <- wrap_elements(p_ct) / wrap_elements(p_ng) / wrap_elements(p_tv) +
-  plot_layout(height = c(28+5.4, 30+5.4, 12+5.4)) +
+  plot_layout(height = c(14.2, 14.9, 8.8)) +
   plot_annotation(tag_levels = "A") & 
   theme(plot.tag = element_text(size = 9, face="bold"))
 
