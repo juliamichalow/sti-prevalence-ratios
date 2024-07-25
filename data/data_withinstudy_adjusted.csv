@@ -1,67 +1,71 @@
-"study_name","study_id","year_mid","region","country","pop_analysis","sex","sti","adj_prev","adj_se"
-"Kisumu Incidence Cohort Study (KICoS)","Otieno 2015",2008,"EA","Kenya","Community members","Female","CT",0.0299184043794435,0.00947266071862051
-"Kisumu Incidence Cohort Study (KICoS)","Otieno 2015",2008,"EA","Kenya","Community members","Male","CT",0.0273169093630043,0.00962624868622718
-"HVTN702","Gray 2021",2018,"SA","South Africa","HIV/STI prevention trial participants","Female","CT",0.256238431236333,0.00818094886326663
-"HVTN702","Gray 2021",2018,"SA","South Africa","HIV/STI prevention trial participants","Male","CT",0.175245488858125,0.0121076715154267
-NA,"Mcharo 2022",2020,"EA","Tanzania","Students","Male","CT",0.101144970592168,0.0208887991943972
-NA,"Rutherford 2014",2009,"EA","Uganda","Students","Male","CT",0.00688428780713399,0.00560872814708132
-NA,"Rutherford 2014",2009,"EA","Uganda","Students","Female","CT",0.0275365457836762,0.0110760845620506
-NA,"Mcharo 2022",2020,"EA","Tanzania","Students","Female","CT",0.157113272183925,0.0287343491026461
-"AYAZI","Kaida 2018",2015,"SA","South Africa","PHC/OPD attendees","Male","CT",0.0875848623954531,0.0253065980078653
-NA,"Behanzin 2012",2008,"WCA","Benin","Population-representative survey participants","Male","CT",0.0179080811603011,0.00506804237155609
-"CHIEDZA","Chikwari 2023",2021,"EA","Zimbabwe","Community members","Male","CT",0.0928180790610619,0.0062385276455056
-NA,"de Walque 2012",2011,"EA","Tanzania","HIV/STI prevention trial participants","Male","CT",0.0120762922415822,0.00418432871988595
-NA,"de Walque 2012",2011,"EA","Tanzania","HIV/STI prevention trial participants","Female","CT",0.029320226709958,0.00537873143694376
-NA,"Behanzin 2012",2008,"WCA","Benin","Population-representative survey participants","Female","CT",0.0183015934858501,0.00423209660052095
-"AYAZI","Kaida 2018",2015,"SA","South Africa","PHC/OPD attendees","Female","CT",0.205657980213907,0.0320037017450443
-"CHIEDZA","Chikwari 2023",2021,"EA","Zimbabwe","Community members","Female","CT",0.195590635496544,0.00522776314998438
-"AHRI HDSS","Francis 2018",2017,"SA","South Africa","Population-representative survey participants","Male","CT",0.0585902141681919,0.0199663996645101
-"AHRI HDSS","Francis 2018",2017,"SA","South Africa","Population-representative survey participants","Female","CT",0.125496981953429,0.0221900270654672
-"HIV incidence Provincial Surveillance System (HIPSS)","Kharsany 2020",2015,"SA","South Africa","Population-representative survey participants","Male","CT",0.0533742718587024,0.0044121809438032
-"HIV incidence Provincial Surveillance System (HIPSS)","Kharsany 2020",2015,"SA","South Africa","Population-representative survey participants","Female","CT",0.0962558195965533,0.00412476068735918
-NA,"Cowley 2021",2016,"WCA","Guinea-Bissau","Population-representative survey participants","Female","CT",0.0643174410912423,0.0165835261061871
-NA,"Cowley 2021",2016,"WCA","Guinea-Bissau","Population-representative survey participants","Male","CT",0.0117090119413926,0.00930031475107279
-"AHRI HDSS","Jarolimova 2023",2021,"SA","South Africa","Population-representative survey participants","Female","CT",0.235131569735518,0.0236564481106698
-"AHRI HDSS","Jarolimova 2023",2021,"SA","South Africa","Population-representative survey participants","Male","CT",0.16352814900599,0.0207385434140461
-"CHIEDZA","Martin 2021",2020,"EA","Zimbabwe","Community members","Male","CT",0.0796770841881347,0.0176193015613591
-"CHIEDZA","Martin 2021",2020,"EA","Zimbabwe","Community members","Female","CT",0.169248076009012,0.0120858856871348
-"Kisumu Incidence Cohort Study (KICoS)","Otieno 2015",2008,"EA","Kenya","Community members","Female","NG",0.0448504036482727,0.0115130352038424
-"Kisumu Incidence Cohort Study (KICoS)","Otieno 2015",2008,"EA","Kenya","Community members","Male","NG",0.00292953845414649,0.00297057424909299
-"HVTN702","Gray 2021",2018,"SA","South Africa","HIV/STI prevention trial participants","Female","NG",0.0488053814148583,0.00421183819703436
-"HVTN702","Gray 2021",2018,"SA","South Africa","HIV/STI prevention trial participants","Male","NG",0.0383577142173734,0.00616563062926285
-NA,"Mcharo 2022",2020,"EA","Tanzania","Students","Male","NG",0.0224654597041751,0.0103889114650619
-NA,"Rutherford 2014",2009,"EA","Uganda","Students","Male","NG",0.00346403534512129,0.00345138267907413
-NA,"Rutherford 2014",2009,"EA","Uganda","Students","Female","NG",0.00884173251629231,0.00698996197172339
-NA,"Mcharo 2022",2020,"EA","Tanzania","Students","Female","NG",0.0114654855401277,0.00797020941560157
-"AYAZI","Kaida 2018",2015,"SA","South Africa","PHC/OPD attendees","Male","NG",0.0231789457272149,0.0140642414056706
-NA,"Behanzin 2012",2008,"WCA","Benin","Population-representative survey participants","Male","NG",0.00313076983771669,0.00213018121709875
-"CHIEDZA","Chikwari 2023",2021,"EA","Zimbabwe","Community members","Male","NG",0.0199164721074087,0.00304096764812736
-NA,"de Walque 2012",2011,"EA","Tanzania","HIV/STI prevention trial participants","Male","NG",0.0050006310850529,0.00260397302051099
-NA,"de Walque 2012",2011,"EA","Tanzania","HIV/STI prevention trial participants","Female","NG",0.0163393998627298,0.0037715194880928
-NA,"Behanzin 2012",2008,"WCA","Benin","Population-representative survey participants","Female","NG",0.00733742720680411,0.00244665363416508
-"AYAZI","Kaida 2018",2015,"SA","South Africa","PHC/OPD attendees","Female","NG",0.0725222863552046,0.0205611162262635
-"CHIEDZA","Chikwari 2023",2021,"EA","Zimbabwe","Community members","Female","NG",0.0361322880061609,0.0024022495671916
-"AHRI HDSS","Francis 2018",2017,"SA","South Africa","Population-representative survey participants","Male","NG",0.0251750044973075,0.0126218991767909
-"AHRI HDSS","Francis 2018",2017,"SA","South Africa","Population-representative survey participants","Female","NG",0.0165418750602642,0.00972902895122942
-"HIV incidence Provincial Surveillance System (HIPSS)","Kharsany 2020",2015,"SA","South Africa","Population-representative survey participants","Male","NG",0.0232819130772567,0.0029122751218317
-"HIV incidence Provincial Surveillance System (HIPSS)","Kharsany 2020",2015,"SA","South Africa","Population-representative survey participants","Female","NG",0.0306134061558315,0.00258433787021451
-NA,"Kahsay 2023",2018,"EA","Ethiopia","PHC/OPD attendees","Female","NG",0.163452990944159,0.0374649659559277
-NA,"Kahsay 2023",2018,"EA","Ethiopia","PHC/OPD attendees","Male","NG",0.0995901379110277,0.0310359775305406
-NA,"Cowley 2021",2016,"WCA","Guinea-Bissau","Population-representative survey participants","Female","NG",0.0376385313244954,0.01319327832579
-NA,"Cowley 2021",2016,"WCA","Guinea-Bissau","Population-representative survey participants","Male","NG",0.0491465112634668,0.0170965285235788
-"AHRI HDSS","Jarolimova 2023",2021,"SA","South Africa","Population-representative survey participants","Female","NG",0.0511916502107575,0.0118683815929604
-"AHRI HDSS","Jarolimova 2023",2021,"SA","South Africa","Population-representative survey participants","Male","NG",0.0593918503773448,0.0131606983202306
-"CHIEDZA","Martin 2021",2020,"EA","Zimbabwe","Community members","Male","NG",0.0317348725800873,0.0113650854693728
-"CHIEDZA","Martin 2021",2020,"EA","Zimbabwe","Community members","Female","NG",0.0254373846129462,0.00468618688667534
-"AYAZI","Kaida 2018",2015,"SA","South Africa","PHC/OPD attendees","Male","TV",0.00804947836311919,0.00768759190446757
-NA,"de Walque 2012",2011,"EA","Tanzania","HIV/STI prevention trial participants","Male","TV",0.0673239124322743,0.00891628726466357
-NA,"de Walque 2012",2011,"EA","Tanzania","HIV/STI prevention trial participants","Female","TV",0.223211096673463,0.0165975030019016
-"AYAZI","Kaida 2018",2015,"SA","South Africa","PHC/OPD attendees","Female","TV",0.0697741546844887,0.0215262917434323
-"AHRI HDSS","Francis 2018",2017,"SA","South Africa","Population-representative survey participants","Male","TV",0.00646025361724795,0.00603227487994508
-"AHRI HDSS","Francis 2018",2017,"SA","South Africa","Population-representative survey participants","Female","TV",0.0323382437845558,0.0142818360018194
-"HIV incidence Provincial Surveillance System (HIPSS)","Kharsany 2020",2015,"SA","South Africa","Population-representative survey participants","Male","TV",0.0225164699792253,0.00368340300384058
-"HIV incidence Provincial Surveillance System (HIPSS)","Kharsany 2020",2015,"SA","South Africa","Population-representative survey participants","Female","TV",0.150980181801003,0.00500406583509692
-NA,"Cowley 2021",2016,"WCA","Guinea-Bissau","Population-representative survey participants","Female","TV",0.12616867555555,0.0269123838883777
-NA,"Cowley 2021",2016,"WCA","Guinea-Bissau","Population-representative survey participants","Male","TV",0.00527691484481852,0.00525771062214874
-"AHRI HDSS","Jarolimova 2023",2021,"SA","South Africa","Population-representative survey participants","Female","TV",0.0892654705964068,0.0160867066919449
-"AHRI HDSS","Jarolimova 2023",2021,"SA","South Africa","Population-representative survey participants","Male","TV",0.00374785587272588,0.00360597858482388
+study_name,study_id,year_mid,region,country,pop_analysis,sex,sti,adj_prev,adj_se
+Kisumu Incidence Cohort Study (KICoS),Otieno 2015,2008,EA,Kenya,Community members,Female,CT,0.029918404,0.009472661
+Kisumu Incidence Cohort Study (KICoS),Otieno 2015,2008,EA,Kenya,Community members,Male,CT,0.027316909,0.009626249
+HVTN702,Gray 2021,2018,SA,South Africa,HIV/STI prevention trial participants,Female,CT,0.256238431,0.008180949
+HVTN702,Gray 2021,2018,SA,South Africa,HIV/STI prevention trial participants,Male,CT,0.175245489,0.012107672
+NA,Mcharo 2022,2020,EA,Tanzania,Students,Male,CT,0.101144971,0.020888799
+NA,Rutherford 2014,2009,EA,Uganda,Students,Male,CT,0.006884288,0.005608728
+NA,Rutherford 2014,2009,EA,Uganda,Students,Female,CT,0.027536546,0.011076085
+NA,Mcharo 2022,2020,EA,Tanzania,Students,Female,CT,0.157113272,0.028734349
+AYAZI,Kaida 2018,2015,SA,South Africa,PHC/OPD attendees,Male,CT,0.087584862,0.025306598
+NA,Behanzin 2012,2008,WCA,Benin,Population-representative survey participants,Male,CT,0.017908081,0.005068042
+CHIEDZA,Chikwari 2023,2021,EA,Zimbabwe,Community members,Male,CT,0.092818079,0.006238528
+NA,de Walque 2012,2011,EA,Tanzania,HIV/STI prevention trial participants,Male,CT,0.012076292,0.004184329
+NA,de Walque 2012,2011,EA,Tanzania,HIV/STI prevention trial participants,Female,CT,0.029320227,0.005378731
+NA,Behanzin 2012,2008,WCA,Benin,Population-representative survey participants,Female,CT,0.018301593,0.004232097
+AYAZI,Kaida 2018,2015,SA,South Africa,PHC/OPD attendees,Female,CT,0.20565798,0.032003702
+CHIEDZA,Chikwari 2023,2021,EA,Zimbabwe,Community members,Female,CT,0.195590635,0.005227763
+AHRI HDSS,Francis 2018,2017,SA,South Africa,Population-representative survey participants,Male,CT,0.058590214,0.0199664
+AHRI HDSS,Francis 2018,2017,SA,South Africa,Population-representative survey participants,Female,CT,0.125496982,0.022190027
+HIV incidence Provincial Surveillance System (HIPSS),Kharsany 2020,2015,SA,South Africa,Population-representative survey participants,Male,CT,0.053374272,0.004412181
+HIV incidence Provincial Surveillance System (HIPSS),Kharsany 2020,2015,SA,South Africa,Population-representative survey participants,Female,CT,0.09625582,0.004124761
+NA,Cowley 2021,2016,WCA,Guinea-Bissau,Population-representative survey participants,Female,CT,0.064317441,0.016583526
+NA,Cowley 2021,2016,WCA,Guinea-Bissau,Population-representative survey participants,Male,CT,0.011709012,0.009300315
+AHRI HDSS,Jarolimova 2023,2021,SA,South Africa,Population-representative survey participants,Female,CT,0.23513157,0.023656448
+AHRI HDSS,Jarolimova 2023,2021,SA,South Africa,Population-representative survey participants,Male,CT,0.163528149,0.020738543
+CHIEDZA,Martin 2021,2020,EA,Zimbabwe,Community members,Male,CT,0.079677084,0.017619302
+CHIEDZA,Martin 2021,2020,EA,Zimbabwe,Community members,Female,CT,0.169248076,0.012085886
+NA,Kiene 2017,2011,EA,Uganda,PHC/OPD attendees,Female,CT,0.032280962,0.015547997
+NA,Kiene 2017,2011,EA,Uganda,PHC/OPD attendees,Male,CT,0.02098039,0.013602811
+Kisumu Incidence Cohort Study (KICoS),Otieno 2015,2008,EA,Kenya,Community members,Female,NG,0.044850404,0.011513035
+Kisumu Incidence Cohort Study (KICoS),Otieno 2015,2008,EA,Kenya,Community members,Male,NG,0.002929538,0.002970574
+HVTN702,Gray 2021,2018,SA,South Africa,HIV/STI prevention trial participants,Female,NG,0.048805381,0.004211838
+HVTN702,Gray 2021,2018,SA,South Africa,HIV/STI prevention trial participants,Male,NG,0.038357714,0.006165631
+NA,Mcharo 2022,2020,EA,Tanzania,Students,Male,NG,0.02246546,0.010388911
+NA,Rutherford 2014,2009,EA,Uganda,Students,Male,NG,0.003464035,0.003451383
+NA,Rutherford 2014,2009,EA,Uganda,Students,Female,NG,0.008841733,0.006989962
+NA,Mcharo 2022,2020,EA,Tanzania,Students,Female,NG,0.011465486,0.007970209
+AYAZI,Kaida 2018,2015,SA,South Africa,PHC/OPD attendees,Male,NG,0.023178946,0.014064241
+NA,Behanzin 2012,2008,WCA,Benin,Population-representative survey participants,Male,NG,0.00313077,0.002130181
+CHIEDZA,Chikwari 2023,2021,EA,Zimbabwe,Community members,Male,NG,0.019916472,0.003040968
+NA,de Walque 2012,2011,EA,Tanzania,HIV/STI prevention trial participants,Male,NG,0.005000631,0.002603973
+NA,de Walque 2012,2011,EA,Tanzania,HIV/STI prevention trial participants,Female,NG,0.0163394,0.003771519
+NA,Behanzin 2012,2008,WCA,Benin,Population-representative survey participants,Female,NG,0.007337427,0.002446654
+AYAZI,Kaida 2018,2015,SA,South Africa,PHC/OPD attendees,Female,NG,0.072522286,0.020561116
+CHIEDZA,Chikwari 2023,2021,EA,Zimbabwe,Community members,Female,NG,0.036132288,0.00240225
+AHRI HDSS,Francis 2018,2017,SA,South Africa,Population-representative survey participants,Male,NG,0.025175004,0.012621899
+AHRI HDSS,Francis 2018,2017,SA,South Africa,Population-representative survey participants,Female,NG,0.016541875,0.009729029
+HIV incidence Provincial Surveillance System (HIPSS),Kharsany 2020,2015,SA,South Africa,Population-representative survey participants,Male,NG,0.023281913,0.002912275
+HIV incidence Provincial Surveillance System (HIPSS),Kharsany 2020,2015,SA,South Africa,Population-representative survey participants,Female,NG,0.030613406,0.002584338
+NA,Kahsay 2023,2018,EA,Ethiopia,PHC/OPD attendees,Female,NG,0.163452991,0.037464966
+NA,Kahsay 2023,2018,EA,Ethiopia,PHC/OPD attendees,Male,NG,0.099590138,0.031035978
+NA,Cowley 2021,2016,WCA,Guinea-Bissau,Population-representative survey participants,Female,NG,0.037638531,0.013193278
+NA,Cowley 2021,2016,WCA,Guinea-Bissau,Population-representative survey participants,Male,NG,0.049146511,0.017096529
+AHRI HDSS,Jarolimova 2023,2021,SA,South Africa,Population-representative survey participants,Female,NG,0.05119165,0.011868382
+AHRI HDSS,Jarolimova 2023,2021,SA,South Africa,Population-representative survey participants,Male,NG,0.05939185,0.013160698
+CHIEDZA,Martin 2021,2020,EA,Zimbabwe,Community members,Male,NG,0.031734873,0.011365085
+CHIEDZA,Martin 2021,2020,EA,Zimbabwe,Community members,Female,NG,0.025437385,0.004686187
+NA,Kiene 2017,2011,EA,Uganda,PHC/OPD attendees,Female,NG,0.045591753,0.016311372
+NA,Kiene 2017,2011,EA,Uganda,PHC/OPD attendees,Male,NG,0.029534218,0.015655014
+AYAZI,Kaida 2018,2015,SA,South Africa,PHC/OPD attendees,Male,TV,0.008049478,0.007687592
+NA,de Walque 2012,2011,EA,Tanzania,HIV/STI prevention trial participants,Male,TV,0.067323912,0.008916287
+NA,de Walque 2012,2011,EA,Tanzania,HIV/STI prevention trial participants,Female,TV,0.223211097,0.016597503
+AYAZI,Kaida 2018,2015,SA,South Africa,PHC/OPD attendees,Female,TV,0.069774155,0.021526292
+AHRI HDSS,Francis 2018,2017,SA,South Africa,Population-representative survey participants,Male,TV,0.006460254,0.006032275
+AHRI HDSS,Francis 2018,2017,SA,South Africa,Population-representative survey participants,Female,TV,0.032338244,0.014281836
+HIV incidence Provincial Surveillance System (HIPSS),Kharsany 2020,2015,SA,South Africa,Population-representative survey participants,Male,TV,0.02251647,0.003683403
+HIV incidence Provincial Surveillance System (HIPSS),Kharsany 2020,2015,SA,South Africa,Population-representative survey participants,Female,TV,0.150980182,0.005004066
+NA,Cowley 2021,2016,WCA,Guinea-Bissau,Population-representative survey participants,Female,TV,0.126168676,0.026912384
+NA,Cowley 2021,2016,WCA,Guinea-Bissau,Population-representative survey participants,Male,TV,0.005276915,0.005257711
+AHRI HDSS,Jarolimova 2023,2021,SA,South Africa,Population-representative survey participants,Female,TV,0.089265471,0.016086707
+AHRI HDSS,Jarolimova 2023,2021,SA,South Africa,Population-representative survey participants,Male,TV,0.003747856,0.003605979
