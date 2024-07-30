@@ -1,5 +1,6 @@
 library(patchwork)
 library(ggh4x)
+library(tidyverse)
 
 mytheme <- theme_bw(base_size = 7) +
   theme(panel.grid = element_blank(),
@@ -12,11 +13,11 @@ mytheme <- theme_bw(base_size = 7) +
         axis.title = element_text(size = rel(1.1), face="bold"),
         legend.title = element_text(size = rel(1.1), face = "bold"),
         legend.text = element_text(size = rel(1.1)),
-        strip.text = element_text(color="black", size = rel(1.2), face="bold",
-                                  margin = margin(3,3,3,3),
-                                  hjust = 0.5),
+        strip.text = element_text(color="black", size = rel(1.3), face="bold",
+                                  margin = margin(unit(c(t=2,r=0,b=4,l=1), "cm")),
+                                  hjust = 0, vjust = 0.5),
         strip.background = element_rect(color = NA, fill = NA),
-        plot.tag = element_text(size=rel(1.25), face="bold"),
+        plot.tag = element_text(size=rel(1.4), face="bold"),
         axis.ticks = element_line(size = rel(1.0)))
 
 df1 <- read.csv("./results/prevalence_2020_adjusted.csv") |>
@@ -87,6 +88,8 @@ p1 <- df1 |>
   scale_fill_manual(values = colour_1) +
   labs(x = "", y = "", fill = "", tag = "A")
 
+p1
+
 colour_2 <- c("grey30","grey30")
 colour_3 <- c("#af4f2f","#df8d71","#1e5a46","#75884b","#5b859e")
 # MetBrewer::met.brewer("Redon", 6, direction=-1) |> as.vector()
@@ -110,7 +113,8 @@ p2 <- df2 |>
          shape=guide_legend(order=1, title = ""),
          linetype=guide_legend(order=1, title = "")) +
   ggh4x::facet_wrap2(dplyr::vars(sti,region),
-                     strip = strip_nested(text_x = elem_list_text(face = c("bold", "plain")),
+                     strip = strip_nested(text_x = elem_list_text(face = c("bold", "plain"),
+                                                                  size = c(7*1.3,7*1.18)), # align with theme
                                           by_layer_x = TRUE),
                      scales = "free_y",
                      nrow = 3,
@@ -131,6 +135,8 @@ p2 <- df2 |>
         legend.box = "vertical",
         legend.margin = margin(unit(c(t=0,r=0,b=0,l=0), "cm"))) +
   labs(x = "", y = "", tag = "B")
+
+p2
 
 (p1 / p2) + plot_layout(height = c(1,3.9))
 
