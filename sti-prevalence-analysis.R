@@ -26,12 +26,10 @@ df_pop <- read.csv("./data/unpopulation_dataportal_20240426093533.csv") |>
                          levels = c("Western and Central", "Eastern", "Southern"))) |>
   filter(!is.na(region)) |>
   group_by(region, sex) |>
-  summarise(population = sum(value))
+  summarise(population = sum(value)) |>
+  ungroup()
 
 # Study data
-# Williams et al ANC review covers 2000-2022
-# WHO three reviews cover 2005-2021
-# Updated review covers 2021-2024
 df <- readxl::read_xlsx("./data/study_data.xlsx") |>
   mutate(year_regression = year_mid - 2015,
          sti = factor(sti, levels = c("CT", "NG", "TV")),
@@ -175,6 +173,100 @@ prediction <- function(mod, sti) {
   
 }
 
+# Function that predicts:
+# SSA mean prevalence ratio for time trend (mean aPR per year)
+
+prediction_2 <- function(mod, sti, y1, y2) {
+  
+  df_pred <- crossing(sex = c("Female", "Male"),
+                      region = c("Western and Central", "Eastern", "Southern"),
+                      year = 2005:2023) %>%
+    mutate(year_regression = year - 2015,
+           population = "ANC attendees",
+           age_group = "Adult",
+           hiv_status = "Mixed",
+           study_id = NA)
+  
+  # predict prevalence
+  df_pred$log_prev <- predict(mod, newdata = df_pred)
+  df_pred$prev <- exp(df_pred$log_prev)
+  
+  # covariance matrix for predictions (log scale)
+  var_log_prev <- predict(mod, newdata = df_pred, se.fit = TRUE, cov.fit = TRUE)$cov.fit
+  
+  # Delta method for variance of predictions (exponentiated scale)
+  var_prev <- diag(df_pred$prev) %*% var_log_prev %*% diag(df_pred$prev)
+  
+  # Calculate weight per region and sex
+  wt <- df_pop |>
+    group_by(sex) |>
+    mutate(wt = population/sum(population)) |>
+    select(!population)
+  
+  # Create matrix of aggregated output wanted
+  df_out <- distinct(df_pred, year) %>%
+    mutate(out_idx = row_number())
+  
+  # Assign row indices to the prediction data frame and
+  # link them to the indices in the output data frame ->
+  # Create the matrix of weights to aggregate
+  df_join <- df_pred %>%
+    select(sex, region, year) %>%
+    mutate(mod_idx = row_number()) %>%
+    left_join(wt, by = join_by(sex, region)) %>%
+    inner_join(df_out, by = join_by(year))
+  
+  # Note: do this with a sparse matrix if the problem becomes large
+  Amat <- matrix(0, nrow = nrow(df_out), ncol = nrow(df_pred))
+  Amat[cbind(df_join$out_idx, df_join$mod_idx)] <- df_join$wt
+  
+  # Aggregate prevalence
+  df_out$prev <- as.numeric(Amat %*% df_pred$prev)
+  var_prev_out <- Amat %*% var_prev %*% t(Amat) 
+  
+  # Convert to log prevalence
+  df_out$log_prev <- log(df_out$prev)
+  var_log_prev_out <- diag(1 / df_out$prev) %*% var_prev_out %*% diag(1 / df_out$prev)
+  
+  # Standard error
+  df_out$se <- sqrt(diag(var_prev_out))
+  
+  # Calculate ratio
+  df_ratio <- df_out %>%
+    select(year, out_idx) |>
+    pivot_wider(names_from = year, values_from = out_idx) %>%
+    mutate(ratio_idx = row_number())
+  
+  # Use y2 and y1 as specified for the ratio
+  df_ratio$log_ratio <- df_out$log_prev[df_ratio[[y2]]] - df_out$log_prev[df_ratio[[y1]]]
+  
+  Aratio_mat <- matrix(0, nrow = nrow(df_ratio), ncol = nrow(df_out))
+  Aratio_mat[cbind(df_ratio$ratio_idx, df_ratio[[y2]])] <- 1
+  Aratio_mat[cbind(df_ratio$ratio_idx, df_ratio[[y1]])] <- -1
+  
+  df_ratio$log_ratio_check <- as.numeric(Aratio_mat %*% df_out$log_prev)
+  
+  var_log_ratio <- Aratio_mat %*% var_log_prev_out %*% t(Aratio_mat)
+  
+  df_ratio <- df_ratio %>%
+    select(c(log_ratio)) |>
+    mutate(se_log_ratio = sqrt(diag(var_log_ratio)),
+           lwr_log_ratio = log_ratio - qnorm(0.975) * se_log_ratio,
+           upr_log_ratio = log_ratio + qnorm(0.975) * se_log_ratio,
+           ratio = exp(log_ratio),
+           se_ratio = ratio * se_log_ratio,
+           lwr_ratio = exp(lwr_log_ratio),
+           upr_ratio = exp(upr_log_ratio),
+           sti = sti,
+           years_for_ratio = paste0(y1," & ",y2)) |>
+    mutate(est = paste0(sprintf(ratio,fmt = '%#.2f')," (", sprintf(lwr_ratio,fmt = '%#.2f'), 
+                        "-", sprintf(upr_ratio,fmt = '%#.2f'), ")"))
+  
+  df_ratio |>
+    select(sti, years_for_ratio, est)
+  
+}
+
 # BETWEEN STUDY ANALYSIS ----
 
 df_ct <- df |> filter(sti == "CT")
@@ -272,6 +364,15 @@ ratio_btwn <- rbind(
   filter(year == 2020) |>
   mutate(type = "Between study",
          n = c(modct2$modelInfo$nobs, modng2$modelInfo$nobs, modtv2$modelInfo$nobs))
+
+# Mean aPR per year
+prediction_2(modct2, "CT", y1 = "2015", y2 = "2016")
+prediction_2(modng2, "NG", y1 = "2015", y2 = "2016")
+prediction_2(modtv2, "TV", y1 = "2015", y2 = "2016")
+
+prediction_2(modct2, "CT", y1 = "2014", y2 = "2015")
+prediction_2(modng2, "NG", y1 = "2014", y2 = "2015")
+prediction_2(modtv2, "TV", y1 = "2014", y2 = "2015")
 
 # < No diagnostic test adjustment ----
 

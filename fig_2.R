@@ -13,7 +13,8 @@ mytheme <- theme_bw(base_size = 7) +
         legend.title = element_text(size = rel(1.1), face = "bold"),
         legend.text = element_text(size = rel(1.1)),
         strip.text = element_text(color="black", size = rel(1.2), face="bold",
-                                  margin = margin(3,3,3,3)),
+                                  margin = margin(3,3,3,3),
+                                  hjust = 0.5),
         strip.background = element_rect(color = NA, fill = NA),
         plot.tag = element_text(size=rel(1.25), face="bold"),
         axis.ticks = element_line(size = rel(1.0)))
