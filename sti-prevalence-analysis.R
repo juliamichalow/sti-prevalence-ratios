@@ -259,8 +259,8 @@ prediction_2 <- function(mod, sti, y1, y2) {
            upr_ratio = exp(upr_log_ratio),
            sti = sti,
            years_for_ratio = paste0(y1," & ",y2)) |>
-    mutate(est = paste0(sprintf(ratio,fmt = '%#.2f')," (", sprintf(lwr_ratio,fmt = '%#.2f'), 
-                        "-", sprintf(upr_ratio,fmt = '%#.2f'), ")"))
+    mutate(est = paste0(sprintf(ratio,fmt = '%#.1f')," (", sprintf(lwr_ratio,fmt = '%#.1f'), 
+                        "-", sprintf(upr_ratio,fmt = '%#.1f'), ")"))
   
   df_ratio |>
     select(sti, years_for_ratio, est)
@@ -370,9 +370,11 @@ prediction_2(modct2, "CT", y1 = "2015", y2 = "2016")
 prediction_2(modng2, "NG", y1 = "2015", y2 = "2016")
 prediction_2(modtv2, "TV", y1 = "2015", y2 = "2016")
 
-prediction_2(modct2, "CT", y1 = "2014", y2 = "2015")
-prediction_2(modng2, "NG", y1 = "2014", y2 = "2015")
-prediction_2(modtv2, "TV", y1 = "2014", y2 = "2015")
+# Mean aPR between 2008 and 2020
+prediction_2(modct2, "CT", y1 = "2008", y2 = "2020")
+prediction_2(modng2, "NG", y1 = "2008", y2 = "2020")
+prediction_2(modtv2, "TV", y1 = "2008", y2 = "2020")
+
 
 # < No diagnostic test adjustment ----
 
