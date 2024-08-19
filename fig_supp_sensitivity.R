@@ -1,5 +1,4 @@
-## SENSITIVITY ANALYSIS
-# Check whether trends vary for different population groups and/or time periods
+## SENSITIVITY ANALYSES
 
 library(tidyverse)
 library(ggh4x)
@@ -21,7 +20,8 @@ mytheme <- theme_bw(base_size = 7) +
         legend.title = element_text(size = rel(1.1), face = "bold"),
         legend.text = element_text(size = rel(1.1)),
         strip.text = element_text(color="black", size = rel(1.2), face="bold",
-                                  margin = margin(3,3,3,3)),
+                                  margin = margin(3,3,3,3),
+                                  hjust = 0, vjust = 0.5),
         strip.background = element_rect(color = NA, fill = NA),
         plot.tag = element_text(size=rel(1.25), face="bold"),
         axis.ticks = element_line(size = rel(1.0)))
@@ -80,10 +80,12 @@ df_est |>
   scale_colour_manual(values = colour_2) +
   guides(colour=guide_legend(order=1, title = "Study population")) +
   ggh4x::facet_wrap2(dplyr::vars(sti,region),
-                     strip = strip_nested(text_x = elem_list_text(face = c("bold", "plain")),
+                     strip = strip_nested(text_x = elem_list_text(face = c("bold", "plain"),
+                                                                  size = c(7*1.3,7*1.18)), # align with theme
                                           by_layer_x = TRUE),
                      scales = "free_y",
-                     nrow = 3) +
+                     nrow = 3,
+                     axes = "x") +
   ggh4x::facetted_pos_scales(
     y = list(
       sti == "Chlamydia" & region == "Western and Central Africa" ~ scale_y_continuous(limits = c(0, 0.4), labels = scales::label_percent()),
@@ -134,10 +136,12 @@ rbind(df_adj |> mutate(type = "Adjusted"),
   guides(colour = guide_legend(order=1, title = ""),
          fill = guide_legend(order=1, title = "")) +
   ggh4x::facet_wrap2(dplyr::vars(sti,region),
-                     strip = strip_nested(text_x = elem_list_text(face = c("bold", "plain")),
+                     strip = strip_nested(text_x = elem_list_text(face = c("bold", "plain"),
+                                                                  size = c(7*1.3,7*1.18)), # align with theme
                                           by_layer_x = TRUE),
                      scales = "free_y",
-                     nrow = 3) +
+                     nrow = 3,
+                     axes = "x") +
   ggh4x::facetted_pos_scales(
     y = list(
       sti == "Chlamydia" & region == "Western and Central Africa" ~ scale_y_continuous(limits = c(0, 0.4), labels = scales::label_percent()),

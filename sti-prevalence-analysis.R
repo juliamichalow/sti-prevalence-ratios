@@ -334,14 +334,14 @@ rbind(dat_region_annual |> filter(year == 2020),
       dat_ssa_annual |> filter(year == 2020)) |>
   write.csv("./results/prevalence_2020_adjusted.csv", row.names = FALSE)
 
-# Prediction for 2008
-dat_ssa_annual |> filter(year == 2008)
+# Prediction for 2010
+dat_ssa_annual |> filter(year == 2010)
 
-# Compare 2020 and 2008
-dat_ssa_annual |> filter(year %in% c(2008, 2020)) |> 
+# Compare 2020 and 2010
+dat_ssa_annual |> filter(year %in% c(2010, 2020)) |> 
   select(!c(lwr,upr)) |> #
   pivot_wider(names_from = year, values_from = prev) |> 
-  mutate(ratio = `2020`/`2008`)
+  mutate(ratio = `2020`/`2010`)
 
 # Prediction for 2012, 2016, 2020 (supp. table for comparison with WHO)
 rbind(dat_region_annual, dat_ssa_annual) |>
@@ -371,9 +371,9 @@ prediction_2(modng2, "NG", y1 = "2015", y2 = "2016")
 prediction_2(modtv2, "TV", y1 = "2015", y2 = "2016")
 
 # Mean aPR between 2008 and 2020
-prediction_2(modct2, "CT", y1 = "2008", y2 = "2020")
-prediction_2(modng2, "NG", y1 = "2008", y2 = "2020")
-prediction_2(modtv2, "TV", y1 = "2008", y2 = "2020")
+prediction_2(modct2, "CT", y1 = "2010", y2 = "2020")
+prediction_2(modng2, "NG", y1 = "2010", y2 = "2020")
+prediction_2(modtv2, "TV", y1 = "2010", y2 = "2020")
 
 
 # < No diagnostic test adjustment ----
