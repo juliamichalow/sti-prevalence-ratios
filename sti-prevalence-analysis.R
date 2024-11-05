@@ -323,8 +323,9 @@ modng2 <- glmmTMB(form, data = df_ng, family = binomial(link="log"),
 modtv2 <- glmmTMB(form, data = df_tv, family = binomial(link="log"),
                   start = list(theta = theta_tv, beta = fixed_tv))
 
-#sjPlot::tab_model(modct1, modng1, modtv1, p.style = "stars", wrap.labels = 100)
-#sjPlot::tab_model(modct2, modng2, modtv2, p.style = "stars", wrap.labels = 100)
+sjPlot::tab_model(modct1, modct2, modng1, modng2, modtv1, modtv2, p.style = "stars", wrap.labels = 100,
+                  dv.labels = c("CT logit", "CT log", "NG logit", "NG log", "TV logit", "TV log"))
+sjPlot::tab_model(modct2, modng2, modtv2, p.style = "stars", wrap.labels = 100)
 
 # What happens when exclude early culture results?
 # df_ng_temp <- df |> filter(sti == "NG") |>

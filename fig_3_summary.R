@@ -149,4 +149,4 @@ p <- wrap_elements(p_ct) / wrap_elements(p_ng) / wrap_elements(p_tv) +
 
 p
 
-ggsave("./plots/fig_3_summary.png", p, width = 22, height = 14, unit = "cm", dpi = 700)
+ggsave("./plots/fig_3_summary.png", p, width = 22, height = 12, unit = "cm", dpi = 700)
