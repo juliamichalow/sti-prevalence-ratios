@@ -11,10 +11,17 @@ dat_plot <- read.csv("./data/data_withinstudy_adjusted.csv") |>
          lwr = exp(ratio_log - 1.96 * ratio_se_log),
          upr = exp(ratio_log + 1.96 * ratio_se_log)) |>
   select(!c(starts_with("adj_"), ratio_log, ratio_se_log)) |>
-  mutate(est = paste0(sprintf(ratio,fmt = '%#.2f')," (", sprintf(lwr,fmt = '%#.2f'), 
-                      "-", sprintf(upr,fmt = '%#.2f'), ")"),
-         est = case_when(est == "1.96 (0.38-10.07)" ~ "1.96 (0.38-10.1)", TRUE ~ est),
-         year_mid = as.character(year_mid)) |>
+  mutate(est = ifelse(upr < 10, 
+                      paste0(sprintf(ratio,fmt = '%#.2f')," (", sprintf(lwr,fmt = '%#.2f'), 
+                             "-", sprintf(upr,fmt = '%#.2f'), ")"),
+                      # if > 10 then only 1 decimal place for upr in CI
+                      paste0(sprintf(ratio,fmt = '%#.2f')," (", sprintf(lwr,fmt = '%#.2f'), 
+                             "-", sprintf(upr,fmt = '%#.1f'), ")")),
+         year_mid = as.character(year_mid),
+         country = ifelse(study_id == "Lingappa 2009", "Multiple", country),
+         study_id = case_when(study_id == "Cowan 2002" & population == "Community members" ~ "Cowan 2002 ",
+                              study_id == "Cowan 2002" & population == "Students" ~ "Cowan 2002",
+                              TRUE ~ study_id)) |>
   # Headings
   bind_rows(data.frame(study_name = NA, study_id = "Study",
                        year_mid = "Year", region = "Region",
@@ -63,9 +70,11 @@ dat_summary_tv <- dat_summary |> filter(sti == "TV")
 # dat = study data
 # dat_summary = weighted ratios
 # dim = dimensions for top and bottom of forest
-plot_forest <- function(dat, dat_summary, dim, who_ratio) {
+plot_forest <- function(dat, dat_summary, dim, who_ratio, title) {
   
-  textsize <- 8
+  textsize <- 7.5
+  x_axis_min <- 0.038
+  x_axis_max <- 5.16
   
   # Studies at top of plot 
   
@@ -112,7 +121,7 @@ plot_forest <- function(dat, dat_summary, dim, who_ratio) {
           axis.title.x = element_blank(),
           plot.margin = unit(c(t=0,r=0,b=0,l=0), "cm")) +
     scale_x_log10() +
-    coord_cartesian(xlim = c(0.039, 1.98))
+    coord_cartesian(xlim = c(x_axis_min, x_axis_max))
   
   p1_right <- dat |>
     ggplot(aes(y = fct_rev(study_id))) +
@@ -163,9 +172,9 @@ plot_forest <- function(dat, dat_summary, dim, who_ratio) {
   # Define x-axis breaks for p2_mid
   # Define the breaks based on the value of `who_ratio`
   x_breaks <- if (who_ratio < 0.5) {
-    c(who_ratio, 0.5, 1.5)
+    c(who_ratio, 0.5, 5)
   } else {
-    c(0.1, 0.5, who_ratio, 1.5)
+    c(0.1, 0.5, who_ratio, 5)
   }
   
   p2_mid <- ggplot(data = diamond_data) +
@@ -177,7 +186,7 @@ plot_forest <- function(dat, dat_summary, dim, who_ratio) {
     # NOTE ylim is exactly lined up with y-axes for p2_left and p2_right
     scale_x_log10(breaks = x_breaks,
                   labels = scales::number_format(accuracy = 0.1)) +
-    coord_cartesian(xlim = c(0.039, 1.98), ylim = c(0.55,3.45)) +
+    coord_cartesian(xlim = c(x_axis_min, x_axis_max), ylim = c(0.55,3.45)) +
     scale_y_continuous(breaks = c(1,2,3,4)) +
     # make who_ratio blue + change other theme
     theme(axis.text.x = element_text(colour = ifelse(x_breaks == who_ratio, "mediumblue", "grey30"),
@@ -219,30 +228,27 @@ plot_forest <- function(dat, dat_summary, dim, who_ratio) {
     plot_layout(widths = c(1.999, 1, 0.8)) 
   
   (p_top / line / p_bot) +
+    plot_annotation(title = title) +
     plot_layout(heights = dim) &
-    theme(plot.margin = unit(c(t=0,r=0,b=0,l=0), "cm"))
+    theme(plot.margin = unit(c(t=0,r=0,b=0,l=5), "pt"),
+          plot.title = element_text(size = textsize*1.1, face="bold", hjust = -0.016, #-0.014
+                                    margin = margin(t = 0, r = 0, b = 4, l = 0)),
+          plot.title.position = "plot")
   
   # FOR PLOT WITHOUT DOTTED LINE 
   # (p_top / plot_spacer() / p_bot) +
   #   plot_layout(heights = dim) 
 } 
 
-# FOR PLOT WITHOUT DOTTED LINE
-# p_ct <- plot_forest(dat_ct, dat_summary_ct, c(3.9, -0.36, 0.6), 0.8)
-# p_ng <- plot_forest(dat_ng, dat_summary_ng, c(4, -0.36, 0.6), 0.86)
-# p_tv <- plot_forest(dat_tv, dat_summary_tv, c(2, -0.36, 0.6), 0.1)
-
-
-p_ct <- plot_forest(dat_ct, dat_summary_ct, c(14/3, 0.1, 1), 0.8)
-p_ng <- plot_forest(dat_ng, dat_summary_ng, c(15/3, 0.1, 1), 0.86)
-p_tv <- plot_forest(dat_tv, dat_summary_tv, c(2.2, 0.1, 1), 0.1)
+p_ct <- plot_forest(dat_ct, dat_summary_ct, c(26/3, 0.1, 1), 0.8, "A    Chlamydia")
+p_ng <- plot_forest(dat_ng, dat_summary_ng, c(26/3, 0.1, 1), 0.86, "B    Gonorrhoea")
+p_tv <- plot_forest(dat_tv, dat_summary_tv, c(12/3, 0.1, 1), 0.1, "C    Trichomoniasis")
 
 
 p <- wrap_elements(p_ct) / wrap_elements(p_ng) / wrap_elements(p_tv) +
-  plot_layout(height = c(14.2, 14.9, 8.8)) +
-  plot_annotation(tag_levels = "A") & 
-  theme(plot.tag = element_text(size = 9, face="bold"))
+  plot_layout(height = c(2, 2, 1.15)) &
+  theme(plot.margin = unit(c(t = 0.05, r = 0, b = 0, l = 0), "cm"))
 
 p
 
-ggsave("./plots/fig_3.png", p, width = 16, height = 23, unit = "cm", dpi = 700)
+ggsave("./plots/fig_3.png", p, width = 15, height = 24, unit = "cm", dpi = 700)

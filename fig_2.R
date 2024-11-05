@@ -21,31 +21,35 @@ mytheme <- theme_bw(base_size = 7) +
         axis.ticks = element_line(size = rel(1.0)))
 
 df1 <- read.csv("./results/prevalence_2020_adjusted.csv") |>
-  mutate(region = factor(region, levels = c("Western and Central", "Eastern", "Southern", "SSA"),
-                         labels = c("WCA", "EA", "SA", "SSA")),
+  mutate(region = factor(region, levels = c("WCA","EA","SA","SSA")),
          sti = factor(sti, levels = c("CT", "NG", "TV"),
                       labels = c("Chlamydia", "Gonorrhoea", "Trichomoniasis")),
          sex = fct_relevel(sex, "Female"))
 
 df2 <- read.csv("./results/prevalence_alldata_adjusted.csv") |>
-  mutate(region = factor(region, levels = c("Western and Central", "Eastern", "Southern"),
+  mutate(region = factor(region, levels = c("WCA", "EA", "SA"),
                          labels = c("Western and Central Africa", "Eastern Africa", "Southern Africa")),
          sti = factor(sti, levels = c("CT", "NG", "TV"),
                       labels = c("Chlamydia", "Gonorrhoea", "Trichomoniasis")),
-         sex = fct_relevel(sex, "Female")) |>
-  filter(year >= 2005)
+         sex = fct_relevel(sex, "Female")) 
 
-df_plot <- readxl::read_xlsx("./data/study_data.xlsx") |>
-  mutate(region = fct_collapse(region_analysis, 
-                               "Western and Central" = c("Western", "Central")),
-         region = factor(region, levels = c("Western and Central", "Eastern", "Southern"),
-                         labels = c("Western and Central Africa","Eastern Africa","Southern Africa")),
+df_plot <- read.csv("./data/final-dataset-v7-adjusted.csv") |>
+  filter(!sex == "Both sexes") |>
+  filter(denom >= 15) |>
+  filter(!(cov_id == "#23088" & sex == "Male" & age_group == "Youth")) |>
+  mutate(region = fct_collapse(region_analysis, "WCA" = c("WA", "CA")),
+         region = factor(region, levels = c("WCA","EA","SA"), 
+                         labels = c("Western and Central Africa", "Eastern Africa", "Southern Africa")),
          sti = factor(sti, levels = c("CT", "NG", "TV"),
                       labels = c("Chlamydia", "Gonorrhoea", "Trichomoniasis")),
-         sex = factor(sex, levels = c("Female", "Male", "Both sexes")),
-         test = fct_collapse(test, "Wet mount" = c("Wet mount", "Wet mount and NAAT")),
-         test = factor(test, levels = c("NAAT","Culture", "DFA", "ELISA", "Rapid antigen test", "Wet mount"))) |>
-  filter(!sex == "Both sexes")
+         sex = factor(sex, levels = c("Female", "Male")),
+         test = fct_collapse(testcat, 
+                             "DFA" = c("DFA", "DFA and NAAT"),
+                             "Culture" = c("culture", "culture or NAAT"),
+                             "Wet mount" = c("WM", "NAAT and WM", "culture and WM"),
+                             "Rapid antigen test" = c("rapid antigen test")),
+         test = factor(test, levels = c("NAAT","Culture", "DFA", "Rapid antigen test", "ELISA", "Wet mount"))
+         )
 
 colour_1 <- c("grey30","#CAA633")
 
@@ -91,7 +95,8 @@ p1 <- df1 |>
 p1
 
 colour_2 <- c("grey30","grey30")
-colour_3 <- c("#af4f2f","#df8d71","#1e5a46","#75884b","#5b859e")
+colour_3 <- c("#af4f2f","#df8d71","#1e5a46","#75884b","#1e395f","#5b859e")
+# "NAAT","Culture", "DFA", "ELISA", "Rapid antigen test", "Wet mount"
 # MetBrewer::met.brewer("Redon", 6, direction=-1) |> as.vector()
 
 p2 <- df2 |>
@@ -108,12 +113,12 @@ p2 <- df2 |>
   geom_point(data = df_plot, aes(x = year_mid, y = adj_prev, colour = test, shape = sex), size = 1, fill = "white") +
   scale_colour_manual(values = colour_3) +
   scale_shape_manual(values = c(19, 21)) +
-  guides(colour=guide_legend(order=2, title = ""),
-         fill=guide_legend(order=1, title = ""),
-         shape=guide_legend(order=1, title = ""),
-         linetype=guide_legend(order=1, title = "")) +
+  guides(colour=guide_legend(order=2, title = "", nrow=1),
+         fill=guide_legend(order=1, title = "", nrow=1),
+         shape=guide_legend(order=1, title = "", nrow=1),
+         linetype=guide_legend(order=1, title = "", nrow=1)) +
   ggh4x::facet_wrap2(dplyr::vars(sti,region),
-                     strip = strip_nested(text_x = elem_list_text(face = c("bold", "plain"),
+                     strip = ggh4x::strip_nested(text_x = ggh4x::elem_list_text(face = c("bold", "plain"),
                                                                   size = c(7*1.3,7*1.18)), # align with theme
                                           by_layer_x = TRUE),
                      scales = "free_y",

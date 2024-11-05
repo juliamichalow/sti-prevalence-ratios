@@ -13,47 +13,56 @@ df_pop <- read.csv("./data/unpopulation_dataportal_20240426093533.csv") |>
          sex %in% c("Female", "Male")) |>
   select(time, location, iso3, sex, age, value) |>
   mutate(region = case_when(
-    iso3 %in% c("BWA","SWZ","LSO","NAM","ZAF") ~ "Southern",
-    iso3 %in% c("AGO","CMR","CAF","TCD","COG","COD","GNQ","GAB","STP") ~ "Central",
+    iso3 %in% c("BWA","SWZ","LSO","NAM","ZAF") ~ "SA",
+    iso3 %in% c("AGO","CMR","CAF","TCD","COG","COD","GNQ","GAB","STP") ~ "CA",
     iso3 %in% c("BEN","BFA","CPV","CIV","GMB","GHA","GIN","GNB",
-                "LBR","MLI","MRT","NER","NGA","SEN","SLE","TGO") ~ "Western",
+                "LBR","MLI","MRT","NER","NGA","SEN","SLE","TGO") ~ "WA",
     iso3 %in% c("BDI","COM","DJI","ERI","ETH","KEN","MDG","MWI",
                 "MUS","MOZ","RWA","SYC","SOM","SSD",
-                "UGA","TZA","TZA","ZMB","ZWE") ~ "Eastern")) |>
+                "UGA","TZA","TZA","ZMB","ZWE") ~ "EA")) |>
   mutate(region = fct_collapse(region, 
-                               "Western and Central" = c("Central", "Western")),
+                               "WCA" = c("CA", "WA")),
          region = factor(region,
-                         levels = c("Western and Central", "Eastern", "Southern"))) |>
+                         levels = c("WCA", "EA", "SA"))) |>
   filter(!is.na(region)) |>
   group_by(region, sex) |>
   summarise(population = sum(value)) |>
   ungroup()
 
 # Study data
-df <- readxl::read_xlsx("./data/study_data.xlsx") |>
-  mutate(year_regression = year_mid - 2015,
+
+df <- read.csv("./data/final-dataset-v7-adjusted.csv") |>
+  # drop Both sexes
+  filter(!sex == "Both sexes") |>
+  # minimum sample size of 15
+  filter(denom >= 15) |>
+  mutate(year_regression = year_mid - 2012,
          sti = factor(sti, levels = c("CT", "NG", "TV")),
-         year_grp = case_when(year_mid %in% c(2005:2009) ~ "2005-2009",
+         year_grp = case_when(year_mid %in% c(2000:2004) ~ "2000-2004",
+                              year_mid %in% c(2005:2009) ~ "2005-2009",
                               year_mid %in% c(2010:2014) ~ "2010-2014",
                               year_mid %in% c(2015:2019) ~ "2015-2019",
                               year_mid %in% c(2020:2022) ~ "2020-2024"),
          year_grp = factor(year_grp, 
-                           levels = c("2005-2009", "2010-2014", 
+                           levels = c("2000-2004", "2005-2009", "2010-2014", 
                                       "2015-2019", "2020-2024")),
-         region = fct_collapse(region_analysis, 
-                                        "Western and Central" = c("Western", "Central")),
-         region = factor(region, levels = c("Southern", "Eastern", "Western and Central")),
-         region_actual = factor(region_actual, 
-                                levels = c("Western", "Central", "Eastern", "Southern", "Multiple")),
-         sex = factor(sex, levels = c("Female", "Male", "Both sexes")),
+         region = fct_collapse(region_analysis, "WCA" = c("WA", "CA")),
+         region = factor(region, levels = c("SA", "EA", "WCA")),
+         region_actual = factor(region_actual, levels = c("WA", "CA", "EA", "SA", "Multiple")),
+         sex = factor(sex, levels = c("Female", "Male")),
          hiv_status = fct_relevel(hiv_status, "Mixed"),
          age_group = factor(age_group, levels = c("Adult", "Youth")),
-         population = factor(population, 
+         population = fct_collapse(population, 
+                                   "ANC attendees" = c("ANC attendees", "ANC and FP attendees",
+                                                       "ANC and GYN attendees"),
+                                   "FP attendees" = c("FP attendees", "FP and GYN attendees")),
+         population = factor(population,
                              levels = c("ANC attendees", "FP attendees", 
                                         "GYN attendees", "PHC/OPD attendees",
                                         "Students","Community members", 
                                         "HIV/STI prevention trial participants",
                                         "Population-representative survey participants")))
+
 
 # FUNCTION ---- 
 
@@ -62,13 +71,13 @@ df <- readxl::read_xlsx("./data/study_data.xlsx") |>
 # 2. SSA mean by year and sex
 # 3. SSA mean male-to-female prevalence ratio
 
-prediction <- function(mod, sti) {
+prediction <- function(mod, sti, pop_pred = "ANC attendees") {
   
   df_pred <- crossing(sex = c("Female", "Male"),
-                      region = c("Western and Central", "Eastern", "Southern"),
-                      year = 2005:2023) %>%
-    mutate(year_regression = year - 2015,
-           population = "ANC attendees",
+                      region = c("WCA", "EA", "SA"),
+                      year = 2000:2024) %>%
+    mutate(year_regression = year - 2012,
+           population = pop_pred,
            age_group = "Adult",
            hiv_status = "Mixed",
            study_id = NA)
@@ -176,13 +185,13 @@ prediction <- function(mod, sti) {
 # Function that predicts:
 # SSA mean prevalence ratio for time trend (mean aPR per year)
 
-prediction_2 <- function(mod, sti, y1, y2) {
+prediction_2 <- function(mod, sti, y1, y2, pop_pred = "ANC attendees") {
   
   df_pred <- crossing(sex = c("Female", "Male"),
-                      region = c("Western and Central", "Eastern", "Southern"),
-                      year = 2005:2023) %>%
-    mutate(year_regression = year - 2015,
-           population = "ANC attendees",
+                      region = c("WCA", "EA", "SA"),
+                      year = 2000:2024) %>%
+    mutate(year_regression = year - 2012,
+           population = pop_pred,
            age_group = "Adult",
            hiv_status = "Mixed",
            study_id = NA)
@@ -269,9 +278,13 @@ prediction_2 <- function(mod, sti, y1, y2) {
 
 # BETWEEN STUDY ANALYSIS ----
 
-df_ct <- df |> filter(sti == "CT")
-df_ng <- df |> filter(sti == "NG")
-df_tv <- df |> filter(sti == "TV")
+# Exclude Mullick 2023 youth data point from meta-reg (keep only for within study ratios)
+df_ct <- df |> filter(sti == "CT") |>
+  filter(!(cov_id == "#23088" & sex == "Male" & age_group == "Youth"))
+df_ng <- df |> filter(sti == "NG") |>
+  filter(!(cov_id == "#23088" & sex == "Male" & age_group == "Youth"))
+df_tv <- df |> filter(sti == "TV") |>
+  filter(!(cov_id == "#23088" & sex == "Male" & age_group == "Youth"))
 
 # < Main model ----
 
@@ -288,18 +301,17 @@ modtv1 <- glmmTMB(form, data = df_tv, family = binomial(link="logit"))
 summary(modct1)
 theta_ct <- as.vector(modct1$fit$par[names(modct1$fit$par) == "theta"])
 fixed_ct <- as.vector(modct1$fit$par[names(modct1$fit$par) == "beta"])
-fixed_ct <- append(fixed_ct, 0, length(fixed_ct))
+#fixed_ct <- append(fixed_ct, 0, length(fixed_ct))
 
 summary(modng1)
 theta_ng <- as.vector(modng1$fit$par[names(modng1$fit$par) == "theta"])
 fixed_ng <- as.vector(modng1$fit$par[names(modng1$fit$par) == "beta"])
-fixed_ng <- append(fixed_ng, 0, length(fixed_ng))
+#fixed_ng <- append(fixed_ng, 0, length(fixed_ng))
 
 summary(modtv1)
 theta_tv <- as.vector(modtv1$fit$par[names(modtv1$fit$par) == "theta"])
 fixed_tv <- as.vector(modtv1$fit$par[names(modtv1$fit$par) == "beta"])
-fixed_tv <- append(fixed_tv, 0, length(fixed_tv) - 1)
-fixed_tv <- append(fixed_tv, 0, length(fixed_tv))
+#fixed_tv <- append(fixed_tv, 0, length(fixed_tv))
 
 # Log models
 modct2 <- glmmTMB(form, data = df_ct, family = binomial(link="log"),
@@ -311,7 +323,23 @@ modng2 <- glmmTMB(form, data = df_ng, family = binomial(link="log"),
 modtv2 <- glmmTMB(form, data = df_tv, family = binomial(link="log"),
                   start = list(theta = theta_tv, beta = fixed_tv))
 
-sjPlot::tab_model(modct2, modng2, modtv2, p.style = "stars", wrap.labels = 100)
+#sjPlot::tab_model(modct1, modng1, modtv1, p.style = "stars", wrap.labels = 100)
+#sjPlot::tab_model(modct2, modng2, modtv2, p.style = "stars", wrap.labels = 100)
+
+# What happens when exclude early culture results?
+# df_ng_temp <- df |> filter(sti == "NG") |>
+#   filter(!(cov_id == "#23088" & sex == "Male" & age_group == "Youth")) |>
+#   filter(!(year_mid < 2005 & testcat == "culture"))
+# 
+# modng1_temp <- glmmTMB(form, data = df_ng_temp, family = binomial(link="logit"))
+# 
+# theta_ng <- as.vector(modng1_temp$fit$par[names(modng1_temp$fit$par) == "theta"])
+# fixed_ng <- as.vector(modng1_temp$fit$par[names(modng1_temp$fit$par) == "beta"])
+# 
+# modng2_temp <- glmmTMB(form, data = df_ng_temp, family = binomial(link="log"),
+#                   start = list(theta = theta_ng, beta = fixed_ng))
+# 
+# sjPlot::tab_model(modng2, modng2_temp, p.style = "stars", wrap.labels = 100)
 
 # Predict by region
 dat_region_annual <- rbind(
@@ -337,11 +365,18 @@ rbind(dat_region_annual |> filter(year == 2020),
 # Prediction for 2010
 dat_ssa_annual |> filter(year == 2010)
 
-# Compare 2020 and 2010
+# Compare 2005 and 2020
+dat_ssa_annual |> filter(year %in% c(2005, 2020)) |> 
+  select(!c(lwr,upr)) |> #
+  pivot_wider(names_from = year, values_from = prev) |> 
+  mutate(ratio = `2020`/`2005`)
+
+# Compare 2010 and 2020
 dat_ssa_annual |> filter(year %in% c(2010, 2020)) |> 
   select(!c(lwr,upr)) |> #
   pivot_wider(names_from = year, values_from = prev) |> 
   mutate(ratio = `2020`/`2010`)
+
 
 # Prediction for 2012, 2016, 2020 (supp. table for comparison with WHO)
 rbind(dat_region_annual, dat_ssa_annual) |>
@@ -350,9 +385,7 @@ rbind(dat_region_annual, dat_ssa_annual) |>
                        "-", sprintf(upr*100,fmt = '%#.1f'), ")")) |>
   select(sti, region, sex, year, prev) |>
   pivot_wider(names_from = c(sti,sex), values_from = prev) |>
-  mutate(region = factor(region, 
-                                  levels = c("Western and Central", "Eastern", 
-                                             "Southern", "SSA"))) |>
+  mutate(region = factor(region, levels = c("WCA", "EA", "SA", "SSA"))) |>
   arrange(year, region) |>
   write.csv("./results/prevalence_comparewho.csv", row.names = FALSE)
 
@@ -370,11 +403,15 @@ prediction_2(modct2, "CT", y1 = "2015", y2 = "2016")
 prediction_2(modng2, "NG", y1 = "2015", y2 = "2016")
 prediction_2(modtv2, "TV", y1 = "2015", y2 = "2016")
 
-# Mean aPR between 2008 and 2020
+# Mean aPR between 2005 and 2020
+prediction_2(modct2, "CT", y1 = "2005", y2 = "2020")
+prediction_2(modng2, "NG", y1 = "2005", y2 = "2020")
+prediction_2(modtv2, "TV", y1 = "2005", y2 = "2020")
+
+# Mean aPR between 2010 and 2020
 prediction_2(modct2, "CT", y1 = "2010", y2 = "2020")
 prediction_2(modng2, "NG", y1 = "2010", y2 = "2020")
 prediction_2(modtv2, "TV", y1 = "2010", y2 = "2020")
-
 
 # < No diagnostic test adjustment ----
 
@@ -391,18 +428,17 @@ modtv3 <- glmmTMB(form, data = df_tv, family = binomial(link="logit"))
 summary(modct3)
 theta_ct <- as.vector(modct3$fit$par[names(modct3$fit$par) == "theta"])
 fixed_ct <- as.vector(modct3$fit$par[names(modct3$fit$par) == "beta"])
-fixed_ct <- append(fixed_ct, 0, length(fixed_ct))
+#fixed_ct <- append(fixed_ct, 0, length(fixed_ct))
 
 summary(modng3)
 theta_ng <- as.vector(modng3$fit$par[names(modng3$fit$par) == "theta"])
 fixed_ng <- as.vector(modng3$fit$par[names(modng3$fit$par) == "beta"])
-fixed_ng <- append(fixed_ng, 0, length(fixed_ng))
+#fixed_ng <- append(fixed_ng, 0, length(fixed_ng))
 
 summary(modtv3)
 theta_tv <- as.vector(modtv3$fit$par[names(modtv3$fit$par) == "theta"])
 fixed_tv <- as.vector(modtv3$fit$par[names(modtv3$fit$par) == "beta"])
-fixed_tv <- append(fixed_tv, 0, length(fixed_tv)-1)
-fixed_tv <- append(fixed_tv, 0, length(fixed_tv))
+#fixed_tv <- append(fixed_tv, 0, length(fixed_tv)-1)
 
 # Log models
 
@@ -566,17 +602,85 @@ rbind(dat_region_annual |> filter(year == 2020),
       dat_ssa_annual |> filter(year == 2020)) |>
   write.csv("./results/prevalence_2020_anc.csv", row.names = FALSE)
 
+# < NAAT only ----
+
+df_ct_naat <- df |> filter(sti == "CT", testcat == "NAAT")
+df_ng_naat <- df |> filter(sti == "NG", testcat == "NAAT")
+df_tv_naat <- df |> filter(sti == "TV", testcat == "NAAT")
+
+# Formula
+form <- cbind(adj_num,(adj_denom-adj_num)) ~ region + year_regression:region + 
+  sex:region + population + age_group + hiv_status + (1 | study_id)
+
+# Logit models
+modct9 <- glmmTMB(form, data = df_ct_naat, family = binomial(link="logit"))
+modng9 <- glmmTMB(form, data = df_ng_naat, family = binomial(link="logit"))
+modtv9 <- glmmTMB(form, data = df_tv_naat, family = binomial(link="logit"))
+
+# Use  parameter values from logit model as starting values for log model
+summary(modct9)
+theta_ct <- as.vector(modct9$fit$par[names(modct9$fit$par) == "theta"])
+fixed_ct <- as.vector(modct9$fit$par[names(modct9$fit$par) == "beta"])
+#fixed_ct <- append(fixed_ct, 0, length(fixed_ct))
+
+summary(modng9)
+theta_ng <- as.vector(modng9$fit$par[names(modng9$fit$par) == "theta"])
+fixed_ng <- as.vector(modng9$fit$par[names(modng9$fit$par) == "beta"])
+#fixed_ng <- append(fixed_ng, 0, length(fixed_ng))
+
+summary(modtv9)
+theta_tv <- as.vector(modtv9$fit$par[names(modtv9$fit$par) == "theta"])
+fixed_tv <- as.vector(modtv9$fit$par[names(modtv9$fit$par) == "beta"])
+#fixed_tv <- append(fixed_tv, 0, length(fixed_tv))
+
+# Log models
+modct10 <- glmmTMB(form, data = df_ct_naat, family = binomial(link="log"),
+                  start = list(theta = theta_ct, beta = fixed_ct))
+
+modng10 <- glmmTMB(form, data = df_ng_naat, family = binomial(link="log"),
+                  start = list(theta = theta_ng, beta = fixed_ng))
+
+modtv10 <- glmmTMB(form, data = df_tv_naat, family = binomial(link="log"),
+                  start = list(theta = theta_tv, beta = fixed_tv))
+
+# Predict by region
+dat_region_annual <- rbind(
+  prediction(modct10, "CT")$region_prev,
+  prediction(modng10, "NG")$region_prev,
+  prediction(modtv10, "TV")$region_prev)
+
+dat_region_annual |> write.csv("./results/prevalence_alldata_naat_adjusted.csv", row.names = FALSE)
+
+# Predict weighted mean for SSA 
+dat_ssa_annual <- rbind(
+  prediction(modct10, "CT")$ssa_prev,
+  prediction(modng10, "NG")$ssa_prev,
+  prediction(modtv10, "TV")$ssa_prev) |>
+  mutate(region = "SSA") |>
+  relocate(sti, sex, region)
+
+# Save 2020 predictions
+rbind(dat_region_annual |> filter(year == 2020),
+      dat_ssa_annual |> filter(year == 2020)) |>
+  write.csv("./results/prevalence_2020_naat_adjusted.csv", row.names = FALSE)
+
 # WITHIN STUDY ANALYSIS ----
 
 sex_within <- df |> 
-  left_join(read.csv("./data/study_name.csv"),
-            by = c("study_id")) |>
+  # Filter out Mullick 2023 adult data point (focus on same pop for ratios)
+  filter(!(cov_id == "#23088" & sex == "Male" & age_group == "Adult")) |>
+  # Consider whether to filter out Paz-Soldan 2012 as different age groups
+  # filter(!cov_id == "#23347") |>
   group_by(study_name, study_id, country, location, sti) |> 
   summarise(n=n_distinct(sex)) |> 
   filter(n>1) |>
   mutate(keep = "y")
 
 df_sex_within <- df |>
+  # Filter out Mullick 2023 adult data point (focus on same pop for ratios)
+  filter(!(cov_id == "#23088" & sex == "Male" & age_group == "Adult")) |>
+  # Consider whether to filter out Paz-Soldan 2012 as different age groups
+  # filter(!cov_id == "#23347") |>
   left_join(sex_within) |>
   filter(!is.na(keep))
 
@@ -584,22 +688,33 @@ df_ct_within <- df_sex_within |> filter(sti=="CT")
 df_ng_within <- df_sex_within |> filter(sti=="NG")
 df_tv_within <- df_sex_within |> filter(sti=="TV")
 
+# save
+df_sex_within |>
+  select(study_name, study_id, year_mid, region, country, population, age_group, sex, sti, adj_prev, adj_se) |>
+  write.csv("./data/data_withinstudy_adjusted.csv", row.names = FALSE)
+
 # < Main model ----
 
 # original formula
-# form <- region + year_regression:region + 
-#   sex:region + population + age_group + hiv_status + (1 | study_id)
+# form <- cbind(adj_num,(adj_denom-adj_num)) ~ region + year_regression:region + 
+#  sex:region + population + age_group + hiv_status + (1 | study_id)
 
+form <- cbind(adj_num,(adj_denom-adj_num)) ~ region + year_regression:region +
+  sex + age_group + hiv_status + (1 | study_id)
+# exclude population as studies relatively distributed across other groups
+# no ANC pop as reference group (obviously)
+# including population makes time trend non-estimable for TV in EA  
+
+# exclude region:sex interaction as too few studies in WCA. Results in very wide CIs for overall estimate. 
+
+# Previous version used a simpler model
+# form <- cbind(adj_num,(adj_denom-adj_num)) ~ region + year_regression:region + 
+#   sex:region + (1 | study_id)
 # Removed HIV-status 
-# No HIV positive pops, and predominantly mixed HIV status
-# TV dataset only mixed HIV status, so model does not fit with only one level of the variable
-
+  # No HIV positive pops, and predominantly mixed HIV status
+  # TV dataset only mixed HIV status, so model does not fit with only one level of the variable
 # Removed population - insufficient data
-
 # Removed age_group - unable to calculate SE for TV with this included
-
-form <- cbind(adj_num,(adj_denom-adj_num)) ~ region + year_regression:region + 
-  sex:region + (1 | study_id)
 
 # Logit models
 modct1_w <- glmmTMB(form, data = df_ct_within, family = binomial(link="logit"))
@@ -620,8 +735,7 @@ fixed_ng_w <- as.vector(modng1_w$fit$par[names(modng1_w$fit$par) == "beta"])
 summary(modtv1_w)
 theta_tv_w <- as.vector(modtv1_w$fit$par[names(modtv1_w$fit$par) == "theta"])
 fixed_tv_w <- as.vector(modtv1_w$fit$par[names(modtv1_w$fit$par) == "beta"])
-fixed_tv_w <- append(fixed_tv_w, 0, length(fixed_tv_w)-3)
-fixed_tv_w <- append(fixed_tv_w, 0, length(fixed_tv_w)-3)
+#fixed_tv_w <- append(fixed_tv_w, 0, length(fixed_tv_w)-4)
 
 # Log models
 modct2_w <- glmmTMB(form, data = df_ct_within, family = binomial(link="log"),
@@ -637,7 +751,7 @@ sjPlot::tab_model(modct2_w, modng2_w, modtv2_w, p.style = "stars", wrap.labels =
 
 # Ratio within study
 ratio_within <- rbind(
-  prediction(modct2_w, "CT")$ssa_ratio,
+  prediction(modct2_w, "CT", "Community members")$ssa_ratio,
   prediction(modng2_w, "NG")$ssa_ratio,
   prediction(modtv2_w, "TV")$ssa_ratio) |>
   filter(year == 2020) |>
@@ -685,7 +799,7 @@ extract_ratio <- function(mod) {
     as.data.frame() |>
     rownames_to_column("variable") |>
     filter(variable == "sexMale") |>
-    mutate(year = 2015,
+    mutate(year = 2012,
            ratio = exp(Estimate),
            lwr = exp(Estimate - 1.96*`Std. Error`),
            upr = exp(Estimate + 1.96*`Std. Error`),
@@ -711,15 +825,14 @@ rbind(ratio_btwn,
 # SAVE REGRESSION TABLES ----
 
 # variable order
-desired_order <- c("(Intercept)","Western and Central","Eastern", "Southern",
-                   "Western and Central:Male", "Eastern:Male","Southern:Male", 
-                   "Western and Central:Both sexes", "Eastern:Both sexes","Southern:Both sexes", 
-                   "Western and Central:Year", "Eastern:Year","Southern:Year", 
+desired_order <- c("(Intercept)","WCA","EA", "SA",
+                   "WCA:Male", "EA:Male","SA:Male", 
+                   "WCA:Year", "EA:Year","SA:Year", 
                    "ANC attendees", "FP attendees", "GYN attendees", 
                    "PHC/OPD attendees", "Students", "Community members", 
                    "HIV/STI prevention trial participants", "Population-representative survey participants", 
-                   "Female","Male","Both sexes", "Adult", "Youth",
-                   "Mixed", "HIV negative", "HIV positive")
+                   "Female","Male", "Adult", "Youth",
+                   "Mixed", "HIV negative")
 
 reg_table <- function(model){
   
@@ -736,11 +849,10 @@ reg_table <- function(model){
            variable = gsub("year_regression","Year",variable),
            variable = gsub("population","", variable),
            variable = gsub("sexMale","Male",variable),
-           variable = gsub("sexBoth sexes","Both sexes",variable),
            variable = gsub("age_group","",variable),
            variable = gsub("hiv_status","",variable)) |>
     # add reference categories 
-    rbind(data.frame(variable = c("ANC attendees","Adult", "Mixed", "Southern"),
+    rbind(data.frame(variable = c("ANC attendees","Adult", "Mixed", "SA"),
                      estimate = rep("Ref",4)))
 }
 
@@ -809,6 +921,22 @@ insight::get_variance(modtv8)
 
 sjPlot::tab_model(modct8, modng8, modtv8, p.style = "stars", wrap.labels = 100)
 
+# between study - NAAT adjusted
+left_join(
+  reg_table(modct10) |> rename(CT = estimate),
+  reg_table(modng10) |> rename(NG = estimate)) |>
+  left_join(reg_table(modtv10) |> rename(TV = estimate)) |>
+  # reorder variables
+  mutate(variable = factor(variable, levels = desired_order)) |>
+  arrange(variable)  |> 
+  write.csv("./tables/regression_alldata_NAAT.csv", row.names = FALSE)
+
+insight::get_variance(modct10)
+insight::get_variance(modng10)
+insight::get_variance(modtv10)
+
+sjPlot::tab_model(modct10, modng10, modtv10, p.style = "stars", wrap.labels = 100)
+
 
 # within study
 left_join(
@@ -832,6 +960,25 @@ sjPlot::tab_model(modct2_w, modng2_w, modtv2_w, p.style = "stars", wrap.labels =
 df |> 
   group_by() |>
   summarise(n = n_distinct(study_id))
+
+df |> 
+  group_by(sti) |>
+  summarise(n = n_distinct(study_id))
+
+# Number studies
+cross_join(
+  df |> 
+    filter(!is.na(study_name)) |>
+    group_by() |>
+    summarise(n_study = n_distinct(study_name)),
+  df |> 
+    filter(is.na(study_name)) |>
+    group_by() |>
+    summarise(n_article = n_distinct(study_id))) |>
+  mutate(n_study = case_when(is.na(n_study) ~ 0, TRUE ~ n_study),
+         n_article = case_when(is.na(n_article) ~ 0, TRUE ~ n_article),
+         n_tot = n_study + n_article)
+
 
 tab_characteristics <- function(df){
   
@@ -874,15 +1021,11 @@ tab_characteristics <- function(df){
 }
 
 # Between study 
-df_study <- df |> 
-  left_join(read.csv("./data/study_name.csv"),
-            by = c("study_id"))
-
 t_characteristics_all <- full_join(
-  tab_characteristics(df_study |> filter(sti == "CT")) |> rename(CT = col, CT_tot = tot),
-  tab_characteristics(df_study |> filter(sti == "NG")) |> rename(NG = col, NG_tot = tot)) |>
-  full_join(tab_characteristics(df_study |> filter(sti == "TV")) |> rename(TV = col, TV_tot = tot)) |>
-  full_join(tab_characteristics(df_study) |> rename(ALL = col, ALL_tot = tot)) |>
+  tab_characteristics(df |> filter(sti == "CT")) |> rename(CT = col, CT_tot = tot),
+  tab_characteristics(df |> filter(sti == "NG")) |> rename(NG = col, NG_tot = tot)) |>
+  full_join(tab_characteristics(df |> filter(sti == "TV")) |> rename(TV = col, TV_tot = tot)) |>
+  full_join(tab_characteristics(df) |> rename(ALL = col, ALL_tot = tot)) |>
   relocate(var, group, CT, NG, TV)
 
 t_characteristics_all |> write.csv("./tables/study_characteristics_alldata.csv", row.names = FALSE)
@@ -897,6 +1040,7 @@ t_characteristics_within <- full_join(
 
 t_characteristics_within |> write.csv("./tables/study_characteristics_within.csv", row.names = FALSE)
 
+# <Countries ----
 # Number countries
 
 df |> 
@@ -975,7 +1119,7 @@ df |>
 # Number studies per country - overall
 
 full_join(
-  df_study |> 
+  df |> 
     filter(!is.na(study_name)) |>
     group_by(country) |>
     summarise(n = n_distinct(study_name)) |>
@@ -983,7 +1127,7 @@ full_join(
     unnest(country_list) |>
     group_by(country_list) |>
     summarise(n_study=sum(n)),
-  df_study |> 
+  df |> 
     filter(is.na(study_name)) |>
     group_by(country) |>
     summarise(n = n_distinct(study_id)) |>
@@ -996,11 +1140,37 @@ full_join(
          n_art = case_when(is.na(n_art) ~ 0, TRUE ~ n_art),
          n_tot = n_study + n_art) |>
   arrange(-n_tot) |>
-  mutate(prop = n_tot/124)
+  mutate(prop = n_tot/211)
+
+# Number studies per region and country - overall
+
+full_join(
+  df |> 
+    filter(!is.na(study_name)) |>
+    group_by(region, country) |>
+    summarise(n = n_distinct(study_name)) |>
+    mutate(country_list = strsplit(country, ", ")) |>
+    unnest(country_list) |>
+    group_by(region, country_list) |>
+    summarise(n_study=sum(n)),
+  df |> 
+    filter(is.na(study_name)) |>
+    group_by(region, country) |>
+    summarise(n = n_distinct(study_id)) |>
+    mutate(country_list = strsplit(country, ", ")) |>
+    unnest(country_list) |>
+    group_by(region, country_list) |>
+    summarise(n_art=sum(n))
+) |>
+  mutate(n_study = case_when(is.na(n_study) ~ 0, TRUE ~ n_study),
+         n_art = case_when(is.na(n_art) ~ 0, TRUE ~ n_art),
+         n_tot = n_study + n_art) |>
+  arrange(-n_tot) |>
+  mutate(prop = n_tot/211)
 
 # Number studies per country - CT
 full_join(
-  df_study |>
+  df |>
     filter(sti == "CT") |>
     filter(!is.na(study_name)) |>
     group_by(country) |>
@@ -1009,7 +1179,7 @@ full_join(
     unnest(country_list) |>
     group_by(country_list) |>
     summarise(n_study=sum(n)),
-  df_study |>
+  df |>
     filter(sti == "CT") |>
     filter(is.na(study_name)) |>
     group_by(country) |>
@@ -1026,7 +1196,7 @@ full_join(
 
 # Number studies per country - NG
 full_join(
-  df_study |>
+  df |>
     filter(sti == "NG") |>
     filter(!is.na(study_name)) |>
     group_by(country) |>
@@ -1035,7 +1205,7 @@ full_join(
     unnest(country_list) |>
     group_by(country_list) |>
     summarise(n_study=sum(n)),
-  df_study |>
+  df |>
     filter(sti == "NG") |>
     filter(is.na(study_name)) |>
     group_by(country) |>
@@ -1052,7 +1222,7 @@ full_join(
 
 # Number studies per country - TV
 full_join(
-  df_study |>
+  df |>
     filter(sti == "TV") |> 
     filter(!is.na(study_name)) |>
     group_by(country) |>
@@ -1061,7 +1231,7 @@ full_join(
     unnest(country_list) |>
     group_by(country_list) |>
     summarise(n_study=sum(n)),
-  df_study |>
+  df |>
     filter(sti == "TV") |>
     filter(is.na(study_name)) |>
     group_by(country) |>
@@ -1076,98 +1246,126 @@ full_join(
          n_tot = n_study + n_art) |>
   arrange(-n_tot) |> print(n=100)
 
-# Number studies among both men and women
-full_join(
-  df_study |> 
-    filter(!is.na(study_name)) |>
-    select(study_name, study_id, country, location, population, sex, sti, adj_prev) |> 
-    pivot_wider(names_from = sex, values_from = adj_prev) |>
-    filter(!is.na(Male) & !is.na(Female)) |>
-    group_by(sti) |>
-    summarise(n_study=n_distinct(study_name)),
-  df_study |> 
-    filter(is.na(study_name)) |>
-    select(study_name, study_id, country, location, population, sex, sti, adj_prev) |> 
-    pivot_wider(names_from = sex, values_from = adj_prev) |>
-    filter(!is.na(Male) & !is.na(Female)) |>
-    group_by(sti) |>
-    summarise(n_art=n_distinct(study_id))) |>
-  mutate(n_tot = n_study + n_art)
-
-# Number studies among both men and women - total
-cbind(
-  df_study |> 
-    filter(!is.na(study_name)) |>
-    select(study_name, study_id, country, location, population, sex, sti, adj_prev) |> 
-    pivot_wider(names_from = sex, values_from = adj_prev) |>
-    filter(!is.na(Male) & !is.na(Female)) |>
-    group_by() |>
-    summarise(n_study=n_distinct(study_name)),
-  df_study |> 
-    filter(is.na(study_name)) |>
-    select(study_name, study_id, country, location, population, sex, sti, adj_prev) |> 
-    pivot_wider(names_from = sex, values_from = adj_prev) |>
-    filter(!is.na(Male) & !is.na(Female)) |>
-    group_by() |>
-    summarise(n_art=n_distinct(study_id))) |>
-  mutate(n_tot = n_study + n_art)
-
-# Number studies among both sexes (unstratified)
-df_study |> 
-  select(study_name, study_id, country, location, population, sex, sti, adj_prev) |> 
-  pivot_wider(names_from = sex, values_from = adj_prev) |>
-  filter(!is.na(`Both sexes`)) |>
-  group_by(sti) |>
-  summarise(n=n_distinct(study_id))
-
-# Number studies among both sexes (unstratified) - total
-df_study |> 
-  select(study_name, study_id, country, location, population, sex, sti, adj_prev) |> 
-  pivot_wider(names_from = sex, values_from = adj_prev) |>
-  filter(!is.na(`Both sexes`)) |>
-  group_by() |>
-  summarise(n=n_distinct(study_id))
+# < Sex ----
 
 # Number studies among men only
-df_study |> 
-  select(study_name, study_id, country, location, population, sex, sti, adj_prev) |> 
-  pivot_wider(names_from = sex, values_from = adj_prev) |>
-  filter(!is.na(Male) & is.na(Female)) |>
-  group_by() |>
-  summarise(n=n_distinct(study_id))
+full_join(
+  df |> 
+    filter(!(cov_id == "#23088" & sex == "Male" & age_group == "Adult")) |>
+    filter(!is.na(study_name)) |>
+    select(study_name, study_id, year_mid, country, location, population, age_group, sex, sti, adj_prev) |> 
+    pivot_wider(names_from = sex, values_from = adj_prev) |>
+    filter(!is.na(Male) & is.na(Female)) |>
+    group_by(sti) |>
+    summarise(n_study=n_distinct(study_name)),
+  df |> 
+    filter(!(cov_id == "#23088" & sex == "Male" & age_group == "Adult")) |>
+    filter(is.na(study_name)) |>
+    select(study_name, study_id, year_mid, country, location, population, age_group, sex, sti, adj_prev) |> 
+    pivot_wider(names_from = sex, values_from = adj_prev) |>
+    filter(!is.na(Male) & is.na(Female)) |>
+    group_by(sti) |>
+    summarise(n_art=n_distinct(study_id))) |>
+  mutate(n_tot = n_study + n_art)
 
 # Number studies among women only
 full_join(
-  df_study |> 
+  df |> 
+    filter(!(cov_id == "#23088" & sex == "Male" & age_group == "Adult")) |>
     filter(!is.na(study_name)) |>
-    select(study_name, study_id, country, location, population, sex, sti, adj_prev) |> 
+    select(study_name, study_id, year_mid, country, location, population, age_group, sex, sti, adj_prev) |> 
     pivot_wider(names_from = sex, values_from = adj_prev) |>
     filter(is.na(Male) & !is.na(Female)) |>
     group_by(sti) |>
     summarise(n_study=n_distinct(study_name)),
-  df_study |> 
+  df |> 
+    filter(!(cov_id == "#23088" & sex == "Male" & age_group == "Adult")) |>
     filter(is.na(study_name)) |>
-    select(study_name, study_id, country, location, population, sex, sti, adj_prev) |> 
+    select(study_name, study_id, year_mid, country, location, population, age_group, sex, sti, adj_prev) |> 
     pivot_wider(names_from = sex, values_from = adj_prev) |>
     filter(is.na(Male) & !is.na(Female)) |>
     group_by(sti) |>
     summarise(n_art=n_distinct(study_id))) |>
   mutate(n_tot = n_study + n_art)
 
-# Number studies among women only - total
-cbind(
-  df_study |> 
+# Number studies among both sexes
+full_join(
+  df |> 
+    filter(!(cov_id == "#23088" & sex == "Male" & age_group == "Adult")) |>
     filter(!is.na(study_name)) |>
-    select(study_name, study_id, country, location, population, sex, sti, adj_prev) |> 
+    select(study_name, study_id, year_mid, country, location, population, age_group, sex, sti, adj_prev) |> 
+    pivot_wider(names_from = sex, values_from = adj_prev) |>
+    filter(!is.na(Male) & !is.na(Female)) |>
+    group_by(sti) |>
+    summarise(n_study=n_distinct(study_name)),
+  df |> 
+    filter(!(cov_id == "#23088" & sex == "Male" & age_group == "Adult")) |>
+    filter(is.na(study_name)) |>
+    select(study_name, study_id, year_mid, country, location, population, age_group, sex, sti, adj_prev) |> 
+    pivot_wider(names_from = sex, values_from = adj_prev) |>
+    filter(!is.na(Male) & !is.na(Female)) |>
+    group_by(sti) |>
+    summarise(n_art=n_distinct(study_id))) |>
+  mutate(n_tot = n_study + n_art)
+
+# < Sex total ----
+
+# Number studies among men only
+cross_join(
+  df |> 
+    filter(!(cov_id == "#23088" & sex == "Male" & age_group == "Adult")) |>
+    filter(!is.na(study_name)) |>
+    select(study_name, study_id, year_mid, country, location, population, age_group, sex, sti, adj_prev) |> 
+    pivot_wider(names_from = sex, values_from = adj_prev) |>
+    filter(!is.na(Male) & is.na(Female)) |>
+    group_by() |>
+    summarise(n_study=n_distinct(study_name)),
+  df |> 
+    filter(!(cov_id == "#23088" & sex == "Male" & age_group == "Adult")) |>
+    filter(is.na(study_name)) |>
+    select(study_name, study_id, year_mid, country, location, population, age_group, sex, sti, adj_prev) |> 
+    pivot_wider(names_from = sex, values_from = adj_prev) |>
+    filter(!is.na(Male) & is.na(Female)) |>
+    group_by() |>
+    summarise(n_art=n_distinct(study_id))) |>
+  mutate(n_tot = n_study + n_art)
+
+# Number studies among women only
+cross_join(
+  df |> 
+    filter(!(cov_id == "#23088" & sex == "Male" & age_group == "Adult")) |>
+    filter(!is.na(study_name)) |>
+    select(study_name, study_id, year_mid, country, location, population, age_group, sex, sti, adj_prev) |> 
     pivot_wider(names_from = sex, values_from = adj_prev) |>
     filter(is.na(Male) & !is.na(Female)) |>
     group_by() |>
     summarise(n_study=n_distinct(study_name)),
-  df_study |> 
+  df |> 
+    filter(!(cov_id == "#23088" & sex == "Male" & age_group == "Adult")) |>
     filter(is.na(study_name)) |>
-    select(study_name, study_id, country, location, population, sex, sti, adj_prev) |> 
+    select(study_name, study_id, year_mid, country, location, population, age_group, sex, sti, adj_prev) |> 
     pivot_wider(names_from = sex, values_from = adj_prev) |>
     filter(is.na(Male) & !is.na(Female)) |>
+    group_by() |>
+    summarise(n_art=n_distinct(study_id))) |>
+  mutate(n_tot = n_study + n_art)
+
+# Number studies among both sexes
+cross_join(
+  df |> 
+    filter(!(cov_id == "#23088" & sex == "Male" & age_group == "Adult")) |>
+    filter(!is.na(study_name)) |>
+    select(study_name, study_id, year_mid, country, location, population, age_group, sex, sti, adj_prev) |> 
+    pivot_wider(names_from = sex, values_from = adj_prev) |>
+    filter(!is.na(Male) & !is.na(Female)) |>
+    group_by() |>
+    summarise(n_study=n_distinct(study_name)),
+  df |> 
+    filter(!(cov_id == "#23088" & sex == "Male" & age_group == "Adult")) |>
+    filter(is.na(study_name)) |>
+    select(study_name, study_id, year_mid, country, location, population, age_group, sex, sti, adj_prev) |> 
+    pivot_wider(names_from = sex, values_from = adj_prev) |>
+    filter(!is.na(Male) & !is.na(Female)) |>
     group_by() |>
     summarise(n_art=n_distinct(study_id))) |>
   mutate(n_tot = n_study + n_art)

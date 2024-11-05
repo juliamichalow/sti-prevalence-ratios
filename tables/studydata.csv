@@ -1,0 +1,256 @@
+Region,Reference,Study,Year,Country,Population,Age,Age range,HIV status,STI,Sex
+WA,Lagarde 2004,,2000,Burkina Faso,Population-representative survey participants,Adult,13 to 49,Mixed,"CT, NG, TV","Female, Male"
+WA,Lafort 2003,RETRO-CI,2000,Cote d'Ivoire,FP attendees,Adult,18 to 53,Mixed,"CT, NG, TV",Female
+WA,Aboyeji 2003,,2000,Nigeria,ANC attendees,Adult,19 to 43,Mixed,"NG, TV",Female
+WA,Donbraye 2010,,2000,Nigeria,ANC attendees,Adult,NR,Mixed,TV,Female
+WA,Apea-Kubi 2004,Apea,2001,Ghana,ANC attendees,Adult,16+,Mixed,"CT, NG",Female
+WA,Apea-Kubi 2005,Apea,2002,Ghana,ANC attendees,Adult,16+,Mixed,TV,Female
+WA,Adejuwon 2005,,2002*,Nigeria,FP attendees,Adult,NR,Mixed,"NG, TV",Female
+WA,Obiajuru 2005,,2002,Nigeria,Community members,Adult,NR,Mixed,"NG, TV",Female
+WA,Tukur 2006,,2002,Nigeria,FP attendees,Adult,NR,Mixed,CT,Female
+WA,Balaka 2005,,2002,Togo,ANC attendees,Adult,16 to 42,Mixed,TV,Female
+WA,Kirakoya-Samadoulougou 2008,,2003,Burkina Faso,ANC attendees,Adult,14 to 49,Mixed,TV,Female
+WA,Siemer 2008,,2003,Ghana,ANC attendees,Adult,NR,Mixed,CT,Female
+WA,Chigbu 2006,,2003*,Nigeria,ANC attendees,Adult,15 to 65,Mixed,"NG, TV",Female
+WA,Chigbu 2006,,2003*,Nigeria,GYN attendees,Adult,15 to 65,Mixed,"NG, TV",Female
+WA,Inabo 2006,,2003*,Nigeria,ANC attendees,Adult,18 to 47,Mixed,TV,Female
+WA,Jatau 2006,,2003*,Nigeria,ANC attendees,Adult,16+,Mixed,TV,Female
+WA,Sagay 2005,,2003,Nigeria,ANC attendees,Adult,NR,Mixed,TV,Female
+WA,Yirenya-Tawiah 2014,,2006,Ghana,Community members,Adult,15 to 49,Mixed,"CT, NG",Female
+WA,Fayemiwo 2018,,2006,Nigeria,FP attendees,Adult,19 to 54,Mixed,"CT, NG, TV",Female
+WA,Omoregie 2009,,2006*,Nigeria,PHC/OPD attendees,Adult,NR,HIV negative,TV,"Female, Male"
+WA,Dosso 2010,,2007*,Cote d'Ivoire,ANC attendees,Adult,NR,Mixed,"CT, NG, TV",Female
+WA,Chinyere 2012,,2007,Nigeria,ANC attendees,Adult,15 to 40,Mixed,TV,Female
+WA,Niemogha 2010,,2007*,Nigeria,FP attendees,Adult,NR,Mixed,TV,Female
+WA,Niemogha 2010,,2007*,Nigeria,GYN attendees,Adult,NR,Mixed,TV,Female
+WA,Niemogha 2010,,2007*,Nigeria,Students,Youth,NR,Mixed,TV,Female
+WA,Behanzin 2012,,2008,Benin,Population-representative survey participants,Adult,15 to 49,Mixed,"CT, NG","Female, Male"
+WA,Usanga 2011,,2008,Nigeria,ANC attendees,Adult,15 to 49,Mixed,"NG, TV",Female
+WA,Sam-Wobo 2012,,2009*,Nigeria,ANC attendees,Adult,16 to 50,Mixed,TV,Female
+WA,Arinze 2014,,2011*,Nigeria,Students,Adult,15 to 30,Mixed,CT,Female
+WA,Bolaji 2013,,2011,Nigeria,ANC attendees,Adult,20 to 40,Mixed,TV,Female
+WA,Tchelougou 2013,,2011,Togo,ANC attendees,Adult,NR,Mixed,TV,Female
+WA,Volker 2017,,2012,Ghana,ANC attendees,Adult,14 to 48,Mixed,"CT, NG",Female
+WA,Adesiji 2015,,2012*,Nigeria,FP attendees,Adult,20+,Mixed,CT,Female
+WA,Olowe 2014,,2012,Nigeria,ANC attendees,Adult,21 to 40,Mixed,TV,Female
+WA,Samuel 2015,,2012*,Nigeria,ANC attendees,Adult,21 to 50,Mixed,TV,Female
+WA,Etuketu 2015,,2013,Nigeria,ANC attendees,Adult,15 to 44,Mixed,TV,Female
+WA,Nnaemeka 2016,,2013*,Nigeria,Population-representative survey participants,Adult,22 to 42,Mixed,TV,Female
+WA,Olusegun-Joseph 2016,,2013*,Nigeria,PHC/OPD attendees,Adult,16 to 55,Mixed,TV,Female
+WA,Olusegun-Joseph 2016,,2013*,Nigeria,Students,Adult,16 to 40,Mixed,TV,Female
+WA,Akinbo 2017,,2014*,Nigeria,Students,Youth,13 to 17,Mixed,TV,Female
+WA,Oyeyemi 2016,,2014,Nigeria,ANC attendees,Adult,21+,Mixed,TV,Female
+WA,Wokem 2015,,2014,Nigeria,ANC attendees,Adult,11 to 60,Mixed,TV,Female
+WA,Sangare 2021,,2015,Burkina Faso,ANC attendees,Adult,15 to 49,Mixed,TV,Female
+WA,Konadu 2019,,2015,Ghana,ANC attendees,Adult,12 to 54,Mixed,TV,Female
+WA,Alexander 2018,,2015,Nigeria,ANC attendees,Adult,15 to 60,Mixed,TV,Female
+WA,Ebhodaghe 2017,,2015,Nigeria,ANC attendees,Adult,19 to 43,HIV negative,"CT, NG, TV",Female
+WA,Asmah 2017,,2016,Ghana,ANC attendees,Adult,NR,Mixed,TV,Female
+WA,Squire 2019,,2016,Ghana,GYN attendees,Adult,16+,Mixed,TV,Female
+WA,Cowley 2021,,2016,Guinea-Bissau,Population-representative survey participants,Adult,16 to 49,Mixed,"CT, NG, TV","Female, Male"
+WA,Ezeanya 2019,,2016*,Nigeria,Students,Adult,15 to 39,Mixed,"CT, TV",Female
+WA,Ukatu 2019,,2016*,Nigeria,ANC attendees,Adult,18 to 45,Mixed,TV,Female
+WA,Kashibu 2018,,2017,Nigeria,ANC attendees,Adult,15 to 39,Mixed,TV,Female
+WA,Odaranle 2020,,2017,Nigeria,FP attendees,Adult,20 to 45,Mixed,TV,Female
+WA,Isara 2021,,2017,The Gambia,ANC attendees,Adult,15 to 44,Mixed,"CT, NG, TV",Female
+WA,Jary 2021,,2018,Mali,PHC/OPD attendees,Adult,18+,Mixed,"CT, NG, TV",Female
+WA,Rasheed 2021,,2018,Nigeria,ANC attendees,Adult,18+,Mixed,TV,Female
+WA,Ajani 2022,,2019,Nigeria,Students,Adult,15 to 30,Mixed,TV,"Female, Male"
+WA,Auta 2020,,2019,Nigeria,ANC attendees,Adult,15+,Mixed,TV,Female
+WA,Maureen 2022,,2019*,Nigeria,ANC attendees,Adult,18+,Mixed,"CT, NG, TV",Female
+WA,Lingani 2021,,2020,Burkina Faso,ANC attendees,Adult,16 to 45,Mixed,CT,Female
+WA,Agabi 2023,,2020*,Nigeria,GYN attendees,Adult,16 to 57,Mixed,TV,Female
+WA,Enwuru 2024,,2020,Nigeria,ANC attendees,Adult,15+,HIV negative,TV,Female
+WA,Butcher 2023,,2020,The Gambia,HIV/STI prevention trial participants,Adult,15 to 69,Mixed,"CT, NG, TV",Female
+WA,Ngom 2023,,2021,Senegal,ANC attendees,Adult,16 to 46,Mixed,"NG, TV",Female
+CA,Ngandjio 2003,,2001,Cameroon,Students,Youth,NR,Mixed,CT,"Female, Male"
+CA,Kinoshita-Moleka 2008,,2004,Democratic Republic of Congo,ANC attendees,Adult,15 to 45,Mixed,"CT, NG",Female
+CA,Mbu 2008,,2006,Cameroon,ANC attendees,Adult,NR,Mixed,"CT, NG, TV",Female
+CA,Alexandre 2015,,2012,Angola,PHC/OPD attendees,Adult,14 to 52,Mixed,"CT, NG",Female
+CA,Vieira-Baptista 2017,,2015,Sao Tome and Principe,GYN attendees,Adult,21 to 60,Mixed,"CT, NG, TV",Female
+CA,Compain 2019,,2017,Chad,Community members,Adult,20 to 65,Mixed,"CT, NG, TV",Female
+CA,Nodjikouambaye 2019,GYNAUTO-STI,2017,Chad,GYN attendees,Adult,18+,Mixed,"CT, NG, TV",Female
+CA,Gadoth 2019,,2017,Democratic Republic of Congo,ANC attendees,Adult,18+,HIV negative,"CT, NG, TV",Female
+CA,Mbah 2022,,2018,Cameroon,ANC attendees,Adult,15 to 46,Mixed,"CT, NG, TV",Female
+CA,Payne 2020,,2018,Cameroon,PHC/OPD attendees,Adult,15 to 55,Mixed,TV,Female
+CA,Ngombe Mouabata 2024,,2021,Congo,GYN attendees,Adult,21 to 71,Mixed,CT,Female
+CA,Eyong 2023,,2022,Cameroon,PHC/OPD attendees,Adult,17 to 53,Mixed,TV,Female
+EA,Hawken 2002,,2000,Kenya,Population-representative survey participants,Adult,15 to 49,Mixed,"CT, NG","Female, Male"
+EA,Kaydos-Daniels 2003,,2000,Malawi,PHC/OPD attendees,Adult,18+,Mixed,TV,Male
+EA,Paz-Soldan 2012,Malawi Pregancy and STI Risk Perception and Avoidance Study,2000,Malawi,Population-representative survey participants,Adult,15-34,Mixed,"CT, NG",Female
+EA,Paz-Soldan 2012,Malawi Pregancy and STI Risk Perception and Avoidance Study,2000,Malawi,Population-representative survey participants,Adult,20-44,Mixed,"CT, NG",Male
+EA,Menendez 2010,,2000,Mozambique,ANC attendees,Adult,14 to 61,Mixed,"CT, NG, TV",Female
+EA,Clift 2003,AMREF Mine Health Project,2000,Tanzania,Community members,Adult,16 to 54,Mixed,"CT, NG","Female, Male"
+EA,Cowan 2002,,2000,Zimbabwe,Community members,Youth,16 to 19,Mixed,"CT, NG","Female, Male"
+EA,Cowan 2002,,2000,Zimbabwe,Students,Youth,12 to 18,Mixed,"CT, NG","Female, Male"
+EA,van de Wijgert 2009,Hormonal Contraception and the Risk of HIV Acquisition (HC-HIV),2002,Uganda,FP attendees,Adult,18 to 35,HIV negative,"CT, NG, TV",Female
+EA,Munjoma 2010,,2002,Zimbabwe,ANC attendees,Adult,NR,Mixed,TV,Female
+EA,van de Wijgert 2009,Hormonal Contraception and the Risk of HIV Acquisition (HC-HIV),2002,Zimbabwe,FP attendees,Adult,18 to 35,HIV negative,"CT, NG, TV",Female
+EA,Bailey 2007,MMC Trial 1,2003,Kenya,HIV/STI prevention trial participants,Youth,18 to 24,HIV negative,"CT, NG, TV",Male
+EA,Ghebremichael 2009,Moshi Infertility survey,2003,Tanzania,Community members,Adult,20 to 44,Mixed,"CT, NG, TV",Female
+EA,Ghebremichael 2011,Moshi Infertility survey,2003,Tanzania,Community members,Adult,20+,Mixed,"CT, TV",Male
+EA,Mapingure 2010,,2003,Tanzania,ANC attendees,Adult,14 to 43,Mixed,TV,Female
+EA,Msuya 2009,,2003,Tanzania,ANC attendees,Adult,14 to 43,Mixed,"NG, TV",Female
+EA,Celentano 2010,NIMH Collaborative HIV/STD Prevention Trial,2003,Zimbabwe,Community members,Adult,18 to 30,Mixed,"CT, NG, TV",Female
+EA,Celentano 2010,NIMH Collaborative HIV/STD Prevention Trial,2003,Zimbabwe,Community members,Adult,18 to 30,Mixed,"CT, NG",Male
+EA,Mapingure 2010,,2003,Zimbabwe,ANC attendees,Adult,NR,Mixed,TV,Female
+EA,Mensch 2008,Malawi Diffusion and Ideational Change Project (MDICP),2004,Malawi,Population-representative survey participants,Youth,15 to 21,Mixed,"CT, NG, TV",Female
+EA,Lujan 2008,,2004,Mozambique,ANC attendees,Adult,15 to 45,Mixed,"CT, NG",Female
+EA,Kamali 2010,,2004,Uganda,HIV/STI prevention trial participants,Adult,18 to 45,Mixed,"CT, NG, TV",Female
+EA,Tann 2006,,2004,Uganda,ANC attendees,Adult,15 to 40,Mixed,"CT, NG, TV",Female
+EA,Ramjee 2008,HPTN 055,2004,Zambia,HIV/STI prevention trial participants,Adult,18+,Mixed,"CT, NG, TV",Female
+EA,Venkatesh 2011,Methods for Improving Reproductive Health in Africa (MIRA),2004,Zimbabwe,HIV/STI prevention trial participants,Adult,18 to 49,HIV negative,"CT, NG, TV",Female
+EA,Gray 2009,MMC Trial 2,2005,Uganda,Community members,Adult,15 to 49,HIV negative,TV,Female
+EA,Lingappa 2009,Partners HSV-2/HIV Transmission Study (Partners Study),2006,"Botswana, Kenya, Rwanda, South Africa, Tanzania, Uganda, Zambia",HIV/STI prevention trial participants,Adult,18+,HIV negative,"CT, NG, TV","Female, Male"
+EA,Chersich 2009,,2006,Kenya,PHC/OPD attendees,Adult,16 to 45,Mixed,TV,Female
+EA,Guffey 2014,HPTN035,2006,Malawi,HIV/STI prevention trial participants,Adult,18+,HIV negative,"CT, NG, TV",Female
+EA,Guffey 2014,HPTN035,2006,Zambia,HIV/STI prevention trial participants,Adult,18+,HIV negative,"CT, NG, TV",Female
+EA,Guffey 2014,HPTN035,2006,Zimbabwe,HIV/STI prevention trial participants,Adult,18+,HIV negative,"CT, NG, TV",Female
+EA,McCormack 2010,MDP301,2007,Tanzania,HIV/STI prevention trial participants,Adult,16+,HIV negative,"CT, NG, TV",Female
+EA,McCormack 2010,MDP301,2007,Uganda,HIV/STI prevention trial participants,Adult,16+,HIV negative,"CT, NG, TV",Female
+EA,Crucitti 2010,,2007*,Zambia,ANC attendees,Adult,15 to 42,Mixed,TV,Female
+EA,Crucitti 2010,,2007*,Zambia,Students,Youth,13 to 16,Mixed,TV,Female
+EA,McCormack 2010,MDP301,2007,Zambia,HIV/STI prevention trial participants,Adult,18+,HIV negative,"CT, NG, TV",Female
+EA,Otieno 2015,Kisumu Incidence Cohort Study (KICoS),2008,Kenya,Community members,Adult,18 to 34,HIV negative,"CT, NG","Female, Male"
+EA,Mocumbi 2017,MDP,2008,Mozambique,HIV/STI prevention trial participants,Adult,17 to 59,HIV negative,"CT, NG, TV",Female
+EA,Lemme 2013,MEMA kwa Vijana,2008,Tanzania,Community members,Youth,15 to 30,Mixed,"CT, NG","Female, Male"
+EA,Muvunyi 2011,,2009,Rwanda,Community members,Adult,21 to 45,Mixed,"CT, NG",Female
+EA,Rutherford 2014,Crane Survey,2009,Uganda,Students,Youth,19 to 25,Mixed,"CT, NG, TV",Female
+EA,Rutherford 2014,Crane Survey,2009,Uganda,Students,Youth,19 to 25,Mixed,"CT, NG",Male
+EA,Ademe 2013,,2010,Ethiopia,ANC attendees,Adult,15 to 49,Mixed,TV,Female
+EA,Chiduo 2012,,2010,Tanzania,ANC attendees,Adult,18 to 44,Mixed,"CT, NG, TV",Female
+EA,Downs 2012,,2010,Tanzania,PHC/OPD attendees,Adult,18 to 50,Mixed,"CT, NG",Female
+EA,Jespers 2014,,2011,Kenya,ANC attendees,Adult,18 to 35,Mixed,"CT, NG, TV",Female
+EA,Jespers 2014,,2011,Kenya,FP attendees,Adult,18 to 35,HIV negative,"CT, NG, TV",Female
+EA,de Walque 2012,,2011,Tanzania,HIV/STI prevention trial participants,Adult,18 to 30,Mixed,"CT, NG, TV","Female, Male"
+EA,Lazenby 2014,,2011*,Tanzania,GYN attendees,Adult,30 to 60,Mixed,"CT, NG, TV",Female
+EA,Kiene 2017,,2011,Uganda,PHC/OPD attendees,Adult,18+,Mixed,"CT, NG","Female, Male"
+EA,Ogilvie 2013,,2011,Uganda,Community members,Adult,26 to 69,Mixed,"CT, NG",Female
+EA,Eshete 2013,,2012,Ethiopia,ANC attendees,Adult,15 to 36,Mixed,TV,Female
+EA,Kerubo 2016,,2012,Kenya,Students,Youth,14 to 17,Mixed,"CT, NG, TV",Female
+EA,Kinuthia 2015,Mama Salama Study,2012,Kenya,ANC attendees,Adult,14+,HIV negative,"CT, NG, TV",Female
+EA,Ravindran 2021,,2012,Kenya,ANC attendees,Adult,14+,HIV negative,"CT, NG, TV",Female
+EA,Nkhoma 2017,iLiNS-DYAD-M trial,2012,Malawi,ANC attendees,Adult,15+,Mixed,TV,Female
+EA,Hokororo 2015,,2012,Tanzania,ANC attendees,Youth,14 to 20,Mixed,"CT, NG, TV",Female
+EA,Stephen 2017,,2012,Zimbabwe,ANC attendees,Adult,18+,Mixed,CT,Female
+EA,Mulu 2015,,2013,Ethiopia,ANC attendees,Adult,15 to 49,Mixed,"NG, TV",Female
+EA,Maina 2016,,2013,Kenya,FP attendees,Adult,20 to 49,Mixed,"CT, NG, TV",Female
+EA,Palanee-Phillips 2015,ASPIRE / MTN-020,2013,Malawi,HIV/STI prevention trial participants,Adult,18 to 45,HIV negative,"CT, NG, TV",Female
+EA,Kestelyn 2018,Ring Plus study,2013,Rwanda,HIV/STI prevention trial participants,Adult,18 to 35,Mixed,"CT, NG, TV",Female
+EA,Donders 2016,,2013*,Uganda,PHC/OPD attendees,Adult,NR,Mixed,"CT, NG, TV",Female
+EA,Nakubulwa 2015,,2013,Uganda,ANC attendees,Adult,18+,Mixed,"CT, TV",Female
+EA,Palanee-Phillips 2015,ASPIRE / MTN-020,2013,Uganda,HIV/STI prevention trial participants,Adult,18 to 45,HIV negative,"CT, NG, TV",Female
+EA,Palanee-Phillips 2015,ASPIRE / MTN-020,2013,Zimbabwe,HIV/STI prevention trial participants,Adult,18 to 45,HIV negative,"CT, NG, TV",Female
+EA,Schonfeld 2018,,2014,Ethiopia,ANC attendees,Adult,NR,Mixed,"CT, NG, TV",Female
+EA,Kanyina 2017,,2014,Kenya,GYN attendees,Adult,15+,Mixed,TV,Female
+EA,Oliver 2018,,2014,Kenya,Community members,Adult,18 to 34,Mixed,"CT, NG",Female
+EA,Franceschi 2016,F,2014,Rwanda,Students,Youth,18 to 20,Mixed,CT,Female
+EA,Francis 2019,,2014,Tanzania,Students,Youth,17 to 18,Mixed,"CT, NG, TV",Female
+EA,Homsy 2019,,2014,Uganda,ANC attendees,Adult,18 to 49,HIV negative,TV,Female
+EA,Moses 2015,,2014,Uganda,Community members,Adult,30 to 65,Mixed,"CT, NG",Female
+EA,Chaponda 2021,,2014,Zambia,ANC attendees,Adult,NR,Mixed,"CT, NG, TV",Female
+EA,Tadesse 2016,,2015,Ethiopia,GYN attendees,Adult,15 to 49,Mixed,NG,Female
+EA,Masese 2017,,2015,Kenya,Students,Youth,15 to 24,Mixed,"CT, NG, TV",Female
+EA,Masha 2017,,2015,Kenya,ANC attendees,Adult,18 to 45,Mixed,"CT, NG, TV",Female
+EA,Yuh 2020,Kenya Girls Study (KGS),2015,Kenya,Students,Youth,16 to 20,HIV negative,"CT, NG, TV",Female
+EA,Mukanyangezi 2018,,2015,Rwanda,GYN attendees,Adult,18+,HIV negative,TV,Female
+EA,Maufi 2016,,2015,Tanzania,ANC attendees,Adult,17 to 46,Mixed,TV,Female
+EA,Yegorov 2018,,2015,Uganda,PHC/OPD attendees,Adult,18 to 45,HIV negative,"CT, NG, TV",Female
+EA,Deese 2021,ECHO,2016,Kenya,FP attendees,Adult,16 to 35,HIV negative,"CT, NG",Female
+EA,Deese 2021,ECHO,2016,Zambia,FP attendees,Adult,16 to 35,HIV negative,"CT, NG",Female
+EA,Mgodi 2021,HVTN703 / HPTN081,2017,Kenya,HIV/STI prevention trial participants,Adult,18 to 50,HIV negative,"CT, NG",Female
+EA,Mgodi 2021,HVTN703 / HPTN081,2017,Malawi,HIV/STI prevention trial participants,Adult,18 to 50,HIV negative,"CT, NG",Female
+EA,Mgodi 2021,HVTN703 / HPTN081,2017,Mozambique,HIV/STI prevention trial participants,Adult,18 to 50,HIV negative,"CT, NG",Female
+EA,Baussano 2021,F,2017,Rwanda,Students,Youth,17 to 21,Mixed,CT,Female
+EA,Nsereko 2020,,2017,Rwanda,ANC attendees,Adult,18 to 49,Mixed,TV,Female
+EA,Masatu 2022,,2017,Tanzania,FP attendees,Adult,18+,Mixed,CT,Female
+EA,Mgodi 2021,HVTN703 / HPTN081,2017,Tanzania,HIV/STI prevention trial participants,Adult,18 to 50,HIV negative,"CT, NG",Female
+EA,Mgodi 2021,HVTN703 / HPTN081,2017,Zimbabwe,HIV/STI prevention trial participants,Adult,18 to 50,HIV negative,"CT, NG",Female
+EA,Kahsay 2023,,2018,Ethiopia,PHC/OPD attendees,Adult,15+,Mixed,NG,"Female, Male"
+EA,Madanitsa 2023,,2018,Kenya,ANC attendees,Adult,NR,HIV negative,"CT, NG, TV",Female
+EA,Mehta 2023,CaCHe study,2018,Kenya,Students,Youth,14 to 22,Mixed,"CT, NG, TV",Female
+EA,Madanitsa 2023,,2018,Malawi,ANC attendees,Adult,NR,HIV negative,"CT, NG, TV",Female
+EA,Madanitsa 2023,,2018,Tanzania,ANC attendees,Adult,NR,HIV negative,"CT, NG, TV",Female
+EA,Celum 2022,POWER,2019,Kenya,FP attendees,Youth,16 to 25,HIV negative,"CT, NG",Female
+EA,Lokken 2022,Microbiota and Preterm Birth Study,2019,Kenya,FP attendees,Adult,18 to 45,HIV negative,"CT, NG, TV",Female
+EA,Juliana 2020,AMANHI,2019,Tanzania,ANC attendees,Adult,16 to 48,Mixed,"CT, NG, TV",Female
+EA,Chitneni 2020,Health Famillies PrEP Study,2019,Uganda,PHC/OPD attendees,Adult,18 to 40,HIV negative,"CT, NG, TV",Female
+EA,Grabowski 2022,STIPS (RCSS),2019,Uganda,Population-representative survey participants,Adult,18 to 49,Mixed,"CT, NG, TV","Female, Male"
+EA,Husen 2023,,2020*,Ethiopia,ANC attendees,Adult,17 to 37,Mixed,TV,Female
+EA,Zenebe 2021,,2020,Ethiopia,ANC attendees,Adult,17 to 41,Mixed,"CT, NG, TV",Female
+EA,Heffron 2021,,2020,Kenya,GYN attendees,Adult,15 to 30,HIV negative,"CT, NG",Female
+EA,Mcharo 2022,,2020,Tanzania,Students,Youth,18 to 24,Mixed,"CT, NG","Female, Male"
+EA,Nair 2023,MTN-034/REACH,2020,Uganda,HIV/STI prevention trial participants,Youth,16 to 21,HIV negative,"CT, NG, TV",Female
+EA,Martin 2021,CHIEDZA,2020,Zimbabwe,Community members,Youth,16 to 24,Mixed,"CT, NG","Female, Male"
+EA,Nair 2023,MTN-034/REACH,2020,Zimbabwe,HIV/STI prevention trial participants,Youth,16 to 21,HIV negative,"CT, NG, TV",Female
+EA,Nyakambi 2022,,2021,Kenya,PHC/OPD attendees,Adult,18 to 49,Mixed,CT,Female
+EA,Oware 2023,DoxyPEP,2021,Kenya,HIV/STI prevention trial participants,Adult,18 to 30,HIV negative,"CT, NG",Female
+EA,van der Veer 2024,,2021,Malawi,ANC attendees,Adult,NR,Mixed,"CT, NG, TV",Female
+EA,Sineque 2024,,2021,Mozambique,PHC/OPD attendees,Adult,30 to 55,Mixed,"CT, NG",Female
+EA,Mbuvi 2024,,2022,Kenya,PHC/OPD attendees,Adult,15 to 44,Mixed,"NG, TV",Female
+EA,Senkoro 2024,,2022,Tanzania,GYN attendees,Adult,18 to 45,Mixed,"NG, TV",Female
+SA,Romoren 2007,,2000,Botswana,ANC attendees,Adult,15 to 43,Mixed,"NG, TV",Female
+SA,Kleinschmidt 2007,,2000,South Africa,FP attendees,Adult,18 to 40,HIV negative,"NG, TV",Female
+SA,Sturm 2004,,2001*,South Africa,ANC attendees,Adult,NR,Mixed,"CT, NG, TV",Female
+SA,Paz-Bailey 2005,,2002,Botswana,FP attendees,Adult,NR,Mixed,"NG, TV",Female
+SA,Pettifor 2005,,2002,South Africa,PHC/OPD attendees,Youth,15 to 24,Mixed,"CT, NG","Female, Male"
+SA,van de Wijgert 2006,,2002,South Africa,PHC/OPD attendees,Adult,18 to 69,Mixed,"CT, NG, TV",Female
+SA,Odendaal 2006,,2003,South Africa,ANC attendees,Adult,NR,Mixed,"CT, NG",Female
+SA,Sobngwi-Tambekou 2009,ANRS-1265,2003,South Africa,HIV/STI prevention trial participants,Adult,18 to 24,Mixed,"CT, NG, TV",Male
+SA,Ramjee 2008,HPTN 055,2004,South Africa,HIV/STI prevention trial participants,Adult,18+,Mixed,"CT, NG, TV",Female
+SA,Sebitloane 2011,,2004,South Africa,ANC attendees,Adult,18+,HIV negative,TV,Female
+SA,Venkatesh 2011,Methods for Improving Reproductive Health in Africa (MIRA),2004,South Africa,HIV/STI prevention trial participants,Adult,18 to 49,HIV negative,"CT, NG, TV",Female
+SA,Black 2008,,2005,South Africa,PHC/OPD attendees,Adult,NR,Mixed,"CT, NG, TV",Male
+SA,Guffey 2014,HPTN035,2006,South Africa,HIV/STI prevention trial participants,Adult,18+,HIV negative,"CT, NG, TV",Female
+SA,Lewis 2008,,2006,South Africa,PHC/OPD attendees,Adult,17 to 73,Mixed,"CT, NG, TV",Male
+SA,De Jongh 2010,,2007*,South Africa,GYN attendees,Adult,13 to 41,Mixed,"CT, NG, TV",Female
+SA,McCormack 2010,MDP301,2007,South Africa,HIV/STI prevention trial participants,Adult,18+,HIV negative,"CT, NG, TV",Female
+SA,Botswana Ministry of Health 2011,,2008,Botswana,FP attendees,Adult,NR,Mixed,"CT, NG",Female
+SA,Thigpen 2012,"TDF-1, TDF-2",2008,Botswana,HIV/STI prevention trial participants,Adult,18 to 39,HIV negative,TV,Female
+SA,Moodley 2015,SAHAPS,2009,South Africa,ANC attendees,Adult,18+,Mixed,"CT, NG, TV",Female
+SA,Jespers 2014,,2011,South Africa,ANC attendees,Adult,18 to 35,Mixed,"CT, NG, TV",Female
+SA,Jespers 2014,,2011,South Africa,FP attendees,Adult,18 to 35,HIV negative,"CT, NG, TV",Female
+SA,Kleppa 2015,,2011,South Africa,Students,Youth,15 to 31,Mixed,"CT, NG, TV",Female
+SA,Peters 2014,,2011,South Africa,PHC/OPD attendees,Adult,18 to 49,Mixed,"CT, NG",Female
+SA,Galappaththi-Arachchige 2016,,2012,South Africa,Students,Youth,16 to 20,Mixed,"CT, NG, TV",Female
+SA,Shukla 2023,,2012,South Africa,Students,Youth,16 to 22,Mixed,"CT, NG, TV",Female
+SA,Jewanraj 2021,CAPRISA 008,2013,South Africa,HIV/STI prevention trial participants,Adult,20 to 44,HIV negative,"CT, NG, TV",Female
+SA,Jongen 2021,EVRI,2013,South Africa,PHC/OPD attendees,Youth,16 to 24,HIV negative,"CT, NG",Female
+SA,Palanee-Phillips 2015,ASPIRE / MTN-020,2013,South Africa,HIV/STI prevention trial participants,Adult,18 to 45,HIV negative,"CT, NG, TV",Female
+SA,Barnabas 2018,WISH,2014,South Africa,PHC/OPD attendees,Youth,16 to 22,HIV negative,"CT, NG, TV",Female
+SA,Le Roux 2017,,2014*,South Africa,PHC/OPD attendees,Adult,17 to 65,Mixed,"CT, NG, TV",Male
+SA,Ginindza 2017,,2015,Eswatini,PHC/OPD attendees,Adult,15 to 49,Mixed,"CT, NG, TV",Female
+SA,Abbai-Shaik 2016,,2015,South Africa,PHC/OPD attendees,Adult,18+,Mixed,CT,Male
+SA,Huyveneers 2023,IPM027,2015,South Africa,HIV/STI prevention trial participants,Adult,18 to 45,HIV negative,"CT, NG, TV",Female
+SA,Kaida 2018,AYAZAZI,2015,South Africa,Community members,Youth,16 to 24,Mixed,"CT, NG, TV","Female, Male"
+SA,Kharsany 2020,HIPSS,2015,South Africa,Population-representative survey participants,Adult,15 to 49,Mixed,"CT, NG, TV","Female, Male"
+SA,Wynn 2018,,2016,Botswana,ANC attendees,Adult,18+,Mixed,"CT, NG, TV",Female
+SA,Deese 2021,ECHO,2016,Eswatini,FP attendees,Adult,16 to 35,HIV negative,"CT, NG",Female
+SA,Gorgens 2020,,2016,Eswatini,HIV/STI prevention trial participants,Youth,15 to 22,HIV negative,TV,Female
+SA,Deese 2021,ECHO,2016,South Africa,FP attendees,Adult,16 to 35,HIV negative,"CT, NG",Female
+SA,Gill 2020,UChoose,2016,South Africa,HIV/STI prevention trial participants,Youth,15 to 19,HIV negative,"CT, NG, TV",Female
+SA,Hoffman 2019,,2016,South Africa,PHC/OPD attendees,Adult,18 to 75,Mixed,"CT, NG, TV",Female
+SA,Mgodi 2021,HVTN703 / HPTN081,2017,Botswana,HIV/STI prevention trial participants,Adult,18 to 50,HIV negative,"CT, NG",Female
+SA,Delany-Moretlwe 2023,HPTN082,2017,South Africa,HIV/STI prevention trial participants,Youth,16 to 25,HIV negative,"CT, NG, TV",Female
+SA,Francis 2018,,2017,South Africa,Population-representative survey participants,Youth,15 to 24,Mixed,"CT, NG, TV","Female, Male"
+SA,Mgodi 2021,HVTN703 / HPTN081,2017,South Africa,HIV/STI prevention trial participants,Adult,18 to 50,HIV negative,"CT, NG",Female
+SA,Delany-Moretlwe 2023,HPTN082,2017,Zimbabwe,HIV/STI prevention trial participants,Youth,16 to 25,HIV negative,"CT, NG, TV",Female
+SA,Dessai 2020,,2018,South Africa,ANC attendees,Adult,18 to 43,Mixed,TV,Female
+SA,Govender 2023,CAP 008,2018,South Africa,ANC attendees,Adult,15+,HIV negative,"CT, NG, TV",Female
+SA,Gray 2021,HVTN702,2018,South Africa,HIV/STI prevention trial participants,Adult,18 to 35,HIV negative,"CT, NG",Male
+SA,Gray 2021,HVTN702,2018,South Africa,HIV/STI prevention trial participants,Adult,18 to 35,HIV negative,"CT, NG, TV",Female
+SA,Joseph Davey 2019,,2018,South Africa,ANC attendees,Adult,18+,Mixed,"CT, NG, TV",Female
+SA,Naicker 2021,,2018,South Africa,ANC attendees,Adult,18+,Mixed,TV,Female
+SA,Price 2024,,2018,South Africa,Community members,Youth,12 to 19,HIV negative,"CT, NG","Female, Male"
+SA,Taku 2021,,2018,South Africa,PHC/OPD attendees,Adult,30+,Mixed,"CT, NG, TV",Female
+SA,Celum 2022,POWER,2019,South Africa,FP attendees,Youth,16 to 25,HIV negative,"CT, NG",Female
+SA,Chetty 2020,,2019,South Africa,ANC attendees,Adult,18+,Mixed,TV,Female
+SA,Oree 2021,,2019,South Africa,ANC attendees,Adult,20 to 40,Mixed,NG,Female
+SA,de Voux 2023,,2020,South Africa,ANC attendees,Adult,16+,HIV negative,"CT, NG, TV",Female
+SA,Mabaso 2022,,2020,South Africa,ANC attendees,Adult,18+,Mixed,CT,Female
+SA,Nair 2023,MTN-034/REACH,2020,South Africa,HIV/STI prevention trial participants,Youth,16 to 21,HIV negative,"CT, NG, TV",Female
+SA,Jarolimova 2023,AHRI HDSS,2021,South Africa,Population-representative survey participants,Youth,16 to 29,Mixed,"CT, NG, TV","Female, Male"
+SA,Mullick 2023,Project PrEP STI substudy,2021,South Africa,PHC/OPD attendees,Youth,15 to 24,HIV negative,"CT, NG, TV","Female, Male"
+SA,Mussa 2023,Maduo,2022,Botswana,ANC attendees,Adult,15+,Mixed,"CT, NG",Female
+SA,de Voux 2024,STI and PrEP in Pregnancy Study,2022,South Africa,ANC attendees,Adult,18+,Mixed,"CT, NG, TV",Female
+Multiple,Delany-Moretlwe 2022,HPTN084,2019,"Botswana, Eswatini, Kenya, Malawi, South Africa, Uganda, Zimbabwe",HIV/STI prevention trial participants,Adult,18 to 45,HIV negative,"CT, NG, TV",Female
