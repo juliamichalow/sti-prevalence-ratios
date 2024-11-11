@@ -209,3 +209,69 @@ rbind(df_adj |> mutate(type = "Adjusted - All tests"),
   labs(x = "", y = "", fill = "", tag = "")
 
 ggsave("./plots/fig_supp_sensitivity_2.png", width = 18, height = 12, unit = "cm", dpi = 700)  
+
+## 4. Compare 2010 onwards vs full timeperiod ----
+df_all <- read.csv("./results/prevalence_alldata_adjusted.csv") 
+df_2010 <- read.csv("./results/prevalence_alldata_2010onwards.csv")
+
+
+rbind(df_all |> mutate(type = "Informed by studies conducted 2000-2024"),
+      df_2010 |> mutate(type = "Informed by studies conducted 2010-2024") |> filter(year >= 2010)) |>  
+  filter(!region == "SSA", sex == "Female") |>
+  mutate(type = fct_relevel(type, "Informed by studies conducted 2000-2024"),
+         region = factor(region, levels = c("WCA","EA","SA"),
+                         labels = c("Western and Central Africa","Eastern Africa","Southern Africa")),
+         sti = factor(sti, levels = c("CT", "NG", "TV"), labels = c("Chlamydia", "Gonorrhoea", "Trichomoniasis"))) |>
+  filter(sex == "Female") |>
+  ggplot() +
+  geom_ribbon(aes(x = year, ymin = lwr, ymax = upr, fill = type), alpha = 0.15) +
+  geom_line(aes(x = year, y = prev, colour = type), size = 0.6) +
+  geom_point(data = df_obs |> filter(sex == "Female", year_mid < 2010) |> mutate(type2 = "Conducted 2000-2009"), 
+             aes(x = year_mid, y = adj_prev, colour = type2), size = 1) +
+  geom_point(data = df_obs |> filter(sex == "Female", year_mid >= 2010) |> mutate(type2 = "Conducted 2010-2024"), 
+             aes(x = year_mid, y = prevalence, colour = type2), size = 1) +
+  
+  scale_fill_manual(
+    values = c("blue", "red"),
+    name = "Study Period",
+    labels = c("Estimates 2000-2024", "Estimates 2010-2024")
+  ) +
+  scale_colour_manual(
+    values = c("blue", "red", "blue", "red"),
+    name = "Study Period",
+    labels = c("Estimates 2000-2024", "Estimates 2010-2024", 
+               "Observed 2000-2009", "Observed 2010-2024")
+  ) +
+  guides(
+    fill = guide_legend(order = 1, title = "Study Period"),
+    colour = guide_legend(order = 1, title = "Study Period")
+  ) +
+
+  
+  scale_fill_manual(values = c("blue","red")) +
+  scale_colour_manual(values =  c("blue","red","blue","red")) +
+  guides(colour = guide_legend(order=1, title = ""),
+         fill = guide_legend(order=1, title = "")) +
+  ggh4x::facet_wrap2(dplyr::vars(sti,region),
+                     strip = strip_nested(text_x = elem_list_text(face = c("bold", "plain"),
+                                                                  size = c(7*1.3,7*1.18)), # align with theme
+                                          by_layer_x = TRUE),
+                     scales = "free_y",
+                     nrow = 3,
+                     axes = "x") +
+  ggh4x::facetted_pos_scales(
+    y = list(
+      sti == "Chlamydia" & region == "Western and Central Africa" ~ scale_y_continuous(limits = c(0, 0.4), labels = scales::label_percent()),
+      sti == "Gonorrhoea" & region == "Western and Central Africa" ~ scale_y_continuous(limits = c(0, 0.2), labels = scales::label_percent()),
+      sti == "Trichomoniasis" & region == "Western and Central Africa" ~ scale_y_continuous(limits = c(0, 0.6), labels = scales::label_percent()),
+      sti == "Chlamydia" & region != "Western and Central Africa" ~ scale_y_continuous(limits = c(0, 0.4), labels = NULL),
+      sti == "Gonorrhoea" & region != "Western and Central Africa" ~ scale_y_continuous(limits = c(0, 0.2), labels = NULL),
+      sti == "Trichomoniasis" & region != "Western and Central Africa" ~ scale_y_continuous(limits = c(0, 0.6), labels = NULL))) +
+  mytheme +
+  theme(panel.spacing.y = unit(0.8, "lines"),
+        legend.key.width = unit(0.5, "cm"),
+        legend.key.height = unit(0.35, "cm"),
+        legend.spacing.x = unit(0.2, "cm"),
+        legend.margin = margin(unit(c(t=0,r=15,b=0,l=0), "cm")),
+        legend.direction = "horizontal") +
+  labs(x = "", y = "")

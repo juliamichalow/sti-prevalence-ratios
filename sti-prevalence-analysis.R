@@ -665,6 +665,75 @@ rbind(dat_region_annual |> filter(year == 2020),
       dat_ssa_annual |> filter(year == 2020)) |>
   write.csv("./results/prevalence_2020_naat_adjusted.csv", row.names = FALSE)
 
+# < 2010 onwards----
+df_ct_2010 <- df |> filter(sti == "CT") |>
+  filter(!(cov_id == "#23088" & sex == "Male" & age_group == "Youth")) |>
+  filter(year_mid >= 2010)
+
+df_ng_2010 <- df |> filter(sti == "NG") |>
+  filter(!(cov_id == "#23088" & sex == "Male" & age_group == "Youth")) |>
+  filter(year_mid >= 2010)
+
+df_tv_2010 <- df |> filter(sti == "TV") |>
+  filter(!(cov_id == "#23088" & sex == "Male" & age_group == "Youth")) |>
+  filter(year_mid >= 2010)
+
+# Formula
+form <- cbind(adj_num,(adj_denom-adj_num)) ~ region + year_regression:region + 
+  sex:region + population + age_group + hiv_status + (1 | study_id)
+
+# Logit models
+modct1_2010 <- glmmTMB(form, data = df_ct_2010, family = binomial(link="logit"))
+modng1_2010 <- glmmTMB(form, data = df_ng_2010, family = binomial(link="logit"))
+modtv1_2010 <- glmmTMB(form, data = df_tv_2010, family = binomial(link="logit"))
+
+# Use  parameter values from logit model as starting values for log model
+summary(modct1_2010)
+theta_ct <- as.vector(modct1_2010$fit$par[names(modct1_2010$fit$par) == "theta"])
+fixed_ct <- as.vector(modct1_2010$fit$par[names(modct1_2010$fit$par) == "beta"])
+#fixed_ct <- append(fixed_ct, 0, length(fixed_ct))
+
+summary(modng1_2010)
+theta_ng <- as.vector(modng1_2010$fit$par[names(modng1_2010$fit$par) == "theta"])
+fixed_ng <- as.vector(modng1_2010$fit$par[names(modng1_2010$fit$par) == "beta"])
+#fixed_ng <- append(fixed_ng, 0, length(fixed_ng))
+
+summary(modtv1_2010)
+theta_tv <- as.vector(modtv1_2010$fit$par[names(modtv1_2010$fit$par) == "theta"])
+fixed_tv <- as.vector(modtv1_2010$fit$par[names(modtv1_2010$fit$par) == "beta"])
+#fixed_tv <- append(fixed_tv, 0, length(fixed_tv))
+
+# Log models
+modct2_2010 <- glmmTMB(form, data = df_ct_2010, family = binomial(link="log"),
+                  start = list(theta = theta_ct, beta = fixed_ct))
+
+modng2_2010 <- glmmTMB(form, data = df_ng_2010, family = binomial(link="log"),
+                  start = list(theta = theta_ng, beta = fixed_ng))
+
+modtv2_2010 <- glmmTMB(form, data = df_tv_2010, family = binomial(link="log"),
+                  start = list(theta = theta_tv, beta = fixed_tv))
+
+# Predict by region
+dat_region_annual <- rbind(
+  prediction(modct2_2010, "CT")$region_prev,
+  prediction(modng2_2010, "NG")$region_prev,
+  prediction(modtv2_2010, "TV")$region_prev)
+
+dat_region_annual |> write.csv("./results/prevalence_alldata_2010onwards.csv", row.names = FALSE)
+
+# Predict weighted mean for SSA 
+dat_ssa_annual <- rbind(
+  prediction(modct2_2010, "CT")$ssa_prev,
+  prediction(modng2_2010, "NG")$ssa_prev,
+  prediction(modtv2_2010, "TV")$ssa_prev) |>
+  mutate(region = "SSA") |>
+  relocate(sti, sex, region)
+
+# Save 2020 predictions
+rbind(dat_region_annual |> filter(year == 2020),
+      dat_ssa_annual |> filter(year == 2020)) |>
+  write.csv("./results/prevalence_2020_2010onwards.csv", row.names = FALSE)
+
 # WITHIN STUDY ANALYSIS ----
 
 sex_within <- df |> 
@@ -1041,7 +1110,7 @@ t_characteristics_within <- full_join(
 
 t_characteristics_within |> write.csv("./tables/study_characteristics_within.csv", row.names = FALSE)
 
-# <Countries ----
+# < Countries ----
 # Number countries
 
 df |> 
@@ -1069,13 +1138,24 @@ df |>
 
 # Number observations per country
 df |> 
-  group_by(country) |>
+  filter(!region_actual == "Multiple") |>
+  group_by(region,country) |>
   summarise(n = n()) |>
   mutate(country_list = strsplit(country, ", ")) |>
   unnest(country_list) |>
-  group_by(country_list) |>
+  group_by(region,country_list) |>
   summarise(n=sum(n)) |>
-  arrange(-n)
+  arrange(region,-n)
+  
+df |> 
+  filter(!region_actual == "Multiple") |>
+  group_by(region,country) |>
+  summarise(n = n()) |> arrange(region, -n) |> write.csv("temp2.csv")
+
+df |> 
+  filter(!region_actual == "Multiple") |>
+  group_by(region) |>
+  summarise(n = n()) 
 
 # Number articles per country
 df |> 
@@ -1166,8 +1246,34 @@ full_join(
   mutate(n_study = case_when(is.na(n_study) ~ 0, TRUE ~ n_study),
          n_art = case_when(is.na(n_art) ~ 0, TRUE ~ n_art),
          n_tot = n_study + n_art) |>
-  arrange(-n_tot) |>
-  mutate(prop = n_tot/211)
+  arrange(region, -n_tot) |>
+  mutate(prop = n_tot/211*100) |>
+  print(n=100)
+
+full_join(
+  df |> 
+    filter(!is.na(study_name)) |>
+    group_by(region_actual, country) |>
+    summarise(n = n_distinct(study_name)) |>
+    mutate(country_list = strsplit(country, ", ")) |>
+    unnest(country_list) |>
+    group_by(region_actual, country_list) |>
+    summarise(n_study=sum(n)),
+  df |> 
+    filter(is.na(study_name)) |>
+    group_by(region_actual, country) |>
+    summarise(n = n_distinct(study_id)) |>
+    mutate(country_list = strsplit(country, ", ")) |>
+    unnest(country_list) |>
+    group_by(region_actual, country_list) |>
+    summarise(n_art=sum(n))
+) |>
+  mutate(n_study = case_when(is.na(n_study) ~ 0, TRUE ~ n_study),
+         n_art = case_when(is.na(n_art) ~ 0, TRUE ~ n_art),
+         n_tot = n_study + n_art) |>
+  arrange(region_actual, -n_tot) |>
+  mutate(prop = n_tot/211*100) |>
+  print(n=100)
 
 # Number studies per country - CT
 full_join(
