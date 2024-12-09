@@ -2,7 +2,7 @@ library(patchwork)
 library(ggh4x)
 library(tidyverse)
 
-mytheme <- theme_bw(base_size = 7) +
+mytheme <- theme_bw(base_size = 7.5) +
   theme(panel.grid = element_blank(),
         panel.spacing = unit(0.2, "cm"),
         legend.position = "bottom",
@@ -60,10 +60,10 @@ p1 <- df1 |>
   ggplot(aes(x = xpos, y = prev, ymin = lwr, ymax = upr, group = sex)) +
   geom_col(aes(fill = sex), position = position_dodge(0.9), width = 0.8) +
   geom_linerange(aes(group = sex), position = position_dodge(0.9), size = 0.2) +
-  geom_label(aes(label = paste0(sprintf("%.1f",prev*100)), y = prev + 0.01),
+  geom_label(aes(label = paste0(sprintf("%.1f",prev*100)), y = prev + 0.012),
              position = position_dodge(0.9),
-             size = 7/.pt, label.size = NA, 
-             label.padding = unit(0.04,"lines"),
+             size = 7.5/.pt, label.size = NA, 
+             label.padding = unit(0.035,"lines"),
              fill = "white",
              colour = "grey30",
              alpha = 0.85,
@@ -96,9 +96,9 @@ p1
 
 colour_2 <- c("grey30","grey30")
 colour_3 <- c("#af4f2f","#df8d71","#1e5a46","#75884b","#1e395f","#5b859e")
+
 # "NAAT","Culture", "DFA", "ELISA", "Rapid antigen test", "Wet mount"
 # MetBrewer::met.brewer("Redon", 6, direction=-1) |> as.vector()
-
 p2 <- df2 |>
   ggplot() +
   geom_ribbon(aes(x = year, ymin = lwr, ymax = upr, fill = sex), alpha = 0.15) +
@@ -119,8 +119,8 @@ p2 <- df2 |>
          linetype=guide_legend(order=1, title = "", nrow=1)) +
   ggh4x::facet_wrap2(dplyr::vars(sti,region),
                      strip = ggh4x::strip_nested(text_x = ggh4x::elem_list_text(face = c("bold", "plain"),
-                                                                  size = c(7*1.3,7*1.18)), # align with theme
-                                          by_layer_x = TRUE),
+                                                                                size = c(7.5*1.3,7.5*1.18)), # align with theme
+                                                 by_layer_x = TRUE),
                      scales = "free_y",
                      nrow = 3,
                      axes = "x") +
@@ -132,6 +132,7 @@ p2 <- df2 |>
       sti == "Chlamydia" & region != "Western and Central Africa" ~ scale_y_continuous(limits = c(0, 0.6), labels = NULL),
       sti == "Gonorrhoea" & region != "Western and Central Africa" ~ scale_y_continuous(limits = c(0, 0.3), labels = NULL),
       sti == "Trichomoniasis" & region != "Western and Central Africa" ~ scale_y_continuous(limits = c(0, 0.6), labels = NULL))) +
+  scale_x_continuous(breaks = c(2000, 2005, 2010, 2015, 2020)) +
   mytheme +
   theme(panel.spacing.y = unit(0.8, "lines"),
         legend.key.width = unit(0.5, "cm"),

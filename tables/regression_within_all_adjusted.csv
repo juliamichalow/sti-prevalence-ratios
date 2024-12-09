@@ -1,0 +1,19 @@
+variable,CT,NG,TV,,
+Intercept,0.13 (0.08-0.21),0.04 (0.02-0.07),0.21 (0.17-0.26),,Intercept & 0.13 (0.08-0.21) & 0.04 (0.02-0.07) & 0.21 (0.17-0.26)\\
+Western and Central,0.28 (0.13-0.61),0.54 (0.17-1.66),0.46 (0.28-0.74),,\hspace{0.2cm}Western and Central & 0.28 (0.13-0.61) & 0.54 (0.17-1.66) & 0.46 (0.28-0.74)\\
+Eastern,0.43 (0.27-0.68),0.52 (0.26-1.04),1.20 (0.86-1.67),,\hspace{0.2cm}Eastern & 0.43 (0.27-0.68) & 0.52 (0.26-1.04) & 1.20 (0.86-1.67)\\
+Southern,Ref,Ref,Ref,,\hspace{0.2cm}Southern & Ref & Ref & Ref\\
+Western and Central:Year,1.04 (0.96-1.12),1.18 (1.04-1.33),1.02 (1.00-1.04),,\hspace{0.2cm}Western and Central:Year & 1.04 (0.96-1.12) & 1.18 (1.04-1.33) & 1.02 (1.00-1.04)\\
+Eastern:Year,1.07 (1.03-1.10),1.00 (0.95-1.05),1.06 (0.82-1.39),,\hspace{0.2cm}Eastern:Year & 1.07 (1.03-1.10) & 1.00 (0.95-1.05) & 1.06 (0.82-1.39)\\
+Southern:Year,1.05 (1.00-1.11),1.05 (0.97-1.14),0.89 (0.84-0.95),,\hspace{0.2cm}Southern:Year & 1.05 (1.00-1.11) & 1.05 (0.97-1.14) & 0.89 (0.84-0.95)\\
+ANC attendees,Ref,Ref,Ref,,\hspace{0.2cm}ANC attendees & Ref & Ref & Ref\\
+Male,0.61 (0.56-0.65),0.73 (0.65-0.83),0.23 (0.20-0.27),,\hspace{0.2cm}Male & 0.61 (0.56-0.65) & 0.73 (0.65-0.83) & 0.23 (0.20-0.27)\\
+Adult,Ref,Ref,Ref,,\hspace{0.2cm}Adult & Ref & Ref & Ref\\
+Youth,1.17 (0.76-1.80),1.25 (0.66-2.34),0.36 (0.22-0.57),,\hspace{0.2cm}Youth & 1.17 (0.76-1.80) & 1.25 (0.66-2.34) & 0.36 (0.22-0.57)\\
+Non-stratified,Ref,Ref,Ref,,\hspace{0.2cm}Non-stratified & Ref & Ref & Ref\\
+HIV negative,1.08 (0.67-1.73),1.05 (0.52-2.14),0.73 (0.19-2.70),,\hspace{0.2cm}HIV negative & 1.08 (0.67-1.73) & 1.05 (0.52-2.14) & 0.73 (0.19-2.70)\\
+NAAT,Ref,Ref,Ref,,\hspace{0.2cm}NAAT & Ref & Ref & Ref\\
+Culture,NA,7.87 (1.92-32.19),2.48 (1.50-4.10),,\hspace{0.2cm}Culture & NA & 7.87 (1.92-32.19) & 2.48 (1.50-4.10)\\
+DFA,1.76 (0.52-5.94),-,-,,\hspace{0.2cm}DFA & 1.76 (0.52-5.94) & - & -\\
+Rapid antigen test,-,-,0.40 (0.05-3.40),,\hspace{0.2cm}Rapid antigen test & - & - & 0.40 (0.05-3.40)\\
+Wet mount,-,-,0.88 (0.13-6.02),,\hspace{0.2cm}Wet mount & - & - & 0.88 (0.13-6.02)\\

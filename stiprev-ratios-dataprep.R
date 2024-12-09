@@ -18,7 +18,7 @@ library(writexl)
 #   # exclude studies marked for exclusion (duplicate articles, etc)
 #   filter(is.na(exclude))
 
-df_wide <- read_xlsx("./../../Data/final-dataset-v7.xlsx")
+df_wide <- read_xlsx("./../../Data/final-dataset-v8.xlsx")
 
 # Put into long format
 df_long <- df_wide |> 
@@ -145,8 +145,8 @@ df_save <- df_final |>
   rename(num = positive, denom = tested)
 
 # save
-write.csv(df_save,"./../../Data/final-dataset-v7-adjusted.csv", row.names = FALSE)
-write.csv(df_save,"./data/final-dataset-v7-adjusted.csv", row.names = FALSE)
+write.csv(df_save,"./../../Data/final-dataset-v8-adjusted.csv", row.names = FALSE)
+write.csv(df_save,"./data/final-dataset-v8-adjusted.csv", row.names = FALSE)
 
 # visualise prev vs adj_prev
 

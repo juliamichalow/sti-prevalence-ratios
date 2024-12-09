@@ -7,7 +7,7 @@ library(sjPlot)
 # PREP DATA ----
 
 # Population by region, 15-49 years in 2020
-df_pop <- read.csv("./data/unpopulation_dataportal_20240426093533.csv") |>
+df_pop <- read.csv("./data/unpopulation_dataportal_20241203105103.csv") |>
   rename_all(tolower) |>
   filter(time == 2020,
          sex %in% c("Female", "Male")) |>
@@ -30,8 +30,7 @@ df_pop <- read.csv("./data/unpopulation_dataportal_20240426093533.csv") |>
   ungroup()
 
 # Study data
-
-df <- read.csv("./data/final-dataset-v7-adjusted.csv") |>
+df <- read.csv("./data/final-dataset-v8-adjusted.csv") |>
   # drop Both sexes
   filter(!sex == "Both sexes") |>
   # minimum sample size of 15
@@ -61,7 +60,13 @@ df <- read.csv("./data/final-dataset-v7-adjusted.csv") |>
                                         "GYN attendees", "PHC/OPD attendees",
                                         "Students","Community members", 
                                         "HIV/STI prevention trial participants",
-                                        "Population-representative survey participants")))
+                                        "Population-representative survey participants")),
+         test = fct_collapse(testcat, 
+                             "DFA" = c("DFA", "DFA and NAAT"),
+                             "Culture" = c("culture", "culture or NAAT"),
+                             "Wet mount" = c("WM", "NAAT and WM", "culture and WM"),
+                             "Rapid antigen test" = c("rapid antigen test")),
+         test = factor(test, levels = c("NAAT","Culture", "DFA", "Rapid antigen test", "ELISA", "Wet mount")))
 
 
 # FUNCTION ---- 
@@ -80,6 +85,7 @@ prediction <- function(mod, sti, pop_pred = "ANC attendees") {
            population = pop_pred,
            age_group = "Adult",
            hiv_status = "Mixed",
+           test = "NAAT",
            study_id = NA)
   
   ## 1. Region prevalence
@@ -194,6 +200,7 @@ prediction_2 <- function(mod, sti, y1, y2, pop_pred = "ANC attendees") {
            population = pop_pred,
            age_group = "Adult",
            hiv_status = "Mixed",
+           test = "NAAT",
            study_id = NA)
   
   # predict prevalence
@@ -268,8 +275,8 @@ prediction_2 <- function(mod, sti, y1, y2, pop_pred = "ANC attendees") {
            upr_ratio = exp(upr_log_ratio),
            sti = sti,
            years_for_ratio = paste0(y1," & ",y2)) |>
-    mutate(est = paste0(sprintf(ratio,fmt = '%#.1f')," (", sprintf(lwr_ratio,fmt = '%#.1f'), 
-                        "-", sprintf(upr_ratio,fmt = '%#.1f'), ")"))
+    mutate(est = paste0(sprintf(ratio,fmt = '%#3f')," (", sprintf(lwr_ratio,fmt = '%#.3f'), 
+                        "-", sprintf(upr_ratio,fmt = '%#.3f'), ")"))
   
   df_ratio |>
     select(sti, years_for_ratio, est)
@@ -286,11 +293,11 @@ df_ng <- df |> filter(sti == "NG") |>
 df_tv <- df |> filter(sti == "TV") |>
   filter(!(cov_id == "#23088" & sex == "Male" & age_group == "Youth"))
 
-# < Main model ----
+# < Main model, with test adjustment ----
 
 # Formula
 form <- cbind(adj_num,(adj_denom-adj_num)) ~ region + year_regression:region + 
-  sex:region + population + age_group + hiv_status + (1 | study_id)
+  sex:region + population + age_group + hiv_status + test + (1 | study_id)
 
 # Logit models
 modct1 <- glmmTMB(form, data = df_ct, family = binomial(link="logit"))
@@ -326,21 +333,6 @@ modtv2 <- glmmTMB(form, data = df_tv, family = binomial(link="log"),
 sjPlot::tab_model(modct1, modct2, modng1, modng2, modtv1, modtv2, p.style = "stars", wrap.labels = 100,
                   dv.labels = c("CT logit", "CT log", "NG logit", "NG log", "TV logit", "TV log"))
 sjPlot::tab_model(modct2, modng2, modtv2, p.style = "stars", wrap.labels = 100)
-
-# What happens when exclude early culture results?
-# df_ng_temp <- df |> filter(sti == "NG") |>
-#   filter(!(cov_id == "#23088" & sex == "Male" & age_group == "Youth")) |>
-#   filter(!(year_mid < 2005 & testcat == "culture"))
-# 
-# modng1_temp <- glmmTMB(form, data = df_ng_temp, family = binomial(link="logit"))
-# 
-# theta_ng <- as.vector(modng1_temp$fit$par[names(modng1_temp$fit$par) == "theta"])
-# fixed_ng <- as.vector(modng1_temp$fit$par[names(modng1_temp$fit$par) == "beta"])
-# 
-# modng2_temp <- glmmTMB(form, data = df_ng_temp, family = binomial(link="log"),
-#                   start = list(theta = theta_ng, beta = fixed_ng))
-# 
-# sjPlot::tab_model(modng2, modng2_temp, p.style = "stars", wrap.labels = 100)
 
 # Predict by region
 dat_region_annual <- rbind(
@@ -391,12 +383,13 @@ rbind(dat_region_annual, dat_ssa_annual) |>
   write.csv("./results/prevalence_comparewho.csv", row.names = FALSE)
 
 # Ratio between study
-ratio_btwn <- rbind(
+ratio_btwn_adj <- rbind(
   prediction(modct2, "CT")$ssa_ratio,
   prediction(modng2, "NG")$ssa_ratio,
   prediction(modtv2, "TV")$ssa_ratio) |>
   filter(year == 2020) |>
   mutate(type = "Between study",
+         diag = "All tests, adjusted",
          n = c(modct2$modelInfo$nobs, modng2$modelInfo$nobs, modtv2$modelInfo$nobs))
 
 # Mean aPR per year
@@ -414,11 +407,11 @@ prediction_2(modct2, "CT", y1 = "2010", y2 = "2020")
 prediction_2(modng2, "NG", y1 = "2010", y2 = "2020")
 prediction_2(modtv2, "TV", y1 = "2010", y2 = "2020")
 
-# < No diagnostic test adjustment ----
+# < Main model, no test adjustment ----
 
 # Formula
 form <- cbind(num,(denom-num)) ~ region + year_regression:region + sex:region +
-  population + age_group + hiv_status + (1 | study_id)
+  population + age_group + hiv_status + test + (1 | study_id)
 
 # Logit models
 modct3 <- glmmTMB(form, data = df_ct, family = binomial(link="logit"))
@@ -477,6 +470,16 @@ rbind(dat_region_annual |> filter(year == 2020),
 
 dat_ssa_annual |> filter(year == 2020)
 
+# Ratios
+ratio_btwn_unadj <- rbind(
+  prediction(modct4, "CT")$ssa_ratio,
+  prediction(modng4, "NG")$ssa_ratio,
+  prediction(modtv4, "TV")$ssa_ratio) |>
+  filter(year == 2020) |>
+  mutate(type = "Between study",
+         diag = "All tests, unadjusted",
+         n = c(modct4$modelInfo$nobs, modng4$modelInfo$nobs, modtv4$modelInfo$nobs))
+
 # < Women only ----
 
 df_ct_fm <- df |> filter(sti == "CT", sex == "Female")
@@ -485,7 +488,7 @@ df_tv_fm <- df |> filter(sti == "TV", sex == "Female")
 
 # Formula
 form <- cbind(adj_num,(adj_denom-adj_num)) ~ region + year_regression:region + 
-  population + age_group + hiv_status + (1 | study_id)
+  population + age_group + hiv_status + test + (1 | study_id)
 
 # Logit models
 modct5 <- glmmTMB(form, data = df_ct_fm, family = binomial(link="logit"))
@@ -548,7 +551,7 @@ df_tv_anc <- df |> filter(sti == "TV", sex == "Female", population == "ANC atten
 
 # Formula
 form <- cbind(adj_num,(adj_denom-adj_num)) ~ region + year_regression:region + 
-  age_group + hiv_status + (1 | study_id)
+  age_group + hiv_status + test + (1 | study_id)
 
 # Logit models
 modct7 <- glmmTMB(form, data = df_ct_anc, family = binomial(link="logit"))
@@ -603,7 +606,7 @@ rbind(dat_region_annual |> filter(year == 2020),
       dat_ssa_annual |> filter(year == 2020)) |>
   write.csv("./results/prevalence_2020_anc.csv", row.names = FALSE)
 
-# < NAAT only ----
+# < NAAT only, with test adjustment ----
 
 df_ct_naat <- df |> filter(sti == "CT", testcat == "NAAT")
 df_ng_naat <- df |> filter(sti == "NG", testcat == "NAAT")
@@ -644,6 +647,8 @@ modng10 <- glmmTMB(form, data = df_ng_naat, family = binomial(link="log"),
 modtv10 <- glmmTMB(form, data = df_tv_naat, family = binomial(link="log"),
                   start = list(theta = theta_tv, beta = fixed_tv))
 
+sjPlot::tab_model(modct10, modng10, modtv10, p.style = "stars", wrap.labels = 100)
+
 # Predict by region
 dat_region_annual <- rbind(
   prediction(modct10, "CT")$region_prev,
@@ -664,6 +669,90 @@ dat_ssa_annual <- rbind(
 rbind(dat_region_annual |> filter(year == 2020),
       dat_ssa_annual |> filter(year == 2020)) |>
   write.csv("./results/prevalence_2020_naat_adjusted.csv", row.names = FALSE)
+
+# Ratios
+ratio_btwn_naat_adj <- rbind(
+  prediction(modct10, "CT")$ssa_ratio,
+  prediction(modng10, "NG")$ssa_ratio,
+  prediction(modtv10, "TV")$ssa_ratio) |>
+  filter(year == 2020) |>
+  mutate(type = "Between study",
+         diag = "NAAT, adjusted",
+         n = c(modct10$modelInfo$nobs, modng10$modelInfo$nobs, modtv10$modelInfo$nobs))
+
+# < NAAT only, no test adjustment ----
+
+df_ct_naat <- df |> filter(sti == "CT", testcat == "NAAT")
+df_ng_naat <- df |> filter(sti == "NG", testcat == "NAAT")
+df_tv_naat <- df |> filter(sti == "TV", testcat == "NAAT")
+
+# Formula
+form <- cbind(num,(denom-num)) ~ region + year_regression:region + sex:region +
+  population + age_group + hiv_status + (1 | study_id)
+
+# Logit models
+modct11 <- glmmTMB(form, data = df_ct_naat, family = binomial(link="logit"))
+modng11 <- glmmTMB(form, data = df_ng_naat, family = binomial(link="logit"))
+modtv11 <- glmmTMB(form, data = df_tv_naat, family = binomial(link="logit"))
+
+# Use  parameter values from logit model as starting values for log model
+summary(modct11)
+theta_ct <- as.vector(modct11$fit$par[names(modct11$fit$par) == "theta"])
+fixed_ct <- as.vector(modct11$fit$par[names(modct11$fit$par) == "beta"])
+#fixed_ct <- append(fixed_ct, 0, length(fixed_ct))
+
+summary(modng11)
+theta_ng <- as.vector(modng11$fit$par[names(modng11$fit$par) == "theta"])
+fixed_ng <- as.vector(modng11$fit$par[names(modng11$fit$par) == "beta"])
+#fixed_ng <- append(fixed_ng, 0, length(fixed_ng))
+
+summary(modtv11)
+theta_tv <- as.vector(modtv11$fit$par[names(modtv11$fit$par) == "theta"])
+fixed_tv <- as.vector(modtv11$fit$par[names(modtv11$fit$par) == "beta"])
+#fixed_tv <- append(fixed_tv, 0, length(fixed_tv))
+
+# Log models
+modct12 <- glmmTMB(form, data = df_ct_naat, family = binomial(link="log"),
+                   start = list(theta = theta_ct, beta = fixed_ct))
+
+modng12 <- glmmTMB(form, data = df_ng_naat, family = binomial(link="log"),
+                   start = list(theta = theta_ng, beta = fixed_ng))
+
+modtv12 <- glmmTMB(form, data = df_tv_naat, family = binomial(link="log"),
+                   start = list(theta = theta_tv, beta = fixed_tv))
+
+sjPlot::tab_model(modct12, modng12, modtv12, p.style = "stars", wrap.labels = 100)
+
+# Predict by region
+dat_region_annual <- rbind(
+  prediction(modct12, "CT")$region_prev,
+  prediction(modng12, "NG")$region_prev,
+  prediction(modtv12, "TV")$region_prev)
+
+dat_region_annual |> write.csv("./results/prevalence_alldata_naat_unadjusted.csv", row.names = FALSE)
+
+# Predict weighted mean for SSA 
+dat_ssa_annual <- rbind(
+  prediction(modct12, "CT")$ssa_prev,
+  prediction(modng12, "NG")$ssa_prev,
+  prediction(modtv12, "TV")$ssa_prev) |>
+  mutate(region = "SSA") |>
+  relocate(sti, sex, region)
+
+# Save 2020 predictions
+rbind(dat_region_annual |> filter(year == 2020),
+      dat_ssa_annual |> filter(year == 2020)) |>
+  write.csv("./results/prevalence_2020_naat_unadjusted.csv", row.names = FALSE)
+
+# Ratios
+ratio_btwn_naat_unadj <- rbind(
+  prediction(modct12, "CT")$ssa_ratio,
+  prediction(modng12, "NG")$ssa_ratio,
+  prediction(modtv12, "TV")$ssa_ratio) |>
+  filter(year == 2020) |>
+  mutate(type = "Between study",
+         diag = "NAAT, unadjusted",
+         n = c(modct12$modelInfo$nobs, modng12$modelInfo$nobs, modtv12$modelInfo$nobs))
 
 # < 2010 onwards----
 df_ct_2010 <- df |> filter(sti == "CT") |>
@@ -734,6 +823,7 @@ rbind(dat_region_annual |> filter(year == 2020),
       dat_ssa_annual |> filter(year == 2020)) |>
   write.csv("./results/prevalence_2020_2010onwards.csv", row.names = FALSE)
 
+
 # WITHIN STUDY ANALYSIS ----
 
 sex_within <- df |> 
@@ -763,14 +853,14 @@ df_sex_within |>
   select(study_name, study_id, year_mid, region, country, population, age_group, sex, sti, adj_prev, adj_se) |>
   write.csv("./data/data_withinstudy_adjusted.csv", row.names = FALSE)
 
-# < Main model ----
+# < Main model, with test adjustment ----
 
 # original formula
 # form <- cbind(adj_num,(adj_denom-adj_num)) ~ region + year_regression:region + 
 #  sex:region + population + age_group + hiv_status + (1 | study_id)
 
 form <- cbind(adj_num,(adj_denom-adj_num)) ~ region + year_regression:region +
-  sex + age_group + hiv_status + (1 | study_id)
+  sex + age_group + hiv_status + test + (1 | study_id)
 # exclude population as studies relatively distributed across other groups
 # no ANC pop as reference group (obviously)
 # including population makes time trend non-estimable for TV in EA  
@@ -791,8 +881,6 @@ modct1_w <- glmmTMB(form, data = df_ct_within, family = binomial(link="logit"))
 modng1_w <- glmmTMB(form, data = df_ng_within, family = binomial(link="logit"))
 modtv1_w <- glmmTMB(form, data = df_tv_within, family = binomial(link="logit"))
 
-tab_model(modct1_w, modng1_w, modtv1_w, p.style = "stars", wrap.labels = 100)
-
 # Use  parameter values from logit model as starting values for log model
 summary(modct1_w)
 theta_ct_w <- as.vector(modct1_w$fit$par[names(modct1_w$fit$par) == "theta"])
@@ -805,7 +893,6 @@ fixed_ng_w <- as.vector(modng1_w$fit$par[names(modng1_w$fit$par) == "beta"])
 summary(modtv1_w)
 theta_tv_w <- as.vector(modtv1_w$fit$par[names(modtv1_w$fit$par) == "theta"])
 fixed_tv_w <- as.vector(modtv1_w$fit$par[names(modtv1_w$fit$par) == "beta"])
-#fixed_tv_w <- append(fixed_tv_w, 0, length(fixed_tv_w)-4)
 
 # Log models
 modct2_w <- glmmTMB(form, data = df_ct_within, family = binomial(link="log"),
@@ -820,15 +907,157 @@ modtv2_w <- glmmTMB(form, data = df_tv_within, family = binomial(link="log"),
 sjPlot::tab_model(modct2_w, modng2_w, modtv2_w, p.style = "stars", wrap.labels = 100)
 
 # Ratio within study
-ratio_within <- rbind(
-  prediction(modct2_w, "CT", "Community members")$ssa_ratio,
+ratio_within_adj <- rbind(
+  prediction(modct2_w, "CT")$ssa_ratio,
   prediction(modng2_w, "NG")$ssa_ratio,
   prediction(modtv2_w, "TV")$ssa_ratio) |>
   filter(year == 2020) |>
   mutate(type = "Within study",
+         diag = "All tests, adjusted",
          n = c(modct2_w$modelInfo$nobs, modng2_w$modelInfo$nobs, modtv2_w$modelInfo$nobs))
 
-# < Pooled model (no covariates) ----
+# < Main model, no test adjustment ----
+
+form <- cbind(num,(denom-num)) ~ region + year_regression:region +
+  sex + age_group + hiv_status + test + (1 | study_id)
+
+# Logit models
+modct3_w <- glmmTMB(form, data = df_ct_within, family = binomial(link="logit"))
+modng3_w <- glmmTMB(form, data = df_ng_within, family = binomial(link="logit"))
+modtv3_w <- glmmTMB(form, data = df_tv_within, family = binomial(link="logit"))
+
+# Use  parameter values from logit model as starting values for log model
+summary(modct3_w)
+theta_ct_w <- as.vector(modct3_w$fit$par[names(modct3_w$fit$par) == "theta"])
+fixed_ct_w <- as.vector(modct3_w$fit$par[names(modct3_w$fit$par) == "beta"])
+
+summary(modng3_w)
+theta_ng_w <- as.vector(modng3_w$fit$par[names(modng3_w$fit$par) == "theta"])
+fixed_ng_w <- as.vector(modng3_w$fit$par[names(modng3_w$fit$par) == "beta"])
+
+summary(modtv3_w)
+theta_tv_w <- as.vector(modtv3_w$fit$par[names(modtv3_w$fit$par) == "theta"])
+fixed_tv_w <- as.vector(modtv3_w$fit$par[names(modtv3_w$fit$par) == "beta"])
+
+# Log models
+modct4_w <- glmmTMB(form, data = df_ct_within, family = binomial(link="log"),
+                    start = list(theta = theta_ct_w, beta = fixed_ct_w))
+
+modng4_w <- glmmTMB(form, data = df_ng_within, family = binomial(link="log"),
+                    start = list(theta = theta_ng_w, beta = fixed_ng_w))
+
+modtv4_w <- glmmTMB(form, data = df_tv_within, family = binomial(link="log"),
+                    start = list(theta = theta_tv_w, beta = fixed_tv_w))
+
+sjPlot::tab_model(modct4_w, modng4_w, modtv4_w, p.style = "stars", wrap.labels = 100)
+
+# Ratio within study
+ratio_within_unadj <- rbind(
+  prediction(modct4_w, "CT")$ssa_ratio,
+  prediction(modng4_w, "NG")$ssa_ratio,
+  prediction(modtv4_w, "TV")$ssa_ratio) |>
+  filter(year == 2020) |>
+  mutate(type = "Within study",
+         diag = "All tests, unadjusted",
+         n = c(modct4_w$modelInfo$nobs, modng4_w$modelInfo$nobs, modtv4_w$modelInfo$nobs))
+
+# < NAAT, with test adjustment ----
+
+df_ct_within_naat <- df_sex_within |> filter(sti=="CT", testcat == "NAAT")
+df_ng_within_naat <- df_sex_within |> filter(sti=="NG", testcat == "NAAT")
+df_tv_within_naat <- df_sex_within |> filter(sti=="TV", testcat == "NAAT")
+
+form <- cbind(adj_num,(adj_denom-adj_num)) ~ region + year_regression:region +
+  sex + age_group + hiv_status + (1 | study_id)
+
+# Logit models
+modct1_w_naat <- glmmTMB(form, data = df_ct_within_naat, family = binomial(link="logit"))
+modng1_w_naat <- glmmTMB(form, data = df_ng_within_naat, family = binomial(link="logit"))
+modtv1_w_naat <- glmmTMB(form, data = df_tv_within_naat, family = binomial(link="logit"))
+
+# Use  parameter values from logit model as starting values for log model
+summary(modct1_w_naat)
+theta_ct_w <- as.vector(modct1_w_naat$fit$par[names(modct1_w_naat$fit$par) == "theta"])
+fixed_ct_w <- as.vector(modct1_w_naat$fit$par[names(modct1_w_naat$fit$par) == "beta"])
+
+summary(modng1_w_naat)
+theta_ng_w <- as.vector(modng1_w_naat$fit$par[names(modng1_w_naat$fit$par) == "theta"])
+fixed_ng_w <- as.vector(modng1_w_naat$fit$par[names(modng1_w_naat$fit$par) == "beta"])
+
+summary(modtv1_w_naat)
+theta_tv_w <- as.vector(modtv1_w_naat$fit$par[names(modtv1_w_naat$fit$par) == "theta"])
+fixed_tv_w <- as.vector(modtv1_w_naat$fit$par[names(modtv1_w_naat$fit$par) == "beta"])
+fixed_tv_w <- append(fixed_tv_w, 0, length(fixed_tv_w))
+
+# Log models
+modct2_w_naat <- glmmTMB(form, data = df_ct_within_naat, family = binomial(link="log"),
+                    start = list(theta = theta_ct_w, beta = fixed_ct_w))
+
+modng2_w_naat <- glmmTMB(form, data = df_ng_within_naat, family = binomial(link="log"),
+                    start = list(theta = theta_ng_w, beta = fixed_ng_w))
+
+modtv2_w_naat <- glmmTMB(form, data = df_tv_within_naat, family = binomial(link="log"),
+                    start = list(theta = theta_tv_w, beta = fixed_tv_w))
+
+sjPlot::tab_model(modct1_w_naat, modng1_w_naat, modtv1_w_naat, p.style = "stars", wrap.labels = 100)
+sjPlot::tab_model(modct2_w_naat, modng2_w_naat, modtv2_w_naat, p.style = "stars", wrap.labels = 100)
+
+# Ratio within study
+ratio_within_naat_adj <- rbind(
+  prediction(modct2_w_naat, "CT")$ssa_ratio,
+  prediction(modng2_w_naat, "NG")$ssa_ratio,
+  prediction(modtv2_w_naat, "TV")$ssa_ratio) |>
+  filter(year == 2020) |>
+  mutate(type = "Within study",
+         diag = "NAAT, adjusted",
+         n = c(modct2_w_naat$modelInfo$nobs, modng2_w_naat$modelInfo$nobs, modtv2_w_naat$modelInfo$nobs))
+
+# < NAAT, no test adjustment ----
+form <- cbind(num,(denom-num)) ~ region + year_regression:region +
+  sex + age_group + hiv_status + (1 | study_id)
+
+# Logit models
+modct3_w_naat <- glmmTMB(form, data = df_ct_within_naat, family = binomial(link="logit"))
+modng3_w_naat <- glmmTMB(form, data = df_ng_within_naat, family = binomial(link="logit"))
+modtv3_w_naat <- glmmTMB(form, data = df_tv_within_naat, family = binomial(link="logit"))
+
+# Use  parameter values from logit model as starting values for log model
+summary(modct3_w_naat)
+theta_ct_w <- as.vector(modct3_w_naat$fit$par[names(modct3_w_naat$fit$par) == "theta"])
+fixed_ct_w <- as.vector(modct3_w_naat$fit$par[names(modct3_w_naat$fit$par) == "beta"])
+
+summary(modng3_w_naat)
+theta_ng_w <- as.vector(modng3_w_naat$fit$par[names(modng3_w_naat$fit$par) == "theta"])
+fixed_ng_w <- as.vector(modng3_w_naat$fit$par[names(modng3_w_naat$fit$par) == "beta"])
+
+summary(modtv3_w_naat)
+theta_tv_w <- as.vector(modtv3_w_naat$fit$par[names(modtv3_w_naat$fit$par) == "theta"])
+fixed_tv_w <- as.vector(modtv3_w_naat$fit$par[names(modtv3_w_naat$fit$par) == "beta"])
+fixed_tv_w <- append(fixed_tv_w, 0, length(fixed_tv_w))
+
+# Log models
+modct4_w_naat <- glmmTMB(form, data = df_ct_within_naat, family = binomial(link="log"),
+                         start = list(theta = theta_ct_w, beta = fixed_ct_w))
+
+modng4_w_naat <- glmmTMB(form, data = df_ng_within_naat, family = binomial(link="log"),
+                         start = list(theta = theta_ng_w, beta = fixed_ng_w))
+
+modtv4_w_naat <- glmmTMB(form, data = df_tv_within_naat, family = binomial(link="log"),
+                         start = list(theta = theta_tv_w, beta = fixed_tv_w))
+
+sjPlot::tab_model(modct4_w_naat, modng4_w_naat, modtv4_w_naat, p.style = "stars", wrap.labels = 100)
+
+# Ratio within study
+ratio_within_naat_unadj <- rbind(
+  prediction(modct4_w_naat, "CT")$ssa_ratio,
+  prediction(modng4_w_naat, "NG")$ssa_ratio,
+  prediction(modtv4_w_naat, "TV")$ssa_ratio) |>
+  filter(year == 2020) |>
+  mutate(type = "Within study",
+         diag = "NAAT, unadjusted",
+         n = c(modct4_w_naat$modelInfo$nobs, modng4_w_naat$modelInfo$nobs, modtv4_w_naat$modelInfo$nobs))
+
+# < Pooled model (no covariates), with test adjustment ----
 
 form <- cbind(adj_num,(adj_denom-adj_num)) ~ sex + (1 | study_id)
 
@@ -837,8 +1066,6 @@ form <- cbind(adj_num,(adj_denom-adj_num)) ~ sex + (1 | study_id)
 modct1_wn <- glmmTMB(form, data = df_ct_within, family = binomial(link="logit"))
 modng1_wn <- glmmTMB(form, data = df_ng_within, family = binomial(link="logit"))
 modtv1_wn <- glmmTMB(form, data = df_tv_within, family = binomial(link="logit"))
-
-tab_model(modct1_wn, modng1_wn, modtv1_wn, p.style = "stars", wrap.labels = 100)
 
 # Use  parameter values from logit model as starting values for log model
 theta_ct_wn <- as.vector(modct1_wn$fit$par[names(modct1_wn$fit$par) == "theta"])
@@ -877,20 +1104,75 @@ extract_ratio <- function(mod) {
     select(year, ratio, lwr, upr, tau_study)
 }
 
-ratio_within_unadjusted <- rbind(
+ratio_pool_adj <- rbind(
   extract_ratio(modct2_wn) |> mutate(sti = "CT"),
   extract_ratio(modng2_wn) |> mutate(sti = "NG"),
   extract_ratio(modtv2_wn) |> mutate(sti = "TV")) |> 
   relocate(sti) |>
-  mutate(type = "Unadjusted",
+  mutate(type = "Pooled",
+         diag = "All tests, adjusted",
          n = c(modct2_wn$modelInfo$nobs, modng2_wn$modelInfo$nobs, modtv2_wn$modelInfo$nobs))
+
+# < Pooled model (no covariates), no test adjustment ----
+
+form <- cbind(num,(denom-num)) ~ sex + (1 | study_id)
+
+# Logit models
+
+modct3_wn <- glmmTMB(form, data = df_ct_within, family = binomial(link="logit"))
+modng3_wn <- glmmTMB(form, data = df_ng_within, family = binomial(link="logit"))
+modtv3_wn <- glmmTMB(form, data = df_tv_within, family = binomial(link="logit"))
+
+# Use  parameter values from logit model as starting values for log model
+theta_ct_wn <- as.vector(modct3_wn$fit$par[names(modct3_wn$fit$par) == "theta"])
+fixed_ct_wn <- as.vector(modct3_wn$fit$par[names(modct3_wn$fit$par) == "beta"])
+
+theta_ng_wn <- as.vector(modng3_wn$fit$par[names(modng3_wn$fit$par) == "theta"])
+fixed_ng_wn <- as.vector(modng3_wn$fit$par[names(modng3_wn$fit$par) == "beta"])
+
+theta_tv_wn <- as.vector(modtv3_wn$fit$par[names(modtv3_wn$fit$par) == "theta"])
+fixed_tv_wn <- as.vector(modtv3_wn$fit$par[names(modtv3_wn$fit$par) == "beta"])
+
+# Log models
+
+modct4_wn <- glmmTMB(form, data = df_ct_within, family = binomial(link="log"),
+                     start = list(theta = theta_ct_wn, beta = fixed_ct_wn))
+
+modng4_wn <- glmmTMB(form, data = df_ng_within, family = binomial(link="log"),
+                     start = list(theta = theta_ng_wn, beta = fixed_ng_wn))
+
+modtv4_wn <- glmmTMB(form, data = df_tv_within, family = binomial(link="log"),
+                     start = list(theta = theta_tv_wn, beta = fixed_tv_wn))
+
+tab_model(modct4_wn, modng4_wn, modtv4_wn, p.style = "stars", wrap.labels = 100)
+
+ratio_pool_unadj <- rbind(
+  extract_ratio(modct4_wn) |> mutate(sti = "CT"),
+  extract_ratio(modng4_wn) |> mutate(sti = "NG"),
+  extract_ratio(modtv4_wn) |> mutate(sti = "TV")) |> 
+  relocate(sti) |>
+  mutate(type = "Pooled",
+         diag = "All tests, unadjusted",
+         n = c(modct4_wn$modelInfo$nobs, modng4_wn$modelInfo$nobs, modtv4_wn$modelInfo$nobs))
 
 # ALL RATIOS ---- 
 
-rbind(ratio_btwn,
-      ratio_within,
-      ratio_within_unadjusted) |>
-  write.csv("./results/ratios.csv", row.names = FALSE)
+df_ratio <- rbind(ratio_btwn_adj,
+      ratio_btwn_unadj,
+      ratio_btwn_naat_adj,
+      ratio_btwn_naat_unadj,
+      ratio_within_adj,
+      ratio_within_unadj,
+      ratio_within_naat_adj,
+      ratio_within_naat_unadj,
+      ratio_pool_adj,
+      ratio_pool_unadj) 
+
+df_ratio |>
+  arrange(sti) |>
+  print(n=50)
+
+write.csv(df_ratio, "./results/ratios.csv", row.names = FALSE)
 
 # SAVE REGRESSION TABLES ----
 
@@ -902,7 +1184,8 @@ desired_order <- c("(Intercept)","WCA","EA", "SA",
                    "PHC/OPD attendees", "Students", "Community members", 
                    "HIV/STI prevention trial participants", "Population-representative survey participants", 
                    "Female","Male", "Adult", "Youth",
-                   "Mixed", "HIV negative")
+                   "Mixed", "HIV negative",
+                   "NAAT","Culture","DFA","ELISA","Rapid antigen test","Wet mount")
 
 reg_table <- function(model){
   
@@ -920,21 +1203,23 @@ reg_table <- function(model){
            variable = gsub("population","", variable),
            variable = gsub("sexMale","Male",variable),
            variable = gsub("age_group","",variable),
+           variable = gsub("test","",variable),
+           variable = gsub("Rapid antigen ","Rapid antigen test",variable),
            variable = gsub("hiv_status","",variable)) |>
     # add reference categories 
-    rbind(data.frame(variable = c("ANC attendees","Adult", "Mixed", "SA"),
-                     estimate = rep("Ref",4)))
+    rbind(data.frame(variable = c("ANC attendees","Adult", "Mixed", "SA", "NAAT"),
+                     estimate = rep("Ref",5)))
 }
 
-# between study
-left_join(
+# < Between study, adjusted ----
+full_join(
   reg_table(modct2) |> rename(CT = estimate),
   reg_table(modng2) |> rename(NG = estimate)) |>
-  left_join(reg_table(modtv2) |> rename(TV = estimate)) |>
+  full_join(reg_table(modtv2) |> rename(TV = estimate)) |>
   # reorder variables
   mutate(variable = factor(variable, levels = desired_order)) |>
   arrange(variable)  |> 
-  write.csv("./tables/regression_alldata.csv", row.names = FALSE)
+  write.csv("./tables/regression_bwtn_all_adjusted.csv", row.names = FALSE)
 
 insight::get_variance(modct2)
 insight::get_variance(modng2)
@@ -942,15 +1227,15 @@ insight::get_variance(modtv2)
 
 sjPlot::tab_model(modct2, modng2, modtv2, p.style = "stars", wrap.labels = 100)
 
-# between study - unadjusted
-left_join(
+# < Between study, unadjusted ----
+full_join(
   reg_table(modct4) |> rename(CT = estimate),
   reg_table(modng4) |> rename(NG = estimate)) |>
-  left_join(reg_table(modtv4) |> rename(TV = estimate)) |>
+  full_join(reg_table(modtv4) |> rename(TV = estimate)) |>
   # reorder variables
   mutate(variable = factor(variable, levels = desired_order)) |>
   arrange(variable)  |> 
-  write.csv("./tables/regression_alldata_unadjusted.csv", row.names = FALSE)
+  write.csv("./tables/regression_btwn_all_unadjusted.csv", row.names = FALSE)
 
 insight::get_variance(modct4)
 insight::get_variance(modng4)
@@ -958,48 +1243,15 @@ insight::get_variance(modtv4)
 
 sjPlot::tab_model(modct4, modng4, modtv4, p.style = "stars", wrap.labels = 100)
 
-# between study - female pops
-left_join(
-  reg_table(modct6) |> rename(CT = estimate),
-  reg_table(modng6) |> rename(NG = estimate)) |>
-  left_join(reg_table(modtv6) |> rename(TV = estimate)) |>
-  # reorder variables
-  mutate(variable = factor(variable, levels = desired_order)) |>
-  arrange(variable)  |> 
-  write.csv("./tables/regression_alldata_female.csv", row.names = FALSE)
-
-insight::get_variance(modct6)
-insight::get_variance(modng6)
-insight::get_variance(modtv6)
-
-sjPlot::tab_model(modct6, modng6, modtv6, p.style = "stars", wrap.labels = 100)
-
-
-# between study - ANC
-left_join(
-  reg_table(modct8) |> rename(CT = estimate),
-  reg_table(modng8) |> rename(NG = estimate)) |>
-  left_join(reg_table(modtv8) |> rename(TV = estimate)) |>
-  # reorder variables
-  mutate(variable = factor(variable, levels = desired_order)) |>
-  arrange(variable)  |> 
-  write.csv("./tables/regression_alldata_ANC.csv", row.names = FALSE)
-
-insight::get_variance(modct8)
-insight::get_variance(modng8)
-insight::get_variance(modtv8)
-
-sjPlot::tab_model(modct8, modng8, modtv8, p.style = "stars", wrap.labels = 100)
-
-# between study - NAAT adjusted
-left_join(
+# < Between study, NAAT adjusted ----
+full_join(
   reg_table(modct10) |> rename(CT = estimate),
   reg_table(modng10) |> rename(NG = estimate)) |>
-  left_join(reg_table(modtv10) |> rename(TV = estimate)) |>
+  full_join(reg_table(modtv10) |> rename(TV = estimate)) |>
   # reorder variables
   mutate(variable = factor(variable, levels = desired_order)) |>
   arrange(variable)  |> 
-  write.csv("./tables/regression_alldata_NAAT.csv", row.names = FALSE)
+  write.csv("./tables/regression_btwn_NAAT_adjusted.csv", row.names = FALSE)
 
 insight::get_variance(modct10)
 insight::get_variance(modng10)
@@ -1007,22 +1259,86 @@ insight::get_variance(modtv10)
 
 sjPlot::tab_model(modct10, modng10, modtv10, p.style = "stars", wrap.labels = 100)
 
+# < Between study, NAAT unadjusted ----
+full_join(
+  reg_table(modct12) |> rename(CT = estimate),
+  reg_table(modng12) |> rename(NG = estimate)) |>
+  full_join(reg_table(modtv12) |> rename(TV = estimate)) |>
+  # reorder variables
+  mutate(variable = factor(variable, levels = desired_order)) |>
+  arrange(variable)  |> 
+  write.csv("./tables/regression_bwtn_NAAT_unadjusted.csv", row.names = FALSE)
 
-# within study
-left_join(
+insight::get_variance(modct12)
+insight::get_variance(modng12)
+insight::get_variance(modtv12)
+
+sjPlot::tab_model(modct12, modng12, modtv12, p.style = "stars", wrap.labels = 100)
+
+# < Within study, adjusted ----
+full_join(
   reg_table(modct2_w) |> rename(CT = estimate),
   reg_table(modng2_w) |> rename(NG = estimate)) |>
-  left_join(reg_table(modtv2_w) |> rename(TV = estimate)) |>
+  full_join(reg_table(modtv2_w) |> rename(TV = estimate)) |>
   # reorder variables
   mutate(variable = factor(variable, levels = desired_order)) |>
   arrange(variable)  |>
-  write.csv("./tables/regression_within.csv", row.names = FALSE)
+  write.csv("./tables/regression_within_all_adjusted.csv", row.names = FALSE)
 
 insight::get_variance(modct2_w)
 insight::get_variance(modng2_w)
 insight::get_variance(modtv2_w)
 
 sjPlot::tab_model(modct2_w, modng2_w, modtv2_w, p.style = "stars", wrap.labels = 100)
+
+# < Within study, unadjusted ----
+full_join(
+  reg_table(modct4_w) |> rename(CT = estimate),
+  reg_table(modng4_w) |> rename(NG = estimate)) |>
+  full_join(reg_table(modtv4_w) |> rename(TV = estimate)) |>
+  # reorder variables
+  mutate(variable = factor(variable, levels = desired_order)) |>
+  arrange(variable)  |>
+  write.csv("./tables/regression_within_all_unadjusted.csv", row.names = FALSE)
+
+insight::get_variance(modct4_w)
+insight::get_variance(modng4_w)
+insight::get_variance(modtv4_w)
+
+sjPlot::tab_model(modct4_w, modng4_w, modtv4_w, p.style = "stars", wrap.labels = 100)
+
+# < Within study, NAAT adjusted ----
+full_join(
+  reg_table(modct2_w_naat) |> rename(CT = estimate),
+  reg_table(modng2_w_naat) |> rename(NG = estimate)) |>
+  full_join(reg_table(modtv2_w_naat) |> rename(TV = estimate)) |>
+  # reorder variables
+  mutate(variable = factor(variable, levels = desired_order)) |>
+  arrange(variable)  |>
+  write.csv("./tables/regression_within_naat_adjusted.csv", row.names = FALSE)
+
+insight::get_variance(modct2_w_naat)
+insight::get_variance(modng2_w_naat)
+insight::get_variance(modtv2_w_naat)
+
+sjPlot::tab_model(modct2_w_naat, modng2_w_naat, modtv2_w_naat, p.style = "stars", wrap.labels = 100)
+
+# < Within study, NAAT unadjusted ----
+full_join(
+  reg_table(modct4_w_naat) |> rename(CT = estimate),
+  reg_table(modng4_w_naat) |> rename(NG = estimate)) |>
+  full_join(reg_table(modtv4_w_naat) |> rename(TV = estimate)) |>
+  # reorder variables
+  mutate(variable = factor(variable, levels = desired_order)) |>
+  arrange(variable)  |>
+  write.csv("./tables/regression_within_naat_unadjusted.csv", row.names = FALSE)
+
+insight::get_variance(modct4_w_naat)
+insight::get_variance(modng4_w_naat)
+insight::get_variance(modtv4_w_naat)
+
+sjPlot::tab_model(modct4_w_naat, modng4_w_naat, modtv4_w_naat, p.style = "stars", wrap.labels = 100)
+
 
 # STUDY CHARACTERISTICS ----
 
@@ -1221,7 +1537,7 @@ full_join(
          n_art = case_when(is.na(n_art) ~ 0, TRUE ~ n_art),
          n_tot = n_study + n_art) |>
   arrange(-n_tot) |>
-  mutate(prop = n_tot/211)
+  mutate(prop = n_tot/212)
 
 # Number studies per region and country - overall
 
@@ -1476,3 +1792,43 @@ cross_join(
     group_by() |>
     summarise(n_art=n_distinct(study_id))) |>
   mutate(n_tot = n_study + n_art)
+
+# < Age range ----
+# Classify age range groups
+df_age_count <- df |>
+  mutate(age_range_class = case_when(age_range == "NR" ~ "NR",
+                                     age_min >= 15 & age_max <= 49 & !age_max=="NR" & !age_min=="NR" ~ "15-49",
+                                     age_min < 15 & age_max > 49 & !age_max=="NR" & !age_min=="NR" ~ "<15 & >49",
+                                     age_min < 15 & !age_min=="NR"~ "<15",
+                                     age_max > 49 & !age_max=="NR" ~ ">49",
+                                     age_min != "NR" & age_max == "NR" ~ "no upper"))
+
+df_age_count |> count(age_range_class, age_range)
+
+df_age_count |> count(cov_id,age_range_class) |>
+  group_by(cov_id) |>
+  summarise(n = n_distinct(age_range_class)) |>
+  filter(n>1) |>
+  pull(cov_id)
+
+df_age_count |> filter(cov_id %in% c("#21877", "#22843", "#23088", "#31017")) |>
+  select(cov_id, age_range, age_range_class, population, country, sex, sti)
+
+df_age_count <- df_age_count |>
+  filter(age_group == "Adult") |>
+  filter(!(cov_id == "#23088" & age_range_class == "no upper"),
+         !(cov_id == "#31017" & age_range_class == ">49"),
+         !(cov_id == "#22843" & age_range_class == "NR"),
+         !(cov_id == "#21877" & age_range_class == "15-49"))
+
+full_join(
+  df_age_count |> 
+    filter(!is.na(study_name)) |>
+    group_by(age_range_class) |>
+    summarise(n_study=n_distinct(study_name)),
+  df_age_count |> 
+    filter(is.na(study_name)) |>
+    group_by(age_range_class) |>
+    summarise(n_art=n_distinct(study_id))) |>
+  rowwise() |>
+  mutate(n_tot = sum(n_study,n_art, na.rm=TRUE))

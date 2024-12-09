@@ -1,0 +1,24 @@
+variable,CT,NG,TV,,
+Intercept,0.13 (0.11-0.16),0.04 (0.03-0.06),0.16 (0.11-0.24),,Intercept & 0.13 (0.11-0.16) & 0.04 (0.03-0.06) & 0.16 (0.11-0.24) \\ 
+Western and Central,0.27 (0.20-0.38),0.28 (0.17-0.47),0.98 (0.45-2.14),,\hspace{0.2cm} Western and Central & 0.27 (0.20-0.38) & 0.28 (0.17-0.47) & 0.98 (0.45-2.14) \\ 
+Eastern,0.37 (0.34-0.40),0.63 (0.56-0.71),0.64 (0.44-0.94),,\hspace{0.2cm} Eastern & 0.37 (0.34-0.40) & 0.63 (0.56-0.71) & 0.64 (0.44-0.94) \\ 
+Southern,Ref,Ref,Ref,,\hspace{0.2cm} Southern & Ref & Ref & Ref \\ 
+Western and Central:Male,0.74 (0.50-1.10),0.90 (0.46-1.74),0.00 (0.00-Inf),,\hspace{0.2cm} Western and Central:Male & 0.74 (0.50-1.10) & 0.90 (0.46-1.74) & 0.00 (0.00-Inf) \\ 
+Eastern:Male,0.73 (0.65-0.82),0.57 (0.47-0.69),0.58 (0.49-0.67),,\hspace{0.2cm} Eastern:Male & 0.73 (0.65-0.82) & 0.57 (0.47-0.69) & 0.58 (0.49-0.67) \\ 
+Southern:Male,0.64 (0.59-0.69),0.62 (0.54-0.72),0.26 (0.22-0.30),,\hspace{0.2cm} Southern:Male & 0.64 (0.59-0.69) & 0.62 (0.54-0.72) & 0.26 (0.22-0.30) \\ 
+Western and Central:Year,1.01 (0.97-1.05),1.05 (0.99-1.12),0.89 (0.78-1.02),,\hspace{0.2cm} Western and Central:Year & 1.01 (0.97-1.05) & 1.05 (0.99-1.12) & 0.89 (0.78-1.02) \\ 
+Eastern:Year,1.07 (1.05-1.10),1.02 (0.99-1.05),0.94 (0.89-1.00),,\hspace{0.2cm} Eastern:Year & 1.07 (1.05-1.10) & 1.02 (0.99-1.05) & 0.94 (0.89-1.00) \\ 
+Southern:Year,1.01 (0.99-1.03),1.02 (0.99-1.05),0.96 (0.92-1.01),,\hspace{0.2cm} Southern:Year & 1.01 (0.99-1.03) & 1.02 (0.99-1.05) & 0.96 (0.92-1.01) \\ 
+ANC attendees,Ref,Ref,Ref,,\hspace{0.2cm} ANC attendees & Ref & Ref & Ref \\ 
+FP attendees,0.98 (0.64-1.51),0.97 (0.51-1.85),0.19 (0.03-1.08),,\hspace{0.2cm} FP attendees & 0.98 (0.64-1.51) & 0.97 (0.51-1.85) & 0.19 (0.03-1.08) \\ 
+GYN attendees,0.92 (0.52-1.61),0.50 (0.20-1.27),0.64 (0.29-1.40),,\hspace{0.2cm} GYN attendees & 0.92 (0.52-1.61) & 0.50 (0.20-1.27) & 0.64 (0.29-1.40) \\ 
+PHC/OPD attendees,0.76 (0.54-1.06),1.15 (0.70-1.90),0.83 (0.46-1.50),,\hspace{0.2cm} PHC/OPD attendees & 0.76 (0.54-1.06) & 1.15 (0.70-1.90) & 0.83 (0.46-1.50) \\ 
+Students,0.84 (0.55-1.31),0.95 (0.48-1.88),1.71 (0.90-3.25),,\hspace{0.2cm} Students & 0.84 (0.55-1.31) & 0.95 (0.48-1.88) & 1.71 (0.90-3.25) \\ 
+Community members,0.95 (0.66-1.37),0.83 (0.48-1.43),0.49 (0.19-1.23),,\hspace{0.2cm} Community members & 0.95 (0.66-1.37) & 0.83 (0.48-1.43) & 0.49 (0.19-1.23) \\ 
+HIV/STI prevention trial participants,0.83 (0.58-1.17),0.99 (0.60-1.65),0.82 (0.39-1.74),,\hspace{0.2cm} HIV/STI prevention trial participants & 0.83 (0.58-1.17) & 0.99 (0.60-1.65) & 0.82 (0.39-1.74) \\ 
+Population-representative survey participants,0.93 (0.61-1.42),1.14 (0.62-2.08),0.71 (0.32-1.56),,\hspace{0.2cm} Population-representative survey participants & 0.93 (0.61-1.42) & 1.14 (0.62-2.08) & 0.71 (0.32-1.56) \\ 
+Adult,Ref,Ref,Ref,,\hspace{0.2cm} Adult & Ref & Ref & Ref \\ 
+Youth,1.21 (0.92-1.59),1.14 (0.78-1.68),0.44 (0.24-0.82),,\hspace{0.2cm} Youth & 1.21 (0.92-1.59) & 1.14 (0.78-1.68) & 0.44 (0.24-0.82) \\ 
+Mixed,Ref,Ref,Ref,,\hspace{0.2cm} Mixed & Ref & Ref & Ref \\ 
+HIV negative,1.45 (1.10-1.92),1.07 (0.72-1.60),0.64 (0.36-1.14),,\hspace{0.2cm} HIV negative & 1.45 (1.10-1.92) & 1.07 (0.72-1.60) & 0.64 (0.36-1.14) \\ 
+NAAT,Ref,Ref,Ref,,

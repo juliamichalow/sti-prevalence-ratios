@@ -1,133 +1,129 @@
 "study_name","study_id","year_mid","region","country","population","age_group","sex","sti","adj_prev","adj_se"
-NA,"Ajani 2022",2019,"WCA","Nigeria","Students","Adult","Male","TV",0.13761707176604,0.0345140450516777
-NA,"Ajani 2022",2019,"WCA","Nigeria","Students","Adult","Female","TV",0.197861102541986,0.044489747214589
-NA,"Behanzin 2012",2008,"WCA","Benin","Population-representative survey participants","Adult","Female","CT",0.0181808014729805,0.00438062842553086
-NA,"Behanzin 2012",2008,"WCA","Benin","Population-representative survey participants","Adult","Female","NG",0.0079652048537565,0.00271970932079282
-NA,"Behanzin 2012",2008,"WCA","Benin","Population-representative survey participants","Adult","Male","CT",0.0184637237692192,0.0054204098914634
-NA,"Behanzin 2012",2008,"WCA","Benin","Population-representative survey participants","Adult","Male","NG",0.00359488441818865,0.00232963052047962
-"NIMH Collaborative HIV/STD Prevention Trial","Celentano 2010",2003,"EA","Zimbabwe","Community members","Adult","Female","CT",0.0638311624750319,0.0056034080490237
-"NIMH Collaborative HIV/STD Prevention Trial","Celentano 2010",2003,"EA","Zimbabwe","Community members","Adult","Female","NG",0.0376355195546838,0.00430233366759362
-"NIMH Collaborative HIV/STD Prevention Trial","Celentano 2010",2003,"EA","Zimbabwe","Community members","Adult","Male","CT",0.0205747608687409,0.00342045727472948
-"NIMH Collaborative HIV/STD Prevention Trial","Celentano 2010",2003,"EA","Zimbabwe","Community members","Adult","Male","NG",0.0178176000564416,0.00283077505133365
-"AMREF Mine Health Project","Clift 2003",2000,"EA","Tanzania","Community members","Adult","Male","CT",0.0540151855010981,0.0174786053457808
-"AMREF Mine Health Project","Clift 2003",2000,"EA","Tanzania","Community members","Adult","Male","NG",0.0229167175921654,0.0124003903399442
-"AMREF Mine Health Project","Clift 2003",2000,"EA","Tanzania","Community members","Adult","Female","CT",0.0307219617837903,0.013077033196797
-"AMREF Mine Health Project","Clift 2003",2000,"EA","Tanzania","Community members","Adult","Female","NG",0.0210763466879454,0.0102858231301558
-NA,"Cowan 2002",2000,"EA","Zimbabwe","Community members","Youth","Female","CT",0.028707388651695,0.0113695739082723
-NA,"Cowan 2002",2000,"EA","Zimbabwe","Community members","Youth","Female","NG",0.0252552838861111,0.0100224853920831
-NA,"Cowan 2002",2000,"EA","Zimbabwe","Community members","Youth","Male","CT",0.00854233634694687,0.00668374144646512
-NA,"Cowan 2002",2000,"EA","Zimbabwe","Community members","Youth","Male","NG",0.0457601731289347,0.0128551183075934
-NA,"Cowan 2002",2000,"EA","Zimbabwe","Students","Youth","Female","CT",0.00619875089175942,0.00516558918678156
-NA,"Cowan 2002",2000,"EA","Zimbabwe","Students","Youth","Female","NG",0.0288120607245456,0.00974110673137085
-NA,"Cowan 2002",2000,"EA","Zimbabwe","Students","Youth","Male","CT",0.00506127625629737,0.00462053266849954
-NA,"Cowan 2002",2000,"EA","Zimbabwe","Students","Youth","Male","NG",0.0220829370403625,0.00893740882867846
-NA,"Cowley 2021",2016,"WCA","Guinea-Bissau","Population-representative survey participants","Adult","Female","CT",0.0643118675887803,0.0161445445567232
-NA,"Cowley 2021",2016,"WCA","Guinea-Bissau","Population-representative survey participants","Adult","Female","NG",0.0370544751384769,0.0130609290962766
-NA,"Cowley 2021",2016,"WCA","Guinea-Bissau","Population-representative survey participants","Adult","Female","TV",0.125716011102985,0.027457666723646
-NA,"Cowley 2021",2016,"WCA","Guinea-Bissau","Population-representative survey participants","Adult","Male","CT",0.0115235818287104,0.00922856501717538
-NA,"Cowley 2021",2016,"WCA","Guinea-Bissau","Population-representative survey participants","Adult","Male","NG",0.0488860986839889,0.0175128752896521
-NA,"Cowley 2021",2016,"WCA","Guinea-Bissau","Population-representative survey participants","Adult","Male","TV",0.00530914876456295,0.00501863377057102
-NA,"de Walque 2012",2011,"EA","Tanzania","HIV/STI prevention trial participants","Adult","Male","CT",0.012193510369575,0.00421316163277174
-NA,"de Walque 2012",2011,"EA","Tanzania","HIV/STI prevention trial participants","Adult","Male","NG",0.0049518785551003,0.00251812630431552
-NA,"de Walque 2012",2011,"EA","Tanzania","HIV/STI prevention trial participants","Adult","Male","TV",0.0673808459417227,0.00876316896818934
-NA,"de Walque 2012",2011,"EA","Tanzania","HIV/STI prevention trial participants","Adult","Female","CT",0.0292161602894265,0.00528162448886201
-NA,"de Walque 2012",2011,"EA","Tanzania","HIV/STI prevention trial participants","Adult","Female","NG",0.0162714529574124,0.00392269621685426
-NA,"de Walque 2012",2011,"EA","Tanzania","HIV/STI prevention trial participants","Adult","Female","TV",0.223544716088998,0.0166087363298999
-NA,"Francis 2018",2017,"SA","South Africa","Population-representative survey participants","Youth","Female","CT",0.125873504702159,0.0215578368835192
-NA,"Francis 2018",2017,"SA","South Africa","Population-representative survey participants","Youth","Female","NG",0.0163647492843045,0.00976009774330566
-NA,"Francis 2018",2017,"SA","South Africa","Population-representative survey participants","Youth","Female","TV",0.0325250516283742,0.0143875174852209
-NA,"Francis 2018",2017,"SA","South Africa","Population-representative survey participants","Youth","Male","CT",0.0582634277428437,0.0200149259438538
-NA,"Francis 2018",2017,"SA","South Africa","Population-representative survey participants","Youth","Male","NG",0.0243431064502026,0.0131994061427986
-NA,"Francis 2018",2017,"SA","South Africa","Population-representative survey participants","Youth","Male","TV",0.0065852505630961,0.00621729159912672
-"STIPS (RCSS)","Grabowski 2022",2019,"EA","Uganda","Population-representative survey participants","Adult","Female","CT",0.106550638100511,0.0149732073378744
-"STIPS (RCSS)","Grabowski 2022",2019,"EA","Uganda","Population-representative survey participants","Adult","Female","NG",0.0615432948423062,0.0119031755614845
-"STIPS (RCSS)","Grabowski 2022",2019,"EA","Uganda","Population-representative survey participants","Adult","Female","TV",0.169274660294818,0.0228386824907135
-"STIPS (RCSS)","Grabowski 2022",2019,"EA","Uganda","Population-representative survey participants","Adult","Male","CT",0.104583417709459,0.0174863641237991
-"STIPS (RCSS)","Grabowski 2022",2019,"EA","Uganda","Population-representative survey participants","Adult","Male","NG",0.0267562444469807,0.00977219962473802
-"STIPS (RCSS)","Grabowski 2022",2019,"EA","Uganda","Population-representative survey participants","Adult","Male","TV",0.0237829900054466,0.0138894824865708
-"HVTN702","Gray 2021",2018,"SA","South Africa","HIV/STI prevention trial participants","Adult","Male","CT",0.175045280099057,0.0117943522755764
-"HVTN702","Gray 2021",2018,"SA","South Africa","HIV/STI prevention trial participants","Adult","Male","NG",0.0381602867918761,0.00629383999046167
-"HVTN702","Gray 2021",2018,"SA","South Africa","HIV/STI prevention trial participants","Adult","Female","CT",0.256164554760496,0.00833989746315327
-"HVTN702","Gray 2021",2018,"SA","South Africa","HIV/STI prevention trial participants","Adult","Female","NG",0.0487498906029347,0.00399612225901223
-NA,"Hawken 2002",2000,"EA","Kenya","Population-representative survey participants","Adult","Female","CT",0.0213871324855707,0.00661498636194621
-NA,"Hawken 2002",2000,"EA","Kenya","Population-representative survey participants","Adult","Female","NG",0.00945218306983031,0.0040160827438217
-NA,"Hawken 2002",2000,"EA","Kenya","Population-representative survey participants","Adult","Male","CT",0.00747972773634398,0.00496408877519668
-NA,"Hawken 2002",2000,"EA","Kenya","Population-representative survey participants","Adult","Male","NG",0.015740681388852,0.00610900382807001
-"AHRI HDSS","Jarolimova 2023",2021,"SA","South Africa","Population-representative survey participants","Youth","Female","CT",0.235328507568197,0.0223496513943687
-"AHRI HDSS","Jarolimova 2023",2021,"SA","South Africa","Population-representative survey participants","Youth","Female","NG",0.0507923572761127,0.0121585220397484
-"AHRI HDSS","Jarolimova 2023",2021,"SA","South Africa","Population-representative survey participants","Youth","Female","TV",0.0897053248707868,0.015966003347353
-"AHRI HDSS","Jarolimova 2023",2021,"SA","South Africa","Population-representative survey participants","Youth","Male","CT",0.163426131637398,0.0209829464497988
-"AHRI HDSS","Jarolimova 2023",2021,"SA","South Africa","Population-representative survey participants","Youth","Male","NG",0.0594868576094165,0.0134403958514023
-"AHRI HDSS","Jarolimova 2023",2021,"SA","South Africa","Population-representative survey participants","Youth","Male","TV",0.00372408599476598,0.0036376629108559
-NA,"Kahsay 2023",2018,"EA","Ethiopia","PHC/OPD attendees","Adult","Female","NG",0.162447937025718,0.0376203137942696
-NA,"Kahsay 2023",2018,"EA","Ethiopia","PHC/OPD attendees","Adult","Male","NG",0.100367465642679,0.0310934413130206
-"AYAZAZI","Kaida 2018",2015,"SA","South Africa","Community members","Youth","Female","CT",0.205351271780598,0.0313864769907221
-"AYAZAZI","Kaida 2018",2015,"SA","South Africa","Community members","Youth","Female","NG",0.0728828184987314,0.0198923161653373
-"AYAZAZI","Kaida 2018",2015,"SA","South Africa","Community members","Youth","Female","TV",0.0698114747166722,0.0215955990516665
-"AYAZAZI","Kaida 2018",2015,"SA","South Africa","Community members","Youth","Male","CT",0.0874399929783875,0.0254503617803961
-"AYAZAZI","Kaida 2018",2015,"SA","South Africa","Community members","Youth","Male","NG",0.0222278541266131,0.0134858955282913
-"AYAZAZI","Kaida 2018",2015,"SA","South Africa","Community members","Youth","Male","TV",0.00810291871389378,0.00760406784907612
-"HIPSS","Kharsany 2020",2015,"SA","South Africa","Population-representative survey participants","Adult","Female","CT",0.0963015138764398,0.00400759346154976
-"HIPSS","Kharsany 2020",2015,"SA","South Africa","Population-representative survey participants","Adult","Female","NG",0.0305676284476929,0.00252770202393456
-"HIPSS","Kharsany 2020",2015,"SA","South Africa","Population-representative survey participants","Adult","Female","TV",0.150886215816597,0.00492002101240244
-"HIPSS","Kharsany 2020",2015,"SA","South Africa","Population-representative survey participants","Adult","Male","CT",0.0534591894140391,0.00434216789508093
-"HIPSS","Kharsany 2020",2015,"SA","South Africa","Population-representative survey participants","Adult","Male","NG",0.023288696560624,0.00295309316298407
-"HIPSS","Kharsany 2020",2015,"SA","South Africa","Population-representative survey participants","Adult","Male","TV",0.0226753243440868,0.00375400976241631
-NA,"Kiene 2017",2011,"EA","Uganda","PHC/OPD attendees","Adult","Female","CT",0.0317828072011946,0.0150245261643918
-NA,"Kiene 2017",2011,"EA","Uganda","PHC/OPD attendees","Adult","Female","NG",0.0458213529263338,0.0167547135007349
-NA,"Kiene 2017",2011,"EA","Uganda","PHC/OPD attendees","Adult","Male","CT",0.0211836990170369,0.0135676503338047
-NA,"Kiene 2017",2011,"EA","Uganda","PHC/OPD attendees","Adult","Male","NG",0.0294765093040963,0.0151222395534735
-NA,"Lagarde 2004",2000,"WCA","Burkina Faso","Population-representative survey participants","Adult","Male","CT",0.0136261164754655,0.00579501439250064
-NA,"Lagarde 2004",2000,"WCA","Burkina Faso","Population-representative survey participants","Adult","Male","NG",0.00722577860934216,0.00379126021118617
-NA,"Lagarde 2004",2000,"WCA","Burkina Faso","Population-representative survey participants","Adult","Male","TV",0.0174717422092314,0.00449160349817165
-NA,"Lagarde 2004",2000,"WCA","Burkina Faso","Population-representative survey participants","Adult","Female","CT",0.0317684807209419,0.0069976212739587
-NA,"Lagarde 2004",2000,"WCA","Burkina Faso","Population-representative survey participants","Adult","Female","NG",0.00140230875067421,0.00141165710815276
-NA,"Lagarde 2004",2000,"WCA","Burkina Faso","Population-representative survey participants","Adult","Female","TV",0.220833734000019,0.0172061497906644
-"MEMA kwa Vijana","Lemme 2013",2008,"EA","Tanzania","Community members","Youth","Male","CT",0.0161685085581654,0.001873043543723
-"MEMA kwa Vijana","Lemme 2013",2008,"EA","Tanzania","Community members","Youth","Male","NG",0.0037112066305929,0.000892184342015138
-"MEMA kwa Vijana","Lemme 2013",2008,"EA","Tanzania","Community members","Youth","Female","CT",0.0251152664484656,0.00215170102344638
-"MEMA kwa Vijana","Lemme 2013",2008,"EA","Tanzania","Community members","Youth","Female","NG",0.0040464684848966,0.000799320472007932
-"Partners HSV-2/HIV Transmission Study (Partners Study)","Lingappa 2009",2006,"EA","Botswana, Kenya, Rwanda, South Africa, Tanzania, Uganda, Zambia","HIV/STI prevention trial participants","Adult","Female","CT",0.0156176418788761,0.00457530271889744
-"Partners HSV-2/HIV Transmission Study (Partners Study)","Lingappa 2009",2006,"EA","Botswana, Kenya, Rwanda, South Africa, Tanzania, Uganda, Zambia","HIV/STI prevention trial participants","Adult","Female","NG",0.00450760166653552,0.00299689185140248
-"Partners HSV-2/HIV Transmission Study (Partners Study)","Lingappa 2009",2006,"EA","Botswana, Kenya, Rwanda, South Africa, Tanzania, Uganda, Zambia","HIV/STI prevention trial participants","Adult","Female","TV",0.0972569577606058,0.0100137435345327
-"Partners HSV-2/HIV Transmission Study (Partners Study)","Lingappa 2009",2006,"EA","Botswana, Kenya, Rwanda, South Africa, Tanzania, Uganda, Zambia","HIV/STI prevention trial participants","Adult","Male","CT",0.0243653763582058,0.00396512108486698
-"Partners HSV-2/HIV Transmission Study (Partners Study)","Lingappa 2009",2006,"EA","Botswana, Kenya, Rwanda, South Africa, Tanzania, Uganda, Zambia","HIV/STI prevention trial participants","Adult","Male","NG",0.00518493120470824,0.00189364784825629
-"Partners HSV-2/HIV Transmission Study (Partners Study)","Lingappa 2009",2006,"EA","Botswana, Kenya, Rwanda, South Africa, Tanzania, Uganda, Zambia","HIV/STI prevention trial participants","Adult","Male","TV",0.0485445900288782,0.00553915727436355
-"CHIEDZA","Martin 2021",2020,"EA","Zimbabwe","Community members","Youth","Male","CT",0.0793112915152608,0.0177199287385806
-"CHIEDZA","Martin 2021",2020,"EA","Zimbabwe","Community members","Youth","Male","NG",0.031274971333416,0.011538516872589
-"CHIEDZA","Martin 2021",2020,"EA","Zimbabwe","Community members","Youth","Female","CT",0.169178002532169,0.0115218351237216
-"CHIEDZA","Martin 2021",2020,"EA","Zimbabwe","Community members","Youth","Female","NG",0.0253816167651466,0.00472470732711917
-NA,"Mcharo 2022",2020,"EA","Tanzania","Students","Youth","Female","CT",0.157083866923522,0.0284327493764667
-NA,"Mcharo 2022",2020,"EA","Tanzania","Students","Youth","Female","NG",0.0114471810678444,0.00786455141117906
-NA,"Mcharo 2022",2020,"EA","Tanzania","Students","Youth","Male","CT",0.101771388978046,0.0207439467943655
-NA,"Mcharo 2022",2020,"EA","Tanzania","Students","Youth","Male","NG",0.0221154798711798,0.0106137238429248
-"Project PrEP STI substudy","Mullick 2023",2021,"SA","South Africa","PHC/OPD attendees","Youth","Female","CT",0.294778393880456,0.0260432905808081
-"Project PrEP STI substudy","Mullick 2023",2021,"SA","South Africa","PHC/OPD attendees","Youth","Female","NG",0.156103001223255,0.0199296672947951
-"Project PrEP STI substudy","Mullick 2023",2021,"SA","South Africa","PHC/OPD attendees","Youth","Female","TV",0.0127685942226456,0.0101165076519872
-"Project PrEP STI substudy","Mullick 2023",2021,"SA","South Africa","PHC/OPD attendees","Youth","Male","CT",0.32733766148259,0.0807292472202321
-"Project PrEP STI substudy","Mullick 2023",2021,"SA","South Africa","PHC/OPD attendees","Youth","Male","NG",0.329994584371274,0.0824067087681426
-"Project PrEP STI substudy","Mullick 2023",2021,"SA","South Africa","PHC/OPD attendees","Youth","Male","TV",0.0258841632493131,0.0251553926540051
-NA,"Ngandjio 2003",2001,"WCA","Cameroon","Students","Youth","Male","CT",0.0366334293664729,0.00913154124625449
-NA,"Ngandjio 2003",2001,"WCA","Cameroon","Students","Youth","Female","CT",0.0455476995516167,0.00992457716710966
-NA,"Omoregie 2009",2006,"WCA","Nigeria","PHC/OPD attendees","Adult","Female","TV",0.0335367521612998,0.0328794511065397
-NA,"Omoregie 2009",2006,"WCA","Nigeria","PHC/OPD attendees","Adult","Male","TV",0.0451930234842582,0.0434417415099175
-"Kisumu Incidence Cohort Study (KICoS)","Otieno 2015",2008,"EA","Kenya","Community members","Adult","Female","CT",0.0302560299786963,0.00989788839316348
-"Kisumu Incidence Cohort Study (KICoS)","Otieno 2015",2008,"EA","Kenya","Community members","Adult","Female","NG",0.0445741544526525,0.0114592792148649
-"Kisumu Incidence Cohort Study (KICoS)","Otieno 2015",2008,"EA","Kenya","Community members","Adult","Male","CT",0.0267467854437537,0.00964395499193408
-"Kisumu Incidence Cohort Study (KICoS)","Otieno 2015",2008,"EA","Kenya","Community members","Adult","Male","NG",0.00287037036081331,0.00280221205675659
-"Malawi Pregancy and STI Risk Perception and Avoidance Study","Paz-Soldan 2012",2000,"EA","Malawi","Population-representative survey participants","Adult","Female","CT",0.058415936867707,0.011891358970525
-"Malawi Pregancy and STI Risk Perception and Avoidance Study","Paz-Soldan 2012",2000,"EA","Malawi","Population-representative survey participants","Adult","Female","NG",0.0383682000910213,0.00929902929235317
-"Malawi Pregancy and STI Risk Perception and Avoidance Study","Paz-Soldan 2012",2000,"EA","Malawi","Population-representative survey participants","Adult","Male","CT",0.0747833628036943,0.0188606220072814
-"Malawi Pregancy and STI Risk Perception and Avoidance Study","Paz-Soldan 2012",2000,"EA","Malawi","Population-representative survey participants","Adult","Male","NG",0.0931725446818921,0.0205963441430733
-NA,"Pettifor 2005",2002,"SA","South Africa","PHC/OPD attendees","Youth","Female","CT",0.11119729004755,0.00518286824817015
-NA,"Pettifor 2005",2002,"SA","South Africa","PHC/OPD attendees","Youth","Female","NG",0.0384189740148039,0.00294751816596807
-NA,"Pettifor 2005",2002,"SA","South Africa","PHC/OPD attendees","Youth","Male","CT",0.0609702688555907,0.00445918081959359
-NA,"Pettifor 2005",2002,"SA","South Africa","PHC/OPD attendees","Youth","Male","NG",0.0222425683279304,0.00281818494775535
-NA,"Price 2024",2018,"SA","South Africa","Community members","Youth","Female","CT",0.264727632369427,0.0538216178146192
-NA,"Price 2024",2018,"SA","South Africa","Community members","Youth","Female","NG",0.0722500954914335,0.0318358025527913
-NA,"Price 2024",2018,"SA","South Africa","Community members","Youth","Male","CT",0.12488577183848,0.0566361769188908
-NA,"Price 2024",2018,"SA","South Africa","Community members","Youth","Male","NG",0.0558775949234242,0.0382922147400784
-"Crane Survey","Rutherford 2014",2009,"EA","Uganda","Students","Youth","Female","CT",0.0278090352167252,0.011437427042622
-"Crane Survey","Rutherford 2014",2009,"EA","Uganda","Students","Youth","Female","NG",0.00870892752190748,0.00678088003963187
-"Crane Survey","Rutherford 2014",2009,"EA","Uganda","Students","Youth","Male","CT",0.00686805633840753,0.0055512294710389
-"Crane Survey","Rutherford 2014",2009,"EA","Uganda","Students","Youth","Male","NG",0.00342447025836797,0.00340554601947421
+"Project PrEP STI substudy","Mullick 2023",2021,"SA","South Africa","PHC/OPD attendees","Youth","Female","CT",0.295365636189206,0.0266669000315747
+"Project PrEP STI substudy","Mullick 2023",2021,"SA","South Africa","PHC/OPD attendees","Youth","Female","NG",0.15560498159505,0.0202873534424589
+"Project PrEP STI substudy","Mullick 2023",2021,"SA","South Africa","PHC/OPD attendees","Youth","Female","TV",0.0126572291336808,0.00985569037501049
+"Project PrEP STI substudy","Mullick 2023",2021,"SA","South Africa","PHC/OPD attendees","Youth","Male","CT",0.329369753569931,0.081434331421915
+"Project PrEP STI substudy","Mullick 2023",2021,"SA","South Africa","PHC/OPD attendees","Youth","Male","NG",0.329999294693417,0.0824557969437774
+"Project PrEP STI substudy","Mullick 2023",2021,"SA","South Africa","PHC/OPD attendees","Youth","Male","TV",0.0250476086816597,0.0243375911503245
+NA,"Lagarde 2004",2000,"WCA","Burkina Faso","Population-representative survey participants","Adult","Female","CT",0.0317410104394163,0.00693340062638006
+NA,"Lagarde 2004",2000,"WCA","Burkina Faso","Population-representative survey participants","Adult","Female","NG",0.00142549427011968,0.00135545276980082
+NA,"Lagarde 2004",2000,"WCA","Burkina Faso","Population-representative survey participants","Adult","Female","TV",0.220588640734689,0.0166548142047751
+NA,"Lagarde 2004",2000,"WCA","Burkina Faso","Population-representative survey participants","Adult","Male","CT",0.0136762131154738,0.00563981104384218
+NA,"Lagarde 2004",2000,"WCA","Burkina Faso","Population-representative survey participants","Adult","Male","NG",0.00707457274580796,0.00371663886960425
+NA,"Lagarde 2004",2000,"WCA","Burkina Faso","Population-representative survey participants","Adult","Male","TV",0.0174941872104627,0.0045055001635746
+NA,"Cowan 2002",2000,"EA","Zimbabwe","Community members","Youth","Male","CT",0.00834189135003972,0.00659701861015819
+NA,"Cowan 2002",2000,"EA","Zimbabwe","Community members","Youth","Male","NG",0.0457064369600552,0.0131869367199597
+NA,"Cowan 2002",2000,"EA","Zimbabwe","Community members","Youth","Female","CT",0.0285526840327892,0.0115624831442022
+NA,"Cowan 2002",2000,"EA","Zimbabwe","Community members","Youth","Female","NG",0.0252740918210636,0.0103169894081689
+"AMREF Mine Health Project","Clift 2003",2000,"EA","Tanzania","Community members","Adult","Male","CT",0.0534948083664846,0.0177847400270832
+"AMREF Mine Health Project","Clift 2003",2000,"EA","Tanzania","Community members","Adult","Male","NG",0.0231732637575856,0.0120503724309803
+"AMREF Mine Health Project","Clift 2003",2000,"EA","Tanzania","Community members","Adult","Female","CT",0.0310207862249902,0.013537192315976
+"AMREF Mine Health Project","Clift 2003",2000,"EA","Tanzania","Community members","Adult","Female","NG",0.0209180538043704,0.0104305184452415
+"STIPS (RCSS)","Grabowski 2022",2019,"EA","Uganda","Population-representative survey participants","Adult","Female","CT",0.106221848156685,0.0148773942915523
+"STIPS (RCSS)","Grabowski 2022",2019,"EA","Uganda","Population-representative survey participants","Adult","Female","NG",0.0615708368430272,0.0113618728958206
+"STIPS (RCSS)","Grabowski 2022",2019,"EA","Uganda","Population-representative survey participants","Adult","Female","TV",0.152994402856182,0.0183028471021809
+"STIPS (RCSS)","Grabowski 2022",2019,"EA","Uganda","Population-representative survey participants","Adult","Male","CT",0.104501905835795,0.0173358827730684
+"STIPS (RCSS)","Grabowski 2022",2019,"EA","Uganda","Population-representative survey participants","Adult","Male","NG",0.026672616563975,0.00963548421099558
+"STIPS (RCSS)","Grabowski 2022",2019,"EA","Uganda","Population-representative survey participants","Adult","Male","TV",0.0346437979798725,0.0120919212586644
+"NIMH Collaborative HIV/STD Prevention Trial","Celentano 2010",2003,"EA","Zimbabwe","Community members","Adult","Female","CT",0.0638279875161006,0.00546838271678408
+"NIMH Collaborative HIV/STD Prevention Trial","Celentano 2010",2003,"EA","Zimbabwe","Community members","Adult","Female","NG",0.0375977004886847,0.00437964712370084
+"NIMH Collaborative HIV/STD Prevention Trial","Celentano 2010",2003,"EA","Zimbabwe","Community members","Adult","Male","CT",0.0206241256972914,0.00332697357672587
+"NIMH Collaborative HIV/STD Prevention Trial","Celentano 2010",2003,"EA","Zimbabwe","Community members","Adult","Male","NG",0.017850882007112,0.00280685697548039
+"MEMA kwa Vijana","Lemme 2013",2008,"EA","Tanzania","Community members","Adult","Male","CT",0.0161633779619044,0.0019309735204921
+"MEMA kwa Vijana","Lemme 2013",2008,"EA","Tanzania","Community members","Adult","Male","NG",0.00371039816192786,0.000921629002968084
+"MEMA kwa Vijana","Lemme 2013",2008,"EA","Tanzania","Community members","Adult","Female","CT",0.0250893207256377,0.00219946462177169
+"MEMA kwa Vijana","Lemme 2013",2008,"EA","Tanzania","Community members","Adult","Female","NG",0.00404852148308335,0.000829442644886296
+"Malawi Pregancy and STI Risk Perception and Avoidance Study","Paz-Soldan 2012",2000,"EA","Malawi","Population-representative survey participants","Adult","Female","CT",0.0585222816952729,0.011883315366831
+"Malawi Pregancy and STI Risk Perception and Avoidance Study","Paz-Soldan 2012",2000,"EA","Malawi","Population-representative survey participants","Adult","Female","NG",0.038342350741975,0.0095167577402256
+"Malawi Pregancy and STI Risk Perception and Avoidance Study","Paz-Soldan 2012",2000,"EA","Malawi","Population-representative survey participants","Adult","Male","CT",0.0750254857247487,0.0189102520316807
+"Malawi Pregancy and STI Risk Perception and Avoidance Study","Paz-Soldan 2012",2000,"EA","Malawi","Population-representative survey participants","Adult","Male","NG",0.0935319579893509,0.0210136061503537
+NA,"Omoregie 2009",2006,"WCA","Nigeria","PHC/OPD attendees","Adult","Female","TV",0.0330223079874074,0.0314594791044086
+NA,"Omoregie 2009",2006,"WCA","Nigeria","PHC/OPD attendees","Adult","Male","TV",0.04511521924504,0.0440451619141196
+NA,"Pettifor 2005",2002,"SA","South Africa","PHC/OPD attendees","Youth","Male","CT",0.0609277503867085,0.00446538406750824
+NA,"Pettifor 2005",2002,"SA","South Africa","PHC/OPD attendees","Youth","Male","NG",0.0222430530783792,0.00273200295661747
+NA,"Pettifor 2005",2002,"SA","South Africa","PHC/OPD attendees","Youth","Female","CT",0.111268789369107,0.00507089155725242
+NA,"Pettifor 2005",2002,"SA","South Africa","PHC/OPD attendees","Youth","Female","NG",0.038462154901785,0.00302299854951307
+NA,"Hawken 2002",2000,"EA","Kenya","Population-representative survey participants","Adult","Female","CT",0.0212981120114143,0.00671065030068343
+NA,"Hawken 2002",2000,"EA","Kenya","Population-representative survey participants","Adult","Female","NG",0.00946877727767138,0.00424537074421094
+NA,"Hawken 2002",2000,"EA","Kenya","Population-representative survey participants","Adult","Male","CT",0.00747349296234795,0.00521953756683894
+NA,"Hawken 2002",2000,"EA","Kenya","Population-representative survey participants","Adult","Male","NG",0.0156367737173339,0.0059672687169627
+NA,"Price 2024",2018,"SA","South Africa","Community members","Youth","Female","CT",0.265006637665014,0.0527566666281652
+NA,"Price 2024",2018,"SA","South Africa","Community members","Youth","Female","NG",0.0717080939278395,0.0314899806590574
+NA,"Price 2024",2018,"SA","South Africa","Community members","Youth","Male","CT",0.124029168888199,0.0546658917718251
+NA,"Price 2024",2018,"SA","South Africa","Community members","Youth","Male","NG",0.0563955244036798,0.0392225182263421
+NA,"Kiene 2017",2011,"EA","Uganda","PHC/OPD attendees","Adult","Female","CT",0.0322220871058787,0.0150241353996835
+NA,"Kiene 2017",2011,"EA","Uganda","PHC/OPD attendees","Adult","Female","NG",0.0460773545124611,0.0166366216639811
+NA,"Kiene 2017",2011,"EA","Uganda","PHC/OPD attendees","Adult","Male","CT",0.0210040256756747,0.0136208392886289
+NA,"Kiene 2017",2011,"EA","Uganda","PHC/OPD attendees","Adult","Male","NG",0.0288190544783119,0.0152867475285996
+"AYAZAZI","Kaida 2018",2015,"SA","South Africa","Community members","Youth","Female","CT",0.205181869725623,0.0303909129492206
+"AYAZAZI","Kaida 2018",2015,"SA","South Africa","Community members","Youth","Female","NG",0.072474752504615,0.0203011576713974
+"AYAZAZI","Kaida 2018",2015,"SA","South Africa","Community members","Youth","Female","TV",0.0699325629286057,0.0210976737531185
+"Partners HSV-2/HIV Transmission Study (Partners Study)","Lingappa 2009",2006,"EA","Botswana, Kenya, Rwanda, South Africa, Tanzania, Uganda, Zambia","HIV/STI prevention trial participants","Adult","Female","CT",0.0155788103082335,0.00454813005985694
+"Partners HSV-2/HIV Transmission Study (Partners Study)","Lingappa 2009",2006,"EA","Botswana, Kenya, Rwanda, South Africa, Tanzania, Uganda, Zambia","HIV/STI prevention trial participants","Adult","Female","NG",0.00457354444711471,0.00311071003089636
+"Partners HSV-2/HIV Transmission Study (Partners Study)","Lingappa 2009",2006,"EA","Botswana, Kenya, Rwanda, South Africa, Tanzania, Uganda, Zambia","HIV/STI prevention trial participants","Adult","Female","TV",0.097186549511576,0.00983482508329206
+NA,"Ngandjio 2003",2001,"WCA","Cameroon","Students","Youth","Female","CT",0.0455792282311463,0.00963868660910758
+NA,"Ngandjio 2003",2001,"WCA","Cameroon","Students","Youth","Male","CT",0.0366394286290113,0.00911244096616391
+"Partners HSV-2/HIV Transmission Study (Partners Study)","Lingappa 2009",2006,"EA","Botswana, Kenya, Rwanda, South Africa, Tanzania, Uganda, Zambia","HIV/STI prevention trial participants","Adult","Male","CT",0.0244219815641505,0.00401060455342611
+"Partners HSV-2/HIV Transmission Study (Partners Study)","Lingappa 2009",2006,"EA","Botswana, Kenya, Rwanda, South Africa, Tanzania, Uganda, Zambia","HIV/STI prevention trial participants","Adult","Male","NG",0.005224212033997,0.00190624877922398
+"Partners HSV-2/HIV Transmission Study (Partners Study)","Lingappa 2009",2006,"EA","Botswana, Kenya, Rwanda, South Africa, Tanzania, Uganda, Zambia","HIV/STI prevention trial participants","Adult","Male","TV",0.0484368260391505,0.00556298417771714
+"AYAZAZI","Kaida 2018",2015,"SA","South Africa","Community members","Youth","Male","CT",0.0873127024992454,0.024861220607552
+"AYAZAZI","Kaida 2018",2015,"SA","South Africa","Community members","Youth","Male","NG",0.0225033180468016,0.0135249149144522
+"AYAZAZI","Kaida 2018",2015,"SA","South Africa","Community members","Youth","Male","TV",0.00802053003555346,0.0076151177071164
+NA,"Ajani 2022",2019,"WCA","Nigeria","Students","Adult","Male","TV",0.136698020958648,0.0338607662078322
+NA,"Ajani 2022",2019,"WCA","Nigeria","Students","Adult","Female","TV",0.198407845511592,0.043389863350059
+NA,"Kahsay 2023",2018,"EA","Ethiopia","PHC/OPD attendees","Adult","Male","NG",0.0998122843449971,0.0317185062931408
+NA,"Kahsay 2023",2018,"EA","Ethiopia","PHC/OPD attendees","Adult","Female","NG",0.162030165372381,0.0368153552495642
+NA,"Behanzin 2012",2008,"WCA","Benin","Population-representative survey participants","Adult","Male","CT",0.0182769602815107,0.00519963311766932
+NA,"Behanzin 2012",2008,"WCA","Benin","Population-representative survey participants","Adult","Male","NG",0.0035504466822168,0.00234004963362757
+NA,"Behanzin 2012",2008,"WCA","Benin","Population-representative survey participants","Adult","Female","CT",0.0182385545999586,0.00439298698688262
+NA,"Behanzin 2012",2008,"WCA","Benin","Population-representative survey participants","Adult","Female","NG",0.00795236574667533,0.0026238225517364
+"HIPSS","Kharsany 2020",2015,"SA","South Africa","Population-representative survey participants","Adult","Male","CT",0.0534068430209077,0.00428267468902321
+"HIPSS","Kharsany 2020",2015,"SA","South Africa","Population-representative survey participants","Adult","Male","NG",0.0232485884257914,0.00299918145615137
+"HIPSS","Kharsany 2020",2015,"SA","South Africa","Population-representative survey participants","Adult","Male","TV",0.0226016235024036,0.00368841568624205
+"HIPSS","Kharsany 2020",2015,"SA","South Africa","Population-representative survey participants","Adult","Female","CT",0.0962741974739308,0.00396797362287472
+"HIPSS","Kharsany 2020",2015,"SA","South Africa","Population-representative survey participants","Adult","Female","NG",0.0305972536763218,0.00255792229557385
+"HIPSS","Kharsany 2020",2015,"SA","South Africa","Population-representative survey participants","Adult","Female","TV",0.151315879001265,0.0050270897124502
+NA,"Cowley 2021",2016,"WCA","Guinea-Bissau","Population-representative survey participants","Adult","Male","CT",0.0117552671644406,0.00935442035371262
+NA,"Cowley 2021",2016,"WCA","Guinea-Bissau","Population-representative survey participants","Adult","Male","NG",0.0496020065098337,0.0173665858429773
+NA,"Cowley 2021",2016,"WCA","Guinea-Bissau","Population-representative survey participants","Adult","Male","TV",0.00530302481766314,0.00526119661779543
+NA,"Cowley 2021",2016,"WCA","Guinea-Bissau","Population-representative survey participants","Adult","Female","CT",0.0646170263754939,0.0164149124754049
+NA,"Cowley 2021",2016,"WCA","Guinea-Bissau","Population-representative survey participants","Adult","Female","NG",0.0375807426904084,0.0132153639127759
+NA,"Cowley 2021",2016,"WCA","Guinea-Bissau","Population-representative survey participants","Adult","Female","TV",0.125261125169104,0.0276787408693051
+"HVTN702","Gray 2021",2018,"SA","South Africa","HIV/STI prevention trial participants","Adult","Female","CT",0.256073287142646,0.0081807491024426
+"HVTN702","Gray 2021",2018,"SA","South Africa","HIV/STI prevention trial participants","Adult","Female","NG",0.048781847159356,0.00415379343567664
+"HVTN702","Gray 2021",2018,"SA","South Africa","HIV/STI prevention trial participants","Adult","Male","CT",0.175031840862492,0.0119781808271143
+"HVTN702","Gray 2021",2018,"SA","South Africa","HIV/STI prevention trial participants","Adult","Male","NG",0.0381020879290749,0.00616082637293007
+"Kisumu Incidence Cohort Study (KICoS)","Otieno 2015",2008,"EA","Kenya","Community members","Adult","Male","CT",0.0270839786328658,0.00970882022989221
+"Kisumu Incidence Cohort Study (KICoS)","Otieno 2015",2008,"EA","Kenya","Community members","Adult","Male","NG",0.0028814946845705,0.00292287775077063
+"Kisumu Incidence Cohort Study (KICoS)","Otieno 2015",2008,"EA","Kenya","Community members","Adult","Female","CT",0.0302601867794646,0.00937617687645599
+"Kisumu Incidence Cohort Study (KICoS)","Otieno 2015",2008,"EA","Kenya","Community members","Adult","Female","NG",0.0443604406882534,0.0110190520260496
+NA,"de Walque 2012",2011,"EA","Tanzania","HIV/STI prevention trial participants","Adult","Male","CT",0.0121173456280128,0.00416463233477242
+NA,"de Walque 2012",2011,"EA","Tanzania","HIV/STI prevention trial participants","Adult","Male","NG",0.00497633693189745,0.0023904327302727
+NA,"de Walque 2012",2011,"EA","Tanzania","HIV/STI prevention trial participants","Adult","Male","TV",0.0673622394936298,0.00878845451775945
+NA,"de Walque 2012",2011,"EA","Tanzania","HIV/STI prevention trial participants","Adult","Female","CT",0.0292048164119453,0.00522805885743783
+NA,"de Walque 2012",2011,"EA","Tanzania","HIV/STI prevention trial participants","Adult","Female","NG",0.0163161215918384,0.00386210805734026
+NA,"de Walque 2012",2011,"EA","Tanzania","HIV/STI prevention trial participants","Adult","Female","TV",0.223205521261679,0.0161444120982118
+"AHRI HDSS","Jarolimova 2023",2021,"SA","South Africa","Population-representative survey participants","Adult","Male","CT",0.164051341589822,0.0208142654682493
+"AHRI HDSS","Jarolimova 2023",2021,"SA","South Africa","Population-representative survey participants","Adult","Male","NG",0.0593913295213356,0.0133389527690806
+"AHRI HDSS","Jarolimova 2023",2021,"SA","South Africa","Population-representative survey participants","Adult","Male","TV",0.00370975404719117,0.00346318717372832
+"AHRI HDSS","Jarolimova 2023",2021,"SA","South Africa","Population-representative survey participants","Adult","Female","CT",0.235587021548025,0.0223707803603323
+"AHRI HDSS","Jarolimova 2023",2021,"SA","South Africa","Population-representative survey participants","Adult","Female","NG",0.0509248925757799,0.0123076553997676
+"AHRI HDSS","Jarolimova 2023",2021,"SA","South Africa","Population-representative survey participants","Adult","Female","TV",0.0892955619126002,0.0164746890849587
+"Crane Survey","Rutherford 2014",2009,"EA","Uganda","Students","Youth","Female","CT",0.0278794148387042,0.0112023949410535
+"Crane Survey","Rutherford 2014",2009,"EA","Uganda","Students","Youth","Female","NG",0.00871460060931837,0.00668173867473993
+"Crane Survey","Rutherford 2014",2009,"EA","Uganda","Students","Youth","Male","CT",0.00690688159890205,0.00576081258129013
+"Crane Survey","Rutherford 2014",2009,"EA","Uganda","Students","Youth","Male","NG",0.00338596148841705,0.00329125137251373
+NA,"Francis 2018",2017,"SA","South Africa","Population-representative survey participants","Youth","Male","CT",0.0583505425354009,0.019499488132589
+NA,"Francis 2018",2017,"SA","South Africa","Population-representative survey participants","Youth","Male","NG",0.0246987396801498,0.0127328854677538
+NA,"Francis 2018",2017,"SA","South Africa","Population-representative survey participants","Youth","Male","TV",0.00653762883955632,0.00650374775349792
+NA,"Francis 2018",2017,"SA","South Africa","Population-representative survey participants","Youth","Female","CT",0.125958404398808,0.0227650225639077
+NA,"Francis 2018",2017,"SA","South Africa","Population-representative survey participants","Youth","Female","NG",0.0165895518248061,0.00970308284397645
+NA,"Francis 2018",2017,"SA","South Africa","Population-representative survey participants","Youth","Female","TV",0.0319423035716913,0.014151107275183
+"CHIEDZA","Martin 2021",2020,"EA","Zimbabwe","Community members","Youth","Male","CT",0.0791777274518723,0.0170161672582633
+"CHIEDZA","Martin 2021",2020,"EA","Zimbabwe","Community members","Youth","Male","NG",0.0314747831315837,0.0113871838936377
+"CHIEDZA","Martin 2021",2020,"EA","Zimbabwe","Community members","Youth","Female","CT",0.169111763303918,0.0116052283413933
+"CHIEDZA","Martin 2021",2020,"EA","Zimbabwe","Community members","Youth","Female","NG",0.0254845279398886,0.00484351737559408
+NA,"Mcharo 2022",2020,"EA","Tanzania","Students","Youth","Female","CT",0.157034544364404,0.0290538645773556
+NA,"Mcharo 2022",2020,"EA","Tanzania","Students","Youth","Female","NG",0.011655415794183,0.00832259460434838
+NA,"Mcharo 2022",2020,"EA","Tanzania","Students","Youth","Male","CT",0.101732919486557,0.0202491902591215
+NA,"Mcharo 2022",2020,"EA","Tanzania","Students","Youth","Male","NG",0.0224577742063708,0.0105725945527086

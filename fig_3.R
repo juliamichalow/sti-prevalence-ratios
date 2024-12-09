@@ -1,6 +1,7 @@
 # Forest plots (manual)
 library(patchwork)
 
+
 # Study data for plot ----
 
 dat_plot <- read.csv("./data/data_withinstudy_adjusted.csv") |>
@@ -18,10 +19,7 @@ dat_plot <- read.csv("./data/data_withinstudy_adjusted.csv") |>
                       paste0(sprintf(ratio,fmt = '%#.2f')," (", sprintf(lwr,fmt = '%#.2f'), 
                              "-", sprintf(upr,fmt = '%#.1f'), ")")),
          year_mid = as.character(year_mid),
-         country = ifelse(study_id == "Lingappa 2009", "Multiple", country),
-         study_id = case_when(study_id == "Cowan 2002" & population == "Community members" ~ "Cowan 2002 ",
-                              study_id == "Cowan 2002" & population == "Students" ~ "Cowan 2002",
-                              TRUE ~ study_id)) |>
+         country = ifelse(study_id == "Lingappa 2009", "Multiple", country)) |>
   # Headings
   bind_rows(data.frame(study_name = NA, study_id = "Study",
                        year_mid = "Year", region = "Region",
@@ -53,12 +51,14 @@ dat_tv <- dat_plot |> filter(sti == "TV" | is.na(sti)) |>
 # Weighted summary ratios ----
 
 dat_summary <- read.csv("./results/ratios.csv") |>
+  filter(diag %in% c("All tests, adjusted")) |>
   relocate(type) |>
   mutate(est = paste0(sprintf(ratio,fmt = '%#.2f'), " (", sprintf(lwr,fmt = '%#.2f'), 
                       "-", sprintf(upr,fmt = '%#.2f'), ")"),
-         type = factor(type, levels = c("Unadjusted","Within study", "Between study"),
+         type = factor(type, levels = c("Pooled", "Within study", "Between study"),
                        labels = c("Pooled within-study ratio","Adjusted within-study ratio", "Adjusted between-study ratio")),
-         sum = paste0("n = ",n, ", \u03C4","\u00B2"," = ", sprintf(tau_study,fmt = '%#.2f'))) |>
+         sum = case_when(tau_study >= 0.01 ~ paste0("n = ",n, ", \u03C4","\u00B2"," = ", sprintf(tau_study,fmt = '%#.2f')),
+                         tau_study <0.01 ~ paste0("n = ",n, ", \u03C4","\u00B2"," < 0.01"))) |> 
   arrange(sti, type)
 
 dat_summary_ct <- dat_summary |> filter(sti == "CT")
@@ -70,7 +70,7 @@ dat_summary_tv <- dat_summary |> filter(sti == "TV")
 # dat = study data
 # dat_summary = weighted ratios
 # dim = dimensions for top and bottom of forest
-plot_forest <- function(dat, dat_summary, dim, who_ratio, title) {
+plot_forest <- function(dat, dat_summary, dim, who_ratio, ihme_ratio, title) {
   
   textsize <- 7.5
   x_axis_min <- 0.038
@@ -101,14 +101,27 @@ plot_forest <- function(dat, dat_summary, dim, who_ratio, title) {
     geom_segment(aes(x = 1, xend = 1), y = 0, yend = "Study", linetype = "solid",
                  size = 0.2, colour = "gray45") +
     geom_segment(aes(x = who_ratio, xend = who_ratio), y = 0, yend = "Study", linetype = "dashed",
-                 size = 0.3, colour = "mediumblue") +
+                 size = 0.3, colour = "#0b54a5") +
+    geom_segment(aes(x = ihme_ratio, xend = ihme_ratio), y = 0, yend = "Study", linetype = "dashed",
+                size = 0.3, colour = "#1e7b54") +
     geom_point(aes(x = ratio), shape=15, size=1.5, colour = "black") +
     geom_linerange(aes(xmin = lwr, xmax = upr), size = 0.4, colour = "black") +
-    geom_label(aes(x = who_ratio, y = "Study", label = "Global ratio"),
-               size = textsize*0.85 / .pt, label.size = NA,
-               label.padding = unit(0.08, "lines"),
-               colour = "mediumblue", fill = "white", fontface = "plain",
-               hjust = 0.5, vjust = 0.5) +
+    geom_label(aes(x = who_ratio, y = "Study", label = "WHO"),
+               size = textsize*0.8 / .pt, label.size = NA,
+               label.padding = unit(0.12, "lines"),
+               colour = "#0b54a5", fill = "white", fontface = "bold",
+               vjust = 0.5, 
+               hjust = case_when(who_ratio == 0.8 ~ 0.92,
+                                 who_ratio == 0.86 ~ 0.1,
+                                 who_ratio == 0.1 ~ 0.6)) +
+    geom_label(aes(x = ihme_ratio, y = "Study", label = "GBD"),
+               size = textsize*0.8 / .pt, label.size = NA,
+               label.padding = unit(0.12, "lines"),
+               colour = "#1e7b54", fill = "white", fontface = "bold",
+               vjust = 0.5, 
+               hjust = case_when(ihme_ratio == 0.9 ~ 0.08,
+                                 ihme_ratio == 0.7 ~ 0.9,
+                                 ihme_ratio == 0.2 ~ 0.4)) +
     theme_classic(base_size = textsize) +
     theme(axis.line.y = element_blank(),
           axis.ticks.y = element_blank(),
@@ -172,14 +185,17 @@ plot_forest <- function(dat, dat_summary, dim, who_ratio, title) {
   # Define x-axis breaks for p2_mid
   # Define the breaks based on the value of `who_ratio`
   x_breaks <- if (who_ratio < 0.5) {
-    c(who_ratio, 0.5, 5)
+    c(who_ratio, ihme_ratio, 0.5, 1, 5)
+  } else if(who_ratio < ihme_ratio) {
+    c(0.1, who_ratio, ihme_ratio, 5) 
   } else {
-    c(0.1, 0.5, who_ratio, 5)
+    c(0.1, ihme_ratio, who_ratio, 5) 
   }
   
   p2_mid <- ggplot(data = diamond_data) +
     geom_vline(xintercept = 1, linetype = "solid", size = 0.22, colour = "gray45") +
-    geom_vline(xintercept = who_ratio, linetype="dashed", size = 0.3, colour = "mediumblue") +
+    geom_vline(xintercept = who_ratio, linetype="dashed", size = 0.3, colour = "#0b54a5") +
+    geom_vline(xintercept = ihme_ratio, linetype="dashed", size = 0.3, colour = "#1e7b54") +
     geom_polygon(aes(x = x, y = y, group = type),
                  fill = "grey", color = "black", size = 0.4) +
     theme_classic(base_size = textsize) +
@@ -189,8 +205,15 @@ plot_forest <- function(dat, dat_summary, dim, who_ratio, title) {
     coord_cartesian(xlim = c(x_axis_min, x_axis_max), ylim = c(0.55,3.45)) +
     scale_y_continuous(breaks = c(1,2,3,4)) +
     # make who_ratio blue + change other theme
-    theme(axis.text.x = element_text(colour = ifelse(x_breaks == who_ratio, "mediumblue", "grey30"),
-                                     face = ifelse(x_breaks == who_ratio, "bold", "plain"),
+    theme(axis.text.x = element_text(colour = case_when(x_breaks == who_ratio ~ "#0b54a5", x_breaks == ihme_ratio ~ "#1e7b54", TRUE~ "grey30"),
+                                     face = ifelse(x_breaks %in% c(who_ratio, ihme_ratio), "bold", "plain"),
+                                     # reposition who and ihme x axis labels
+                                     hjust = case_when(who_ratio < 0.5 ~ 0.5,
+                                                       x_breaks == who_ratio & who_ratio < ihme_ratio  ~ 1,
+                                                       x_breaks == ihme_ratio & who_ratio < ihme_ratio  ~ 0,
+                                                       x_breaks == who_ratio & who_ratio > ihme_ratio  ~ 0,
+                                                       x_breaks == ihme_ratio & who_ratio > ihme_ratio  ~ 0.8,
+                                                       TRUE ~ 0.5),
                                      size = rel(1)),
           axis.line.y = element_blank(),
           axis.ticks.y = element_blank(),
@@ -200,7 +223,7 @@ plot_forest <- function(dat, dat_summary, dim, who_ratio, title) {
           axis.line.x = element_line(colour = "gray45", size = 0.3),
           axis.ticks.x = element_line(colour = "gray45", size = 0.3),
           plot.margin = unit(c(t=0,r=0,b=0,l=0), "cm")) +
-    labs(x = "Ratio (log scale)")
+    labs(x = "Prevalence ratio (log scale)")
   
   p2_right <- dat_summary |>
     ggplot(aes(y = fct_rev(type))) +
@@ -240,15 +263,16 @@ plot_forest <- function(dat, dat_summary, dim, who_ratio, title) {
   #   plot_layout(heights = dim) 
 } 
 
-p_ct <- plot_forest(dat_ct, dat_summary_ct, c(26/3, 0.1, 1), 0.8, "A    Chlamydia")
-p_ng <- plot_forest(dat_ng, dat_summary_ng, c(26/3, 0.1, 1), 0.86, "B    Gonorrhoea")
-p_tv <- plot_forest(dat_tv, dat_summary_tv, c(12/3, 0.1, 1), 0.1, "C    Trichomoniasis")
+p_ct <- plot_forest(dat_ct, dat_summary_ct, c(26/3, 0.1, 1), 0.80, 0.91, "A    Chlamydia")
+p_ng <- plot_forest(dat_ng, dat_summary_ng, c(26/3, 0.1, 1), 0.86, 0.71, "B    Gonorrhoea")
+p_tv <- plot_forest(dat_tv, dat_summary_tv, c(12/3, 0.1, 1), 0.10, 0.25, "C    Trichomoniasis")
 
 
 p <- wrap_elements(p_ct) / wrap_elements(p_ng) / wrap_elements(p_tv) +
-  plot_layout(height = c(2, 2, 1.15)) &
-  theme(plot.margin = unit(c(t = 0.05, r = 0, b = 0, l = 0), "cm"))
+  plot_layout(height = c(1, 1, 0.6)) &
+  theme(plot.margin = unit(c(t = 0.04, r = 0, b = 0, l = 0), "cm"))
 
 p
 
 ggsave("./plots/fig_3.png", p, width = 15, height = 24, unit = "cm", dpi = 700)
+

@@ -1,0 +1,15 @@
+variable,CT,NG,TV,,
+Intercept,0.13 (0.08-0.21),0.04 (0.02-0.08),0.21 (0.17-0.26),,Intercept & 0.13 (0.08-0.21) & 0.04 (0.02-0.08) & 0.21 (0.17-0.26) \\ 
+Western and Central,0.28 (0.12-0.62),0.54 (0.17-1.70),0.48 (0.30-0.77),,\hspace{0.2cm} Western and Central & 0.28 (0.12-0.62) & 0.54 (0.17-1.70) & 0.48 (0.30-0.77) \\ 
+Eastern,0.43 (0.27-0.69),0.52 (0.25-1.05),1.18 (0.85-1.65),,\hspace{0.2cm} Eastern & 0.43 (0.27-0.69) & 0.52 (0.25-1.05) & 1.18 (0.85-1.65) \\ 
+Southern,Ref,Ref,Ref,,\hspace{0.2cm} Southern & Ref & Ref & Ref \\ 
+Western and Central:Year,1.04 (0.95-1.12),1.18 (1.04-1.33),-,,\hspace{0.2cm} Western and Central:Year & 1.04 (0.95-1.12) & 1.18 (1.04-1.33) & - \\ 
+Eastern:Year,1.07 (1.03-1.10),1.00 (0.95-1.05),1.07 (0.82-1.40),,\hspace{0.2cm} Eastern:Year & 1.07 (1.03-1.10) & 1.00 (0.95-1.05) & 1.07 (0.82-1.40) \\ 
+Southern:Year,1.05 (1.00-1.11),1.05 (0.97-1.14),0.89 (0.84-0.95),,\hspace{0.2cm} Southern:Year & 1.05 (1.00-1.11) & 1.05 (0.97-1.14) & 0.89 (0.84-0.95) \\ 
+ANC attendees,Ref,Ref,Ref,,\hspace{0.2cm} ANC attendees & Ref & Ref & Ref \\ 
+Male,0.60 (0.56-0.65),0.74 (0.65-0.84),0.25 (0.22-0.30),,\hspace{0.2cm} Male & 0.60 (0.56-0.65) & 0.74 (0.65-0.84) & 0.25 (0.22-0.30) \\ 
+Adult,Ref,Ref,Ref,,\hspace{0.2cm} Adult & Ref & Ref & Ref \\ 
+Youth,1.17 (0.75-1.81),1.24 (0.65-2.36),0.35 (0.22-0.56),,\hspace{0.2cm} Youth & 1.17 (0.75-1.81) & 1.24 (0.65-2.36) & 0.35 (0.22-0.56) \\ 
+Mixed,Ref,Ref,Ref,,\hspace{0.2cm} Mixed & Ref & Ref & Ref \\ 
+HIV negative,1.08 (0.66-1.75),1.05 (0.51-2.18),0.74 (0.20-2.76),,\hspace{0.2cm} HIV negative & 1.08 (0.66-1.75) & 1.05 (0.51-2.18) & 0.74 (0.20-2.76) \\ 
+NAAT,Ref,Ref,Ref,,\hspace{0.2cm} NAAT & Ref & Ref & Ref \\ 
