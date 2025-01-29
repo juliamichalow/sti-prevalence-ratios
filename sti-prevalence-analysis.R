@@ -61,7 +61,19 @@ df <- read.csv("./data/final-dataset-v8-adjusted.csv") |>
                                         "Students","Community members", 
                                         "HIV/STI prevention trial participants",
                                         "Population-representative survey participants")),
-         test = fct_collapse(testcat, 
+         rob_study_sample = factor(case_when(study_sample %in% c("Consecutive", "Convenience", "Respondent-driven sampling", "NR") ~ "Higher",
+                                             study_sample %in% c("Random") ~ "Lower"),
+                                   levels = c("Lower", "Higher")),
+         rob_participant = factor(case_when(age_range == "NR" | (is.na(age_mean) & is.na(age_median)) | hiv_prevalence == "NR" | is.na(location) ~ "Higher",
+                                            TRUE ~ "Lower"),
+                                  levels = c("Lower", "Higher")),
+         rob_measurement = factor(case_when(test %in% c("DFA and NAAT", "culture or NAAT", "NAAT and WM", "culture and WM") |
+                                              specimen %in% c("genital fluid and urine", "genital fluid or urine") ~ "Higher",
+                                            TRUE ~ "Lower"),
+                                  levels = c("Lower", "Higher")),
+         rob_precision = factor(case_when(denom < 100 ~ "Higher", denom >= 100 ~ "Lower"),
+                                levels = c("Lower", "Higher")),
+         test = fct_collapse(test, 
                              "DFA" = c("DFA", "DFA and NAAT"),
                              "Culture" = c("culture", "culture or NAAT"),
                              "Wet mount" = c("WM", "NAAT and WM", "culture and WM"),
@@ -1155,6 +1167,42 @@ ratio_pool_unadj <- rbind(
          diag = "All tests, unadjusted",
          n = c(modct4_wn$modelInfo$nobs, modng4_wn$modelInfo$nobs, modtv4_wn$modelInfo$nobs))
 
+# ROB SENSITIVITY ANALYSES ----
+
+form <- cbind(adj_num,(adj_denom-adj_num)) ~ region + year_regression:region + 
+  sex:region + population + age_group + hiv_status + test + 
+  rob_study_sample + rob_participant + rob_measurement + rob_precision + (1 | study_id)
+
+# Logit models
+modct1_rob <- glmmTMB(form, data = df_ct, family = binomial(link="logit"))
+modng1_rob <- glmmTMB(form, data = df_ng, family = binomial(link="logit"))
+modtv1_rob <- glmmTMB(form, data = df_tv, family = binomial(link="logit"))
+
+# Use  parameter values from logit model as starting values for log model
+summary(modct1_rob)
+theta_ct <- as.vector(modct1_rob$fit$par[names(modct1_rob$fit$par) == "theta"])
+fixed_ct <- as.vector(modct1_rob$fit$par[names(modct1_rob$fit$par) == "beta"])
+
+summary(modng1_rob)
+theta_ng <- as.vector(modng1_rob$fit$par[names(modng1_rob$fit$par) == "theta"])
+fixed_ng <- as.vector(modng1_rob$fit$par[names(modng1_rob$fit$par) == "beta"])
+
+summary(modtv1_rob)
+theta_tv <- as.vector(modtv1_rob$fit$par[names(modtv1_rob$fit$par) == "theta"])
+fixed_tv <- as.vector(modtv1_rob$fit$par[names(modtv1_rob$fit$par) == "beta"])
+
+# Log models
+modct2_rob <- glmmTMB(form, data = df_ct, family = binomial(link="log"),
+                  start = list(theta = theta_ct, beta = fixed_ct))
+
+modng2_rob <- glmmTMB(form, data = df_ng, family = binomial(link="log"),
+                  start = list(theta = theta_ng, beta = fixed_ng))
+
+modtv2_rob <- glmmTMB(form, data = df_tv, family = binomial(link="log"),
+                  start = list(theta = theta_tv, beta = fixed_tv))
+
+sjPlot::tab_model(modct2_rob, modng2_rob, modtv2_rob, p.style = "stars", wrap.labels = 100)
+
 # ALL RATIOS ---- 
 
 df_ratio <- rbind(ratio_btwn_adj,
@@ -1185,7 +1233,9 @@ desired_order <- c("(Intercept)","WCA","EA", "SA",
                    "HIV/STI prevention trial participants", "Population-representative survey participants", 
                    "Female","Male", "Adult", "Youth",
                    "Mixed", "HIV negative",
-                   "NAAT","Culture","DFA","ELISA","Rapid antigen test","Wet mount")
+                   "NAAT","Culture","DFA","ELISA","Rapid antigen test","Wet mount",
+                   "Participant sampling", "Participant characterisation",
+                   "Diagnostic method consistency", "Sample size adequacy")
 
 reg_table <- function(model){
   
@@ -1205,8 +1255,13 @@ reg_table <- function(model){
            variable = gsub("age_group","",variable),
            variable = gsub("test","",variable),
            variable = gsub("Rapid antigen ","Rapid antigen test",variable),
-           variable = gsub("hiv_status","",variable)) |>
-    # add reference categories 
+           variable = gsub("hiv_status","",variable),
+           variable = gsub("rob_","",variable),
+           variable = gsub("participantHigher","Participant characterisation",variable),
+           variable = gsub("Higher","",variable),
+           variable = gsub("study_sample","Participant sampling",variable),
+           variable = gsub("measurement","Diagnostic method consistency",variable),
+           variable = gsub("precision","Sample size adequacy",variable)) |>
     rbind(data.frame(variable = c("ANC attendees","Adult", "Mixed", "SA", "NAAT"),
                      estimate = rep("Ref",5)))
 }
@@ -1339,6 +1394,22 @@ insight::get_variance(modtv4_w_naat)
 
 sjPlot::tab_model(modct4_w_naat, modng4_w_naat, modtv4_w_naat, p.style = "stars", wrap.labels = 100)
 
+# < ROB ----
+
+full_join(
+  reg_table(modct2_rob) |> rename(CT = estimate),
+  reg_table(modng2_rob) |> rename(NG = estimate)) |>
+  full_join(reg_table(modtv2_rob) |> rename(TV = estimate)) |>
+  # reorder variables
+  mutate(variable = factor(variable, levels = desired_order)) |>
+  arrange(variable)  |>
+  write.csv("./tables/regression_rob.csv", row.names = FALSE)
+
+insight::get_variance(modct2_rob)
+insight::get_variance(modng2_rob)
+insight::get_variance(modtv2_rob)
+
+sjPlot::tab_model(modct2_rob, modng2_rob, modtv2_rob, p.style = "stars", wrap.labels = 100)
 
 # STUDY CHARACTERISTICS ----
 
@@ -1832,3 +1903,153 @@ full_join(
     summarise(n_art=n_distinct(study_id))) |>
   rowwise() |>
   mutate(n_tot = sum(n_study,n_art, na.rm=TRUE))
+
+# < ROB ----
+
+full_join(
+  df |> 
+    filter(!is.na(study_name)) |>
+    group_by(sti, rob_study_sample) |>
+    summarise(n_study = n_distinct(study_name)),
+  df |> 
+    filter(is.na(study_name)) |>
+    group_by(sti, rob_study_sample) |>
+    summarise(n_article = n_distinct(study_id))) |>
+  mutate(n_study = case_when(is.na(n_study) ~ 0, TRUE ~ n_study),
+         n_article = case_when(is.na(n_article) ~ 0, TRUE ~ n_article),
+         n_tot = n_study + n_article) |>
+  select(!c(n_study, n_article)) |>
+  pivot_wider(names_from = rob_study_sample, values_from = n_tot) |>
+  mutate(n_tot = Lower + Higher,
+         p_low = Lower/n_tot*100,
+         p_high = Higher/n_tot*100)
+
+full_join(
+  df |> 
+    filter(!is.na(study_name)) |>
+    group_by(sti, rob_participant) |>
+    summarise(n_study = n_distinct(study_name)),
+  df |> 
+    filter(is.na(study_name)) |>
+    group_by(sti, rob_participant) |>
+    summarise(n_article = n_distinct(study_id))) |>
+  mutate(n_study = case_when(is.na(n_study) ~ 0, TRUE ~ n_study),
+         n_article = case_when(is.na(n_article) ~ 0, TRUE ~ n_article),
+         n_tot = n_study + n_article) |>
+  select(!c(n_study, n_article)) |>
+  pivot_wider(names_from = rob_participant, values_from = n_tot) |>
+  mutate(n_tot = Lower + Higher,
+         p_low = Lower/n_tot*100,
+         p_high = Higher/n_tot*100)
+
+
+full_join(
+  df |> 
+    filter(!is.na(study_name)) |>
+    group_by(sti, rob_measurement) |>
+    summarise(n_study = n_distinct(study_name)),
+  df |> 
+    filter(is.na(study_name)) |>
+    group_by(sti, rob_measurement) |>
+    summarise(n_article = n_distinct(study_id))) |>
+  mutate(n_study = case_when(is.na(n_study) ~ 0, TRUE ~ n_study),
+         n_article = case_when(is.na(n_article) ~ 0, TRUE ~ n_article),
+         n_tot = n_study + n_article) |>
+  select(!c(n_study, n_article)) |>
+  pivot_wider(names_from = rob_measurement, values_from = n_tot) |>
+  mutate(n_tot = Lower + Higher,
+         p_low = Lower/n_tot*100,
+         p_high = Higher/n_tot*100)
+
+
+full_join(
+  df |> 
+    filter(!is.na(study_name)) |>
+    group_by(sti, rob_precision) |>
+    summarise(n_study = n_distinct(study_name)),
+  df |> 
+    filter(is.na(study_name)) |>
+    group_by(sti, rob_precision) |>
+    summarise(n_article = n_distinct(study_id))) |>
+  mutate(n_study = case_when(is.na(n_study) ~ 0, TRUE ~ n_study),
+         n_article = case_when(is.na(n_article) ~ 0, TRUE ~ n_article),
+         n_tot = n_study + n_article) |>
+  select(!c(n_study, n_article)) |>
+  pivot_wider(names_from = rob_precision, values_from = n_tot) |>
+  mutate(n_tot = Lower + Higher,
+         p_low = Lower/n_tot*100,
+         p_high = Higher/n_tot*100)
+
+# Overall
+full_join(
+  df |> 
+    filter(!is.na(study_name)) |>
+    group_by(rob_study_sample) |>
+    summarise(n_study = n_distinct(study_name)),
+  df |> 
+    filter(is.na(study_name)) |>
+    group_by(rob_study_sample) |>
+    summarise(n_article = n_distinct(study_id))) |>
+  mutate(n_study = case_when(is.na(n_study) ~ 0, TRUE ~ n_study),
+         n_article = case_when(is.na(n_article) ~ 0, TRUE ~ n_article),
+         n_tot = n_study + n_article) |>
+  select(!c(n_study, n_article)) |>
+  pivot_wider(names_from = rob_study_sample, values_from = n_tot) |>
+  mutate(n_tot = Lower + Higher,
+         p_low = Lower/n_tot*100,
+         p_high = Higher/n_tot*100)
+
+full_join(
+  df |> 
+    filter(!is.na(study_name)) |>
+    group_by(rob_participant) |>
+    summarise(n_study = n_distinct(study_name)),
+  df |> 
+    filter(is.na(study_name)) |>
+    group_by(rob_participant) |>
+    summarise(n_article = n_distinct(study_id))) |>
+  mutate(n_study = case_when(is.na(n_study) ~ 0, TRUE ~ n_study),
+         n_article = case_when(is.na(n_article) ~ 0, TRUE ~ n_article),
+         n_tot = n_study + n_article) |>
+  select(!c(n_study, n_article)) |>
+  pivot_wider(names_from = rob_participant, values_from = n_tot) |>
+  mutate(n_tot = Lower + Higher,
+         p_low = Lower/n_tot*100,
+         p_high = Higher/n_tot*100)
+
+full_join(
+  df |> 
+    filter(!is.na(study_name)) |>
+    group_by(rob_measurement) |>
+    summarise(n_study = n_distinct(study_name)),
+  df |> 
+    filter(is.na(study_name)) |>
+    group_by(rob_measurement) |>
+    summarise(n_article = n_distinct(study_id))) |>
+  mutate(n_study = case_when(is.na(n_study) ~ 0, TRUE ~ n_study),
+         n_article = case_when(is.na(n_article) ~ 0, TRUE ~ n_article),
+         n_tot = n_study + n_article) |>
+  select(!c(n_study, n_article)) |>
+  pivot_wider(names_from = rob_measurement, values_from = n_tot) |>
+  mutate(n_tot = Lower + Higher,
+         p_low = Lower/n_tot*100,
+         p_high = Higher/n_tot*100)
+
+full_join(
+  df |> 
+    filter(!is.na(study_name)) |>
+    group_by(rob_precision) |>
+    summarise(n_study = n_distinct(study_name)),
+  df |> 
+    filter(is.na(study_name)) |>
+    group_by(rob_precision) |>
+    summarise(n_article = n_distinct(study_id))) |>
+  mutate(n_study = case_when(is.na(n_study) ~ 0, TRUE ~ n_study),
+         n_article = case_when(is.na(n_article) ~ 0, TRUE ~ n_article),
+         n_tot = n_study + n_article) |>
+  select(!c(n_study, n_article)) |>
+  pivot_wider(names_from = rob_precision, values_from = n_tot) |>
+  mutate(n_tot = Lower + Higher,
+         p_low = Lower/n_tot*100,
+         p_high = Higher/n_tot*100)
+

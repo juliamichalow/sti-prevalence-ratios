@@ -1,6 +1,6 @@
 # Forest plots (manual)
 library(patchwork)
-
+library(tidyverse)
 
 # Study data for plot ----
 
@@ -111,17 +111,17 @@ plot_forest <- function(dat, dat_summary, dim, who_ratio, ihme_ratio, title) {
                label.padding = unit(0.12, "lines"),
                colour = "#0b54a5", fill = "white", fontface = "bold",
                vjust = 0.5, 
-               hjust = case_when(who_ratio == 0.8 ~ 0.92,
-                                 who_ratio == 0.86 ~ 0.1,
-                                 who_ratio == 0.1 ~ 0.6)) +
+               hjust = case_when(who_ratio == 0.80 ~ 0.94,
+                                 who_ratio == 0.86 ~ 0.06,
+                                 who_ratio == 0.10 ~ 0.5)) +
     geom_label(aes(x = ihme_ratio, y = "Study", label = "GBD"),
                size = textsize*0.8 / .pt, label.size = NA,
                label.padding = unit(0.12, "lines"),
                colour = "#1e7b54", fill = "white", fontface = "bold",
                vjust = 0.5, 
-               hjust = case_when(ihme_ratio == 0.9 ~ 0.08,
-                                 ihme_ratio == 0.7 ~ 0.9,
-                                 ihme_ratio == 0.2 ~ 0.4)) +
+               hjust = case_when(ihme_ratio == 0.91 ~ 0.06,
+                                 ihme_ratio == 0.71 ~ 0.94,
+                                 ihme_ratio == 0.25 ~ 0.5)) +
     theme_classic(base_size = textsize) +
     theme(axis.line.y = element_blank(),
           axis.ticks.y = element_blank(),
@@ -185,7 +185,7 @@ plot_forest <- function(dat, dat_summary, dim, who_ratio, ihme_ratio, title) {
   # Define x-axis breaks for p2_mid
   # Define the breaks based on the value of `who_ratio`
   x_breaks <- if (who_ratio < 0.5) {
-    c(who_ratio, ihme_ratio, 0.5, 1, 5)
+    c(who_ratio, ihme_ratio, 1, 5)
   } else if(who_ratio < ihme_ratio) {
     c(0.1, who_ratio, ihme_ratio, 5) 
   } else {
@@ -201,7 +201,13 @@ plot_forest <- function(dat, dat_summary, dim, who_ratio, ihme_ratio, title) {
     theme_classic(base_size = textsize) +
     # NOTE ylim is exactly lined up with y-axes for p2_left and p2_right
     scale_x_log10(breaks = x_breaks,
-                  labels = scales::number_format(accuracy = 0.1)) +
+                  labels = function(x) {
+                    ifelse(x %in% c(who_ratio, ihme_ratio),
+                           scales::number_format(accuracy = 0.01)(x),
+                           scales::number_format(accuracy = 0.1)(x))
+                  }) +
+    # scale_x_log10(breaks = x_breaks,
+    #               labels = scales::number_format(accuracy = 0.01)) +
     coord_cartesian(xlim = c(x_axis_min, x_axis_max), ylim = c(0.55,3.45)) +
     scale_y_continuous(breaks = c(1,2,3,4)) +
     # make who_ratio blue + change other theme
@@ -212,7 +218,7 @@ plot_forest <- function(dat, dat_summary, dim, who_ratio, ihme_ratio, title) {
                                                        x_breaks == who_ratio & who_ratio < ihme_ratio  ~ 1,
                                                        x_breaks == ihme_ratio & who_ratio < ihme_ratio  ~ 0,
                                                        x_breaks == who_ratio & who_ratio > ihme_ratio  ~ 0,
-                                                       x_breaks == ihme_ratio & who_ratio > ihme_ratio  ~ 0.8,
+                                                       x_breaks == ihme_ratio & who_ratio > ihme_ratio  ~ 1,
                                                        TRUE ~ 0.5),
                                      size = rel(1)),
           axis.line.y = element_blank(),
