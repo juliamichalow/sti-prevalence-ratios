@@ -81,7 +81,7 @@ df <- read.csv("./data/final-dataset-v8-adjusted.csv") |>
          test = factor(test, levels = c("NAAT","Culture", "DFA", "Rapid antigen test", "ELISA", "Wet mount")))
 
 
-# FUNCTION ---- 
+# FUNCTIONS ---- 
 
 # Function that predicts prevalence for:
 # 1. Region by year and sex
@@ -293,6 +293,70 @@ prediction_2 <- function(mod, sti, y1, y2, pop_pred = "ANC attendees") {
   df_ratio |>
     select(sti, years_for_ratio, est)
   
+}
+
+
+# Function that calculates:
+# total variance
+# random and fixed effect variance
+# marginal r2: variance explained by fixed effects
+# conditional r2: variance explained by fixed and random effects
+
+r2_calc <- function(model){
+  
+  # Get fixed effects
+  beta <- fixef(model)$cond
+  X <- model.matrix(model)
+  
+  # Calculate linear predictor
+  eta <- as.vector(X %*% beta)
+  
+  # Convert to probabilities for log link
+  p <- exp(eta)  # convert to probabilities
+  
+  # Calculate variance of fixed effects
+  var_fix <- var(eta)
+  
+  # Get random effects variance
+  vc <- VarCorr(model)
+  var_rand <- as.numeric(vc$cond$study_id[1])
+  
+  # For binomial GLMM with log link
+  # Get sample size for variance calculation
+  mf <- model.frame(model) 
+  y_mat <- mf[[1]] 
+  n <- y_mat[,1] + y_mat[,2]  # sample sizes
+  
+  # Calculate distribution variance using delta method
+  var_dist <- mean((1-p)/(n * p))
+  
+  # Total variance
+  var_tot <- var_fix + var_rand + var_dist
+  
+  # Calculate R2
+  R2m <- var_fix / var_tot
+  R2c <- (var_fix + var_rand) / var_tot
+  
+  # Calculate I2
+  # https://www.metafor-project.org/doku.php/tips:i2_multilevel_multivariate
+  # Percentage of variability in the effect sizes that is not caused by sampling error
+  # Between-study variance = var_rand
+  # Sampling error variance = var_dist
+  
+  # Don't include var_fix in the denominator because I2 is about unexplained 
+  # variation and var_fix represents variance explained by moderators
+  # i.e. want to know what proportion of remaining unexplained variance is due 
+  # to between-study heterogeneity
+  
+  I2 <- var_rand / (var_rand + var_dist)
+  
+  list(R2m = R2m,
+       R2mc = R2c,
+       I2 = I2,
+       var_rand = paste0(round(var_rand,2)," (", round(var_rand/var_tot*100,1), "%)"),
+       var_fixed = paste0(round(var_fix,2)," (", round(var_fix/var_tot*100,1), "%)"),
+       var_dist = paste0(round(var_dist,2)," (", round(var_dist/var_tot*100,1), "%)"),
+       var_tot = var_tot)
 }
 
 # BETWEEN STUDY ANALYSIS ----
@@ -1279,6 +1343,10 @@ full_join(
 insight::get_variance(modct2)
 insight::get_variance(modng2)
 insight::get_variance(modtv2)
+
+r2_calc(modct2)
+r2_calc(modng2)
+r2_calc(modtv2)
 
 sjPlot::tab_model(modct2, modng2, modtv2, p.style = "stars", wrap.labels = 100)
 
